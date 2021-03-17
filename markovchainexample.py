@@ -3,6 +3,15 @@ import pandas as pd
 from random import seed
 from random import random
 import matplotlib.pyplot as plt
+# P = np.array([[0.2, 0.7, 0.1],
+#               [0.9, 0.0, 0.1],
+#               [0.2, 0.8, 0.0]])
+#
+# stateChangeHist= np.array([[0.0,  0.0,  0.0],
+#                           [0.0, 0.0,  0.0],
+#                           [0.0, 0.0,  0.0]])
+# state=np.array([[1.0, 0.0, 0.0]])
+
 P = np.array([[0.2, 0.7, 0.1],
               [0.9, 0.0, 0.1],
               [0.2, 0.8, 0.0]])
@@ -11,13 +20,16 @@ stateChangeHist= np.array([[0.0,  0.0,  0.0],
                           [0.0, 0.0,  0.0],
                           [0.0, 0.0,  0.0]])
 state=np.array([[1.0, 0.0, 0.0]])
+
+
+
 currentState=0
 stateHist=state
 dfStateHist=pd.DataFrame(state)
 distr_hist = [[0,0,0]]
 seed(4)
-# Simulate from multinomial distribution
 
+# Simulate from multinomial distribution
 def simulate_multinomial(vmultinomial):
   r=np.random.uniform(0.0, 1.0)
   CS=np.cumsum(vmultinomial)
