@@ -19,6 +19,16 @@ p = [[0.0, 0.89, 0.09, 0.02, 0.0, 0.0, 0.0], [0.0, 0.17, 0.64, 0.06, 0.0, 0.0, 0
 stateHist = state
 mc = MarkovChain(p, statenames)
 
+q_df = pd.DataFrame(columns=statenames, index=statenames)
+i = 0
+for statename in statenames:
+    q_df.loc[statename] = p[i]
+    i=i+1
+
+print("Matriz de Transição:")
+print(q_df)
+
+
 print(mc)
 print("Matriz Fundamental:")
 print(mc.fundamental_matrix)
