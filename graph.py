@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 
 states = [(0, 0),(1, 0),(2, 0),(3, 0),(4, 0),(5, 0),(6, 0)]
 #states = ['Inicio', 'A1', 'A2', 'A3', 'A4', 'Graduado', 'Parou']
-Q = [[0.0, 0.89, 0.09, 0.02, 0.0, 0.0, 0.0], [0.0, 0.17, 0.64, 0.06, 0.0, 0.0, 0.13],
-     [0.0, 0.0, 0.1, 0.75, 0.08, 0.0, 0.07], [0.0, 0.0, 0.0, 0.08, 0.84, 0.04, 0.04],
-     [0.0, 0.0, 0.0, 0.0, 0.37, 0.61, 0.02], [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+Q = [[0.057, 0.31, 0.0, 0.0, 0.603, 0.0, 0.03],
+     [0.0, 0.187, 0.528, 0.0, 0.285, 0.0, 0.0],
+     [0.0, 0.0, 0.012, 0.563, 0.097, 0.328, 0.0],
+     [0.0, 0.0, 0.0, 0.039, 0.094, 0.814, 0.053],
+     [0.001, 0.036, 0.02, 0.0, 0.0, 0.003, 0.94],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 G = nx.MultiDiGraph()
@@ -20,8 +23,8 @@ for i, origin_state in enumerate(states):
             G.add_edge(origin_state,
                        destination_state,
                        weight=rate,
-                       label="{:.02f}".format(rate))
-            edge_labels[(origin_state, destination_state)] = label="{:.02f}".format(rate)
+                       label="{:.03f}".format(rate))
+            edge_labels[(origin_state, destination_state)] = label="{:.03f}".format(rate)
 
 
 plt.figure(figsize=(14,7))
