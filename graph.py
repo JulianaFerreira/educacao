@@ -1,18 +1,21 @@
 from __future__ import division
 import networkx as nx
 import matplotlib.pyplot as plt
+from subprocess import check_call
 
-states = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0), (9, 0), (10, 0), (11, 0)]
+import pydot
+
 
 class Graph:
 
-    def creategraph(self, Q, n):
+    def creategraph(self, Q):
         G = nx.MultiDiGraph()
         labels = {}
         edge_labels = {}
+        states = []
 
-        #criar array de estados
-        #for i to n:
+        for i in range(len(Q)):
+            states.append((i,0))
 
 
         for i, origin_state in enumerate(states):
@@ -34,5 +37,8 @@ class Graph:
         plt.axis('off')
 
         nx.nx_pydot.write_dot(G, 'mc.dot')
+        #TODO tentar gerar em png
+        # (graph,) = pydot.graph_from_dot_file('mc.dot')
+        # graph.write_png('mc.png')
 
 
