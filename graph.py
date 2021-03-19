@@ -25,8 +25,8 @@ class Graph:
                     G.add_edge(origin_state,
                                destination_state,
                                weight=rate,
-                               label="{:.03f}".format(rate))
-                    edge_labels[(origin_state, destination_state)] = label = "{:.03f}".format(rate)
+                               label="{:.02f}".format(rate))
+                    edge_labels[(origin_state, destination_state)] = label = "{:.02f}".format(rate)
 
         plt.figure(figsize=(14, 7))
         node_size = 200
@@ -37,8 +37,5 @@ class Graph:
         plt.axis('off')
 
         nx.nx_pydot.write_dot(G, 'mc.dot')
-        #TODO tentar gerar em png
-        # (graph,) = pydot.graph_from_dot_file('mc.dot')
-        # graph.write_png('mc.png')
 
 

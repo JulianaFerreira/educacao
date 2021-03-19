@@ -57,6 +57,9 @@ A5toG = 1 - A5toA5R - A5toE
 A5RtoE = 0.1 * taxaEvasaoR
 A5RtoG = 1 - A5RtoE
 
+progres = [A1toA2, A2toA3, A3toA4, A4toA5, A5toG, A1RtoA2R, A2RtoA3R, A3RtoA4R, A4RtoA5R, A5RtoG]
+ret = [A1toA1R, A2toA2R, A3toA3R, A4toA4R, A5toA5R]
+
 statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'G', 'E']
 state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
@@ -87,13 +90,6 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
 
 # statenames = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'G', 'W']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0, 0]])
-# p = [[0.057, 0.31, 0.0, 0.0, 0.603, 0.0, 0.03, 0.0],
-#      [0.0, 0.187, 0.528, 0.0, 0.285, 0.0, 0.0],
-#      [0.0, 0.0, 0.012, 0.563, 0.097, 0.328, 0.0],
-#      [0.0, 0.0, 0.0, 0.039, 0.094, 0.814, 0.053],
-#      [0.001, 0.036, 0.02, 0.0, 0.0, 0.003, 0.94],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 # statenames = ['Inicio', 'A1', 'A2', 'A3', 'A4', 'Graduado', 'Evadido']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0]])
@@ -107,6 +103,9 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
 
 plot = Plot()
 graph = Graph()
+
+#Desenha Cadeia de Markov
+graph.creategraph(p)
 
 stateHist = state
 mc = MarkovChain(p, statenames)
@@ -134,7 +133,7 @@ print("\n Duração esperada em cada ano até a graduação ou evasão")
 print(np.round(mc.absorption_times, 3))
 
 print("\n Duração média esperada até graduação:")
-print(np.round(np.trace(np.asarray(N)),3))
+print(np.round(np.trace(np.asarray(N)), 3))
 
 #f=NR
 x = np.array(p)
@@ -148,16 +147,28 @@ for i in range(len(probGE)):
     print(probGE[i])
 
 #Gráficos Graduação e Evasão
-plot.barplot("G", probGE.T[0], statenames[:len(statenames)-2])
-plot.barplot("E", probGE.T[1], statenames[:len(statenames)-2])
+# plot.barplot("G", probGE.T[0], statenames[:len(statenames)-2])
+# plot.barplot("E", probGE.T[1], statenames[:len(statenames)-2])
 
+#Gráfico Retenção
+plot.barplot("Probalididade de Retenção", ret, statenames[:5])
 
-#Fazer gráfico com probabilidade de progressão/retenção dos alunos para o próximo nível de estudo durante um ano acadêmico
-# dfGE = pd.DataFrame(stateHist, columns=statenames)
-# i = 0
-# for statename in statenames:
-#     q_df.loc[statename] = p[i]
-#     i = i + 1
+#Gráfico Progressão
+dfGE = pd.DataFrame({'Não Retidos': progres[:5],
+                    'Retidos': progres[-5:]}, index=statenames[:5])
+dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Progressão")
+
+#Gráfico Graduação e Evasão Agrupado
+e = probGE.T[1]
+g = probGE.T[0]
+
+dfGE = pd.DataFrame({'Não Retidos': e[:5],
+                    'Retidos': e[-5:]}, index=statenames[:5])
+dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Evasão")
+
+dfGE = pd.DataFrame({'Não Retidos': g[:5],
+                    'Retidos': g[-5:]}, index=statenames[:5])
+dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
 
 #Gráfico do histórico de distribuição
 for x in range(10):
@@ -169,9 +180,6 @@ for x in range(10):
 
 dfDistrHist.plot()
 # print(dfDistrHist)
-
-#Desenha Cadeia de Markov
-graph.creategraph(p)
 
 
 #outros
