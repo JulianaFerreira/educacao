@@ -104,9 +104,6 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
 plot = Plot()
 graph = Graph()
 
-#Desenha Cadeia de Markov
-graph.creategraph(p)
-
 stateHist = state
 mc = MarkovChain(p, statenames)
 
@@ -151,12 +148,18 @@ for i in range(len(probGE)):
 # plot.barplot("E", probGE.T[1], statenames[:len(statenames)-2])
 
 #Gráfico Retenção
-plot.barplot("Probalididade de Retenção", ret, statenames[:5])
+plot.barplot("Probabilidade de Retenção", ret, statenames[:5])
+
+print("\n Probabilidade de Retenção: ")
+print(ret)
 
 #Gráfico Progressão
 dfGE = pd.DataFrame({'Não Retidos': progres[:5],
                     'Retidos': progres[-5:]}, index=statenames[:5])
 dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Progressão")
+
+print("\n Probabilidade de Progressão: ")
+print(ret)
 
 #Gráfico Graduação e Evasão Agrupado
 e = probGE.T[1]
@@ -181,6 +184,8 @@ for x in range(10):
 dfDistrHist.plot()
 # print(dfDistrHist)
 
+#Desenha Cadeia de Markov
+graph.creategraph(p)
 
 #outros
 #print(mc.expected_transitions(6))
