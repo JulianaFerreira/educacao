@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
 from graph import Graph
-from plot import Plot
 
 plt.ion()
 
@@ -101,24 +100,49 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
 # normalize rows to ensure p is a valid right stochastic matrix
 #p = p / np.sum(p, axis=1)
 
-plot = Plot()
 graph = Graph()
 
 stateHist = state
 mc = MarkovChain(p, statenames)
 
-q_df = pd.DataFrame(columns=statenames, index=statenames)
-i = 0
-for statename in statenames:
-    q_df.loc[statename] = p[i]
-    i = i + 1
+def barplot(title, height, bars):
+    # Make a dataset:
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+    plt.title(title)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    # Show graphic
+    plt.show()
+
+def matriz_transicao():
+    q_df = pd.DataFrame(columns=statenames, index=statenames)
+    i = 0
+    for statename in statenames:
+        q_df.loc[statename] = p[i]
+        i += 1
+
+    # Progressão dos alunos entre diferentes estados
+    print("\n Matriz de Transição:")
+    print(q_df)
+
+def prob_absor():
+    # f=NR
+    x = np.array(p)
+    x1 = x[:len(x) - 2, len(x) - 2]
+    x2 = x[:len(x) - 2, len(x) - 1]
+    R = np.array([x1, x2])
+
+    return np.round(np.dot(R, N.T).T, 3)
 
 # informacoes sobre a cadeia de markov
 # print(mc)
 
-#Progressão dos alunos entre diferentes estados
-print("\n Matriz de Transição:")
-print(q_df)
+matriz_transicao()
 
 #O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
 print("\n Matriz Fundamental:")
@@ -132,23 +156,13 @@ print(np.round(mc.absorption_times, 3))
 print("\n Duração média esperada até graduação:")
 print(np.round(np.trace(np.asarray(N)), 3))
 
-#f=NR
-x = np.array(p)
-x1 = x[:len(x)-2, len(x)-2]
-x2 = x[:len(x)-2, len(x)-1]
-R = np.array([x1, x2])
-probGE = np.round(np.dot(R, N.T).T, 3)
-
+probGE = prob_absor()
 for i in range(len(probGE)):
     print("\n Probabilidade graduação e evasão no estado " + statenames[i] + ":")
     print(probGE[i])
 
-#Gráficos Graduação e Evasão
-# plot.barplot("G", probGE.T[0], statenames[:len(statenames)-2])
-# plot.barplot("E", probGE.T[1], statenames[:len(statenames)-2])
-
 #Gráfico Retenção
-plot.barplot("Probabilidade de Retenção", ret, statenames[:5])
+barplot("Probabilidade de Retenção", ret, statenames[:5])
 
 print("\n Probabilidade de Retenção: ")
 print(ret)
@@ -160,6 +174,10 @@ dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="P
 
 print("\n Probabilidade de Progressão: ")
 print(ret)
+
+#Gráficos Graduação e Evasão individuais
+# plot.barplot("G", probGE.T[0], statenames[:len(statenames)-2])
+# plot.barplot("E", probGE.T[1], statenames[:len(statenames)-2])
 
 #Gráfico Graduação e Evasão Agrupado
 e = probGE.T[1]

@@ -1,10 +1,6 @@
 from __future__ import division
 import networkx as nx
 import matplotlib.pyplot as plt
-from subprocess import check_call
-
-import pydot
-
 
 class Graph:
 
