@@ -3,61 +3,107 @@ import numpy as np
 import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
 from graph import Graph
+from lifelines import KaplanMeierFitter as kmf
 
 plt.ion()
 
+#TODO trocar para prob add a parte do R e NR em trancar
 taxaRetencao = 1.0
 taxaEvasao = 1.0
 taxaEvasaoR = 1.0
+taxaTrancar = 1.0
+taxaTrancarR = 1.0
+taxaVoltar = 1.0
+taxaVoltarR = 1.0
+taxaProporcaoEvasao = 1.0
+taxaProporcaoTrancar = 1.0
+taxaProporcaoVoltar = 1.0
 
 # taxa dos estados
 # A1
+A1toT = 0 * taxaTrancar
 A1toA1R = 0.3 * taxaRetencao
 A1toE = 0.1 * taxaEvasao
-A1toA2 = 1 - A1toA1R - A1toE
+A1toA2 = 1 - A1toA1R - A1toE - A1toT
+TtoA1 = 0 * taxaVoltar
 
 # A1R
+A1RtoT = 0 * taxaTrancar
 A1RtoE = 0.35 * taxaEvasaoR
-A1RtoA2R = 1 - A1RtoE
+A1RtoA2R = 1 - A1RtoE - A1RtoT
+TtoA1R = 0 * taxaVoltar
+TtoA1R = 0 * taxaVoltar
 
 # A2
+A2toT = 0 * taxaTrancar
 A2toA2R = 0.25 * taxaRetencao
 A2toE = 0.1 * taxaEvasao
-A2toA3 = 1 - A2toA2R - A2toE
+A2toA3 = 1 - A2toA2R - A2toE - A2toT
+TtoA2 = 0 * taxaVoltar
 
 # A2R
+A2RtoT = 0 * taxaTrancar
 A2RtoE = 0.28 * taxaEvasaoR
-A2RtoA3R = 1 - A2RtoE
+A2RtoA3R = 1 - A2RtoE - A2RtoT
+TtoA2R = 0 * taxaVoltar
 
 # A3
+A3toT = 0 * taxaTrancar
 A3toA3R = 0.2 * taxaRetencao
 A3toE = 0.1 * taxaEvasao
-A3toA4 = 1 - A3toA3R - A3toE
+A3toA4 = 1 - A3toA3R - A3toE - A3toT
+TtoA3 = 0 * taxaVoltar
 
 # A3R
+A3RtoT = 0 * taxaTrancar
 A3RtoE = 0.25 * taxaEvasaoR
-A3RtoA4R = 1 - A3RtoE
+A3RtoA4R = 1 - A3RtoE - A3RtoT
+TtoA3R = 0 * taxaVoltar
 
 # A4
+A4toT = 0 * taxaTrancar
 A4toA4R = 0.15 * taxaRetencao
 A4toE = 0.06 * taxaEvasao
-A4toA5 = 1 - A4toA4R - A4toE
+A4toA5 = 1 - A4toA4R - A4toE - A4toT
+TtoA4 = 0 * taxaVoltar
 
 # A4R
+A4RtoT = 0 * taxaTrancar
 A4RtoE = 0.18 * taxaEvasaoR
-A4RtoA5R = 1 - A4RtoE
+A4RtoA5R = 1 - A4RtoE - A4RtoT
+TtoA4R = 0 * taxaVoltar
 
 # A5
+A5toT = 0 * taxaTrancar
 A5toA5R = 0.2 * taxaRetencao
 A5toE = 0.03 * taxaEvasao
-A5toG = 1 - A5toA5R - A5toE
+A5toG = 1 - A5toA5R - A5toE - A5toT
+TtoA5 = 0 * taxaVoltar
 
 # A5R
+A5RtoT = 0 * taxaTrancar
 A5RtoE = 0.1 * taxaEvasaoR
-A5RtoG = 1 - A5RtoE
+A5RtoG = 1 - A5RtoE - A5RtoT
+TtoA5R = 0 * taxaVoltar
 
 progres = [A1toA2, A2toA3, A3toA4, A4toA5, A5toG, A1RtoA2R, A2RtoA3R, A3RtoA4R, A4RtoA5R, A5RtoG]
 ret = [A1toA1R, A2toA2R, A3toA3R, A4toA4R, A5toA5R]
+tranc = [A1toT, A2toT, A3toT, A4toT, A5toT, A1RtoT, A2RtoT, A3RtoT, A4RtoT, A5RtoT]
+
+# statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'T', 'G', 'E']
+# state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+# p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
+#      [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, A2toE],
+#      [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, A3toE],
+#      [0.0, 0.0, 0.0, 0.0, A4toA5, 0.0, 0.0, 0.0, A4toA4R, 0.0, 0.0, A4toE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5toA5R, A5toG, A5toE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, 0.0, A1RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, 0.0, A2RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RtoA4R, 0.0, 0.0, A3RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RtoA5R, 0.0, A4RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RtoG, A5RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'G', 'E']
 state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
@@ -176,8 +222,8 @@ print("\n Probabilidade de Progressão: ")
 print(ret)
 
 #Gráficos Graduação e Evasão individuais
-# plot.barplot("G", probGE.T[0], statenames[:len(statenames)-2])
-# plot.barplot("E", probGE.T[1], statenames[:len(statenames)-2])
+# barplot("G", probGE.T[0], statenames[:len(statenames)-2])
+# barplot("E", probGE.T[1], statenames[:len(statenames)-2])
 
 #Gráfico Graduação e Evasão Agrupado
 e = probGE.T[1]
@@ -192,7 +238,7 @@ dfGE = pd.DataFrame({'Não Retidos': g[:5],
 dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
 
 #Gráfico do histórico de distribuição
-for x in range(10):
+for x in range(8):
     # probalidade dos estado
     # print(np.round(state, 3))
     state = np.dot(state, p)
@@ -201,6 +247,23 @@ for x in range(10):
 
 dfDistrHist.plot()
 # print(dfDistrHist)
+
+
+
+#lifelines
+# t1 = [1,2,3,4,5,6,7,8]
+# df2 = pd.DataFrame(np.array(t1), columns=['T'])
+#
+# T = df2["T"]
+# E = dfDistrHist['E']
+#
+# kmf.fit(durations=T, event_observed=E)
+# kmf.survival_function_
+# kmf.cumulative_density_
+# kmf.plot_survival_function()
+
+
+
 
 #Desenha Cadeia de Markov
 graph.creategraph(p)
