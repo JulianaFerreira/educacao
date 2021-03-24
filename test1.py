@@ -33,13 +33,13 @@ def simulate_multinomial(vmultinomial):
   m=(np.where(CS<r))[0]
   nextState=m[len(m)-1]
   return nextState
-for x in range(1000):
+for x in range(10):
   currentRow=np.ma.masked_values((P[currentState]), 0.0)
   nextState=simulate_multinomial(currentRow)
   # Keep track of state changes
   stateChangeHist[currentState,nextState]+=1
   # Keep track of the state vector itself
-  state=np.array([[0,0,0]])
+  state=np.array([[0,0,0,0,0,0,0]])
   state[0,nextState]=1.0
   # Keep track of state history
   stateHist=np.append(stateHist,state,axis=0)
@@ -48,7 +48,7 @@ for x in range(1000):
   totals=np.sum(stateHist,axis=0)
   gt=np.sum(totals)
   distrib=totals/gt
-  distrib=np.reshape(distrib,(1,3))
+  distrib=np.reshape(distrib,(1,7))
   distr_hist=np.append(distr_hist,distrib,axis=0)
 print(distrib)
 P_hat=stateChangeHist/stateChangeHist.sum(axis=1)[:,None]
@@ -58,3 +58,5 @@ dfDistrHist = pd.DataFrame(distr_hist)
 # Plot the distribution as the simulation progresses over time
 dfDistrHist.plot(title="Simulation History")
 plt.show()
+
+
