@@ -15,8 +15,6 @@ plt.ion()
 #tempo até retenção - Não passa por varios estados, faz sentido? talvez com o estado trancado
 #criar versão considerando anos no curso
 
-#criar classe com a matriz e seus dados assim eu não enlouqueço
-
 
 taxaRetencao = 1.0
 taxaEvasao = 1.0
@@ -180,6 +178,7 @@ def matriz_transicao():
         q_df.loc[statename] = p[i]
         i += 1
 
+    q_df.to_csv("matriz.csv")
     # Progressão dos alunos entre diferentes estados
     print("\n Matriz de Transição:")
     print(q_df)
@@ -251,7 +250,7 @@ dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="P
 
 
 #Gráfico do histórico de distribuição
-for x in range(15):
+for x in range(8):
     # probalidade dos estado
     #print(np.round(state, 3))
     state = np.dot(state, p)
@@ -268,12 +267,17 @@ n = 100
 e = 0
 g = 0
 r = 0
+ano = []
+
+print(f"\nSimulação com {n} alunos")
 for i in range(n):
     arr = mc.walk(8, 'A1')
 
     #Se ficou Retido em algum dos estados
-    if ():
-        r += 1
+    for estado in arr:
+        if ('R' in estado):
+            r += 1
+            break
 
     #Quantos Graduados e Evadidos
     if (arr[-1] == 'G'):
@@ -282,9 +286,13 @@ for i in range(n):
         e += 1
 
 
-print("Probabilidade de evasão: " + e/n)
-print("Probabilidade de graduação: " + g/n)
-print("Probabilidade de ser retido: " + r/n)
+print(f"\nProbabilidade de evasão: {e/n}")
+print(f"Probabilidade de graduação: {g/n}")
+print(f"Probabilidade de ser retido: {r/n}")
+#tempo até retenção - calcula media dos anos
+
+
+#fazer for com o tempo que aparece o G ou E
 
 
 #lifelines
