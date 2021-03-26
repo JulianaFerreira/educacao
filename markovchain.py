@@ -311,6 +311,8 @@ t = 0
 tempo = np.arange(0, passosSimu, 1)
 time = np.array([])
 tempo_ate_retido = []
+tempo_ate_trancado = []
+tempo_ate_evadido = []
 tempo_ate_graduado = []
 event_observedE = np.array([])
 event_observedG = np.array([])
@@ -324,14 +326,17 @@ for i in range(n):
     # Cria Arrays para analise de sobrevivencia e Verificar se foi G, E, T ou R em algum dos estados
     time = np.concatenate((tempo, time))
     estados = np.zeros((passosSimu,), dtype=int)
-    if (arr[-1] == 'E'):
+    if 'E' in arr:
         e += 1 # quantidade para probabilidade
         k = arr.index("E")
+        tempo_ate_evadido.append(k + 1)
         estados[k] = 1
+        # for k in range(len(estados)):
+        #     estados[k] = 1
     event_observedE = np.concatenate((event_observedE, estados))
 
     estados = np.zeros((passosSimu,), dtype=int)
-    if (arr[-1] == 'G'):
+    if 'G' in arr:
         g += 1 # quantidade para probabilidade
         k = arr.index("G")
         tempo_ate_graduado.append(k + 1)
@@ -340,12 +345,17 @@ for i in range(n):
 
     #Trancado
     estados = np.zeros((passosSimu,), dtype=int)
+    count = 0
+    for estado in arr:
+        if estado == 'T':
+            estados[count] = 1
+        count += 1
+    event_observedT = np.concatenate((event_observedT, estados))
+
     if 'T' in arr:
         t += 1
         k = arr.index("T")
-        for k in range(len(estados)):
-            estados[k] = 1
-    event_observedT = np.concatenate((event_observedT, estados))
+        tempo_ate_trancado.append(k + 1)
 
     # Retido
     estados = np.zeros((passosSimu,), dtype=int)
@@ -366,12 +376,14 @@ for i in range(n):
         count += 1
 
 
-print(f"\nProbabilidade de evasão: {e/n}")
-print(f"Probabilidade de graduação: {g/n}")
-print(f"Probabilidade de ser retido: {r/n}")
+print(f"\nProbabilidade de ser retido: {r/n}")
 print(f"Probabilidade de ser trancado: {t/n}")
-print(f"Duração média até ser retido: {np.round(np.mean(tempo_ate_retido),3)} anos")
-print(f"Duração média até graduação: {np.round(np.mean(tempo_ate_graduado),3)} anos")
+print(f"Probabilidade de evasão: {e/n}")
+print(f"Probabilidade de graduação: {g/n}")
+print(f"Tempo médio até ser retido: {np.round(np.mean(tempo_ate_retido),3)} anos")
+print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado),3)} anos")
+print(f"Tempo médio até ser evadido: {np.round(np.mean(tempo_ate_evadido),3)} anos")
+print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado),3)} anos")
 
 #lifelines
 kmf = KaplanMeierFitter()
