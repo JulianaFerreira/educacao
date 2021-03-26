@@ -8,10 +8,9 @@ from lifelines import KaplanMeierFitter
 #TODO
 #criar variável para proporção entre retidos e não retidos - FEITO
 #adicionar estado trancado - FEITO
+#analise de sobrevivencia/Survival regression/lifelines - FEITO
+#tempo até retenção - FEITO
 #extrair formula - FEITO PARCIALMENTE
-#analise de sobrevivencia/Survival regression/lifelines - FEITO - Fazer para G, R e T, testar colocando 1 até o final e sem
-#A1+A1R até E com gráfico
-#tempo até retenção - Não passa por varios estados, faz sentido? talvez com o estado trancado
 #criar versão considerando anos no curso
 #corrigir gráficos
 
@@ -93,6 +92,34 @@ A5toG = 1 - A5toA5R - A5toE - A5toT
 TtoA5 = 0.03 * taxaVoltar
 
 # A5R
+A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
+A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
+A5RtoG = 1 - A5RtoE - A5RtoT
+TtoA5R = 0.02 * taxaVoltar
+
+# A6
+#A5toT = 0.0 * taxaTrancar
+A5toT = 0.05 * taxaTrancar
+A5toA5R = 0.2 * taxaRetencao
+A5toE = 0.03 * taxaEvasao
+A5toG = 1 - A5toA5R - A5toE - A5toT
+TtoA5 = 0.03 * taxaVoltar
+
+# A6R
+A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
+A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
+A5RtoG = 1 - A5RtoE - A5RtoT
+TtoA5R = 0.02 * taxaVoltar
+
+# A7
+#A5toT = 0.0 * taxaTrancar
+A5toT = 0.05 * taxaTrancar
+A5toA5R = 0.2 * taxaRetencao
+A5toE = 0.03 * taxaEvasao
+A5toG = 1 - A5toA5R - A5toE - A5toT
+TtoA5 = 0.03 * taxaVoltar
+
+# A7R
 A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
 A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
 A5RtoG = 1 - A5RtoE - A5RtoT
@@ -257,8 +284,12 @@ dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="P
 plt.show()
 
 
+#Quantidade de anos para simulação
+# passosSimu = 8 # Sem trancar
+passosSimu = 20 # Com trancar
+
 # Gráfico do histórico de distribuição
-for x in range(15):
+for x in range(passosSimu):
     # probalidade dos estado
     #print(np.round(state, 3))
     state = np.dot(state, p)
@@ -272,44 +303,53 @@ plt.show()
 
 
 # Simulação
-n = 200
+n = 1000
 e = 0
 g = 0
 r = 0
 t = 0
-tempo = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+tempo = np.arange(0, passosSimu, 1)
 time = np.array([])
+tempo_ate_retido = []
+tempo_ate_graduado = []
 event_observedE = np.array([])
 event_observedG = np.array([])
+event_observedT = np.array([])
 event_observedR = np.array([])
 
-#TODO ver se tempo nao devia ser o total e não so quando entra em E ou G ou R
 print(f"\nSimulação com {n} alunos")
 for i in range(n):
-    arr = mc.walk(18, 'A1')
+    arr = mc.walk(passosSimu, 'A1')
 
-    # Cria Arrays para analise de sobrevivencia
-    estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Cria Arrays para analise de sobrevivencia e Verificar se foi G, E, T ou R em algum dos estados
     time = np.concatenate((tempo, time))
+    estados = np.zeros((passosSimu,), dtype=int)
     if (arr[-1] == 'E'):
         e += 1 # quantidade para probabilidade
         k = arr.index("E")
-        k = k + 1
         estados[k] = 1
-        # for k in range(len(estados)):
-        #     estados[k] = 1
     event_observedE = np.concatenate((event_observedE, estados))
 
-    estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    estados = np.zeros((passosSimu,), dtype=int)
     if (arr[-1] == 'G'):
         g += 1 # quantidade para probabilidade
         k = arr.index("G")
-        k = k + 1
+        tempo_ate_graduado.append(k + 1)
         estados[k] = 1
     event_observedG = np.concatenate((event_observedG, estados))
 
-    estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    count = 1
+    #Trancado
+    estados = np.zeros((passosSimu,), dtype=int)
+    if 'T' in arr:
+        t += 1
+        k = arr.index("T")
+        for k in range(len(estados)):
+            estados[k] = 1
+    event_observedT = np.concatenate((event_observedT, estados))
+
+    # Retido
+    estados = np.zeros((passosSimu,), dtype=int)
+    count = 0
     for estado in arr:
         if ('R' in estado):
             estados[count] = 1
@@ -317,22 +357,21 @@ for i in range(n):
     event_observedR = np.concatenate((event_observedR, estados))
 
     # Se ficou Retido em algum dos estados
+    count = 0
     for estado in arr:
         if ('R' in estado):
+            tempo_ate_retido.append(count+1)
             r += 1
             break
-
-    # Se ficou Trancado em algum dos estados
-    if 'T' in arr:
-        t += 1
-
+        count += 1
 
 
 print(f"\nProbabilidade de evasão: {e/n}")
 print(f"Probabilidade de graduação: {g/n}")
 print(f"Probabilidade de ser retido: {r/n}")
-print(f"Probabilidade de trancar: {t/n}")
-#tempo até retenção - calcula media dos anos
+print(f"Probabilidade de ser trancado: {t/n}")
+print(f"Duração média até ser retido: {np.round(np.mean(tempo_ate_retido),3)} anos")
+print(f"Duração média até graduação: {np.round(np.mean(tempo_ate_graduado),3)} anos")
 
 #lifelines
 kmf = KaplanMeierFitter()
@@ -351,6 +390,13 @@ plt.show()
 
 kmf = KaplanMeierFitter()
 kmf.fit(time, event_observedR, label='Retido')
+kmf.plot_survival_function()
+plt.show()
+# kmf.plot_cumulative_density(ci_show=False)
+# plt.show()
+
+kmf = KaplanMeierFitter()
+kmf.fit(time, event_observedT, label='Trancado')
 kmf.plot_survival_function()
 plt.show()
 # kmf.plot_cumulative_density(ci_show=False)
