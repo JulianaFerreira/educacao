@@ -4,16 +4,16 @@ import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
 from graph import Graph
 from lifelines import KaplanMeierFitter
-plt.ion()
 
 #TODO
 #criar variável para proporção entre retidos e não retidos - FEITO
-#adicionar estado trancado - FEITO - ERRADO TEM QUE SER 1 PRA CADA ESTADO!!!
-#extrair formula
-#analise de sobrevivencia/lifelines
+#adicionar estado trancado - FEITO
+#extrair formula - FEITO PARCIALMENTE
+#analise de sobrevivencia/Survival regression/lifelines - FEITO - Fazer para G, R e T, testar colocando 1 até o final e sem
 #A1+A1R até E com gráfico
 #tempo até retenção - Não passa por varios estados, faz sentido? talvez com o estado trancado
 #criar versão considerando anos no curso
+#corrigir gráficos
 
 
 taxaRetencao = 1.0
@@ -155,6 +155,8 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, A1toT, 0.0, A1toE
 #      [0.0, 0.0, 0.0, 0.0, 0.37, 0.61, 0.02], [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
+p = np.round(p, 4)
+
 stateHist = state
 mc = MarkovChain(p, statenames)
 
@@ -199,7 +201,7 @@ def prob_absor():
 
 matriz_transicao()
 
-#O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
+# O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
 print("\n Matriz Fundamental:")
 N = np.round(mc.fundamental_matrix, 3)
 print(N)
@@ -220,39 +222,43 @@ for i in range(len(probGE)):
     print("\n Probabilidade graduação e evasão no estado " + statenames[i] + ":")
     print(probGE[i])
 
-#Gráfico Retenção
+# Gráfico Retenção
 barplot("Probabilidade de Retenção", ret, statenames[:5])
+plt.show()
 
 print("\n Probabilidade de Retenção: ")
 print(ret)
 
-#Gráfico Progressão
+# Gráfico Progressão
 dfGE = pd.DataFrame({'Não Retidos': progres[:5],
                     'Retidos': progres[-5:]}, index=statenames[:5])
 dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Progressão")
+plt.show()
 
 print("\n Probabilidade de Progressão: ")
 print(np.round(progres, 4))
 
-#Gráficos Graduação e Evasão individuais
+# Gráficos Graduação e Evasão individuais
 # barplot("G", probGE.T[0], statenames[:len(statenames)-2])
 # barplot("E", probGE.T[1], statenames[:len(statenames)-2])
 
-#Gráfico Graduação e Evasão Agrupado
+# Gráfico Graduação e Evasão Agrupado
 e = probGE.T[1]
 g = probGE.T[0]
 
 dfGE = pd.DataFrame({'Não Retidos': e[:5],
                     'Retidos': e[-5:]}, index=statenames[:5])
 dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Evasão")
+plt.show()
 
 dfGE = pd.DataFrame({'Não Retidos': g[:5],
                     'Retidos': g[-5:]}, index=statenames[:5])
 dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
+plt.show()
 
 
-#Gráfico do histórico de distribuição
-for x in range(10):
+# Gráfico do histórico de distribuição
+for x in range(15):
     # probalidade dos estado
     #print(np.round(state, 3))
     state = np.dot(state, p)
@@ -261,33 +267,46 @@ for x in range(10):
 
 
 dfDistrHist.plot()
+plt.show()
 #print(dfDistrHist)
 
 
-#Simulação
-n = 1000
+# Simulação
+n = 200
 e = 0
 g = 0
 r = 0
 t = 0
-#criar lista com o ano(posicao no array) e G ou E
-ano = []
+tempo = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])
+time = np.array([])
+event_observed = np.array([])
 
 print(f"\nSimulação com {n} alunos")
 for i in range(n):
-    arr = mc.walk(10, 'A1')
+    arr = mc.walk(18, 'A1')
+
+    # Encontrar E
+    estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    if (arr[-1] == 'E'):
+        k = arr.index("E")
+        time = np.concatenate((tempo, time))
+        k = k + 1
+        for k in range(len(estados)):
+            estados[k] = 1
+        event_observed = np.concatenate((event_observed, estados))
+
 
     # Se ficou Trancado em algum dos estados
     if 'T' in arr:
         t += 1
 
-    #Se ficou Retido em algum dos estados
+    # Se ficou Retido em algum dos estados
     for estado in arr:
         if ('R' in estado):
             r += 1
             break
 
-    #Quantos Graduados e Evadidos
+    # Quantos Graduados e Evadidos
     if (arr[-1] == 'G'):
         g += 1
     else:
@@ -301,20 +320,13 @@ print(f"Probabilidade de trancar: {t/n}")
 #tempo até retenção - calcula media dos anos
 
 
-#fazer for com o tempo que aparece o G ou E
-
-
 #lifelines
-# dfDistrHist.insert(0, 'T', [0, 1, 2, 3, 4, 5, 6, 7, 8], True)
-#
-# T = dfDistrHist['T']
-# E = dfDistrHistTotal['E']
-#
-# kmf = KaplanMeierFitter()
-# kmf.fit(T, event_observed=E)
-# kmf.survival_function_
-# kmf.cumulative_density_
-# kmf.plot_survival_function()
+kmf = KaplanMeierFitter()
+kmf.fit(time, event_observed, label='Evadido')
+kmf.plot_survival_function()
+plt.show()
+# kmf.plot_cumulative_density(ci_show=False)
+# plt.show()
 
 
 #Desenha Cadeia de Markov

@@ -4,7 +4,9 @@ df = load_waltons() # returns a Pandas DataFrame
 
 from matplotlib import pyplot as plt
 
-plt.ion()
+durations = [5,6,6,2.5,4,4]
+event_observed = [1, 0, 0, 1, 1, 1]
+label='Kaplan Meier Estimate'
 
 print(df)
 """
@@ -23,7 +25,9 @@ E = df['E']
 kmf = KaplanMeierFitter()
 kmf.fit(T, event_observed=E)
 
-kmf.survival_function_
-kmf.cumulative_density_
+# kmf.survival_function_
+# kmf.cumulative_density_
 kmf.plot_survival_function()
-#kmf.plot_cumulative_density()
+plt.show()
+kmf.plot_cumulative_density()
+plt.show()
