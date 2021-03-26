@@ -277,28 +277,44 @@ e = 0
 g = 0
 r = 0
 t = 0
-tempo = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])
+tempo = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 time = np.array([])
-event_observed = np.array([])
+event_observedE = np.array([])
+event_observedG = np.array([])
+event_observedR = np.array([])
 
+#TODO ver se tempo nao devia ser o total e não so quando entra em E ou G ou R
 print(f"\nSimulação com {n} alunos")
 for i in range(n):
     arr = mc.walk(18, 'A1')
 
-    # Encontrar E
+    # Cria Arrays para analise de sobrevivencia
     estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    time = np.concatenate((tempo, time))
     if (arr[-1] == 'E'):
+        e += 1 # quantidade para probabilidade
         k = arr.index("E")
-        time = np.concatenate((tempo, time))
         k = k + 1
-        for k in range(len(estados)):
-            estados[k] = 1
-        event_observed = np.concatenate((event_observed, estados))
+        estados[k] = 1
+        # for k in range(len(estados)):
+        #     estados[k] = 1
+    event_observedE = np.concatenate((event_observedE, estados))
 
+    estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    if (arr[-1] == 'G'):
+        g += 1 # quantidade para probabilidade
+        k = arr.index("G")
+        k = k + 1
+        estados[k] = 1
+    event_observedG = np.concatenate((event_observedG, estados))
 
-    # Se ficou Trancado em algum dos estados
-    if 'T' in arr:
-        t += 1
+    estados = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    count = 1
+    for estado in arr:
+        if ('R' in estado):
+            estados[count] = 1
+        count += 1
+    event_observedR = np.concatenate((event_observedR, estados))
 
     # Se ficou Retido em algum dos estados
     for estado in arr:
@@ -306,11 +322,10 @@ for i in range(n):
             r += 1
             break
 
-    # Quantos Graduados e Evadidos
-    if (arr[-1] == 'G'):
-        g += 1
-    else:
-        e += 1
+    # Se ficou Trancado em algum dos estados
+    if 'T' in arr:
+        t += 1
+
 
 
 print(f"\nProbabilidade de evasão: {e/n}")
@@ -319,10 +334,23 @@ print(f"Probabilidade de ser retido: {r/n}")
 print(f"Probabilidade de trancar: {t/n}")
 #tempo até retenção - calcula media dos anos
 
-
 #lifelines
 kmf = KaplanMeierFitter()
-kmf.fit(time, event_observed, label='Evadido')
+kmf.fit(time, event_observedE, label='Evadido')
+kmf.plot_survival_function()
+plt.show()
+# kmf.plot_cumulative_density(ci_show=False)
+# plt.show()
+
+kmf = KaplanMeierFitter()
+kmf.fit(time, event_observedG, label='Graduado')
+kmf.plot_survival_function()
+plt.show()
+# kmf.plot_cumulative_density(ci_show=False)
+# plt.show()
+
+kmf = KaplanMeierFitter()
+kmf.fit(time, event_observedR, label='Retido')
 kmf.plot_survival_function()
 plt.show()
 # kmf.plot_cumulative_density(ci_show=False)
