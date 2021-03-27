@@ -10,9 +10,9 @@ from lifelines import KaplanMeierFitter
 #adicionar estado trancado - FEITO
 #analise de sobrevivencia/Survival regression/lifelines - FEITO
 #tempo até retenção - FEITO
-#extrair formula - FEITO PARCIALMENTE
-#criar versão considerando anos no curso
-#corrigir gráficos
+#criar versão considerando anos no curso # FEITO
+#extrair formula - PARCIAL
+#corrigir gráficos antigos
 
 
 taxaRetencao = 1.0
@@ -27,11 +27,11 @@ taxaProporcaoTrancar = 2.0
 taxaProporcaoVoltar = 1.0
 
 # Probabilidade dos estados
+# Com Trancar
 # A1
-#A1toT = 0 * taxaTrancar
-A1toT = 0.15 * taxaTrancar
-A1toA1R = 0.3 * taxaRetencao
-A1toE = 0.1 * taxaEvasao
+A1toT = 0.1 * taxaTrancar
+A1toA1R = 0.25 * taxaRetencao
+A1toE = 0.12 * taxaEvasao
 A1toA2 = 1 - A1toA1R - A1toE - A1toT
 TtoA1 = 0.03 * taxaVoltar
 
@@ -42,10 +42,9 @@ A1RtoA2R = 1 - A1RtoE - A1RtoT
 TtoA1R = 0.02 * taxaVoltar
 
 # A2
-#A2toT = 0 * taxaTrancar
-A2toT = 0.12 * taxaTrancar
-A2toA2R = 0.25 * taxaRetencao
-A2toE = 0.1 * taxaEvasao
+A2toT = 0.08 * taxaTrancar
+A2toA2R = 0.3 * taxaRetencao
+A2toE = 0.08 * taxaEvasao
 A2toA3 = 1 - A2toA2R - A2toE - A2toT
 TtoA2 = 0.03 * taxaVoltar
 
@@ -56,8 +55,7 @@ A2RtoA3R = 1 - A2RtoE - A2RtoT
 TtoA2R = 0.02 * taxaVoltar
 
 # A3
-#A3toT = 0 * taxaTrancar
-A3toT = 0.08 * taxaTrancar
+A3toT = 0.04 * taxaTrancar
 A3toA3R = 0.2 * taxaRetencao
 A3toE = 0.1 * taxaEvasao
 A3toA4 = 1 - A3toA3R - A3toE - A3toT
@@ -70,8 +68,7 @@ A3RtoA4R = 1 - A3RtoE - A3RtoT
 TtoA3R = 0.02 * taxaVoltar
 
 # A4
-#A4toT = 0 * taxaTrancar
-A4toT = 0.1 * taxaTrancar
+A4toT = 0.05 * taxaTrancar
 A4toA4R = 0.15 * taxaRetencao
 A4toE = 0.06 * taxaEvasao
 A4toA5 = 1 - A4toA4R - A4toE - A4toT
@@ -84,8 +81,7 @@ A4RtoA5R = 1 - A4RtoE - A4RtoT
 TtoA4R = 0.02 * taxaVoltar
 
 # A5
-#A5toT = 0.0 * taxaTrancar
-A5toT = 0.05 * taxaTrancar
+A5toT = 0.02 * taxaTrancar
 A5toA5R = 0.2 * taxaRetencao
 A5toE = 0.03 * taxaEvasao
 A5toG = 1 - A5toA5R - A5toE - A5toT
@@ -97,37 +93,68 @@ A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
 A5RtoG = 1 - A5RtoE - A5RtoT
 TtoA5R = 0.02 * taxaVoltar
 
-# A6
-#A5toT = 0.0 * taxaTrancar
-A5toT = 0.05 * taxaTrancar
-A5toA5R = 0.2 * taxaRetencao
-A5toE = 0.03 * taxaEvasao
-A5toG = 1 - A5toA5R - A5toE - A5toT
-TtoA5 = 0.03 * taxaVoltar
-
-# A6R
-A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
-A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
-A5RtoG = 1 - A5RtoE - A5RtoT
-TtoA5R = 0.02 * taxaVoltar
-
-# A7
-#A5toT = 0.0 * taxaTrancar
-A5toT = 0.05 * taxaTrancar
-A5toA5R = 0.2 * taxaRetencao
-A5toE = 0.03 * taxaEvasao
-A5toG = 1 - A5toA5R - A5toE - A5toT
-TtoA5 = 0.03 * taxaVoltar
-
-# A7R
-A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
-A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
-A5RtoG = 1 - A5RtoE - A5RtoT
-TtoA5R = 0.02 * taxaVoltar
-
 # T
 TtoT = 0.6
 TtoE = 0.15
+
+
+
+# Com mais anos e sem Trancar
+# A1
+# A1toA1R = 0.25 * taxaRetencao
+# A1toE = 0.15 * taxaEvasao
+# A1toA2 = 1 - A1toA1R - A1toE
+#
+# # A1R
+# A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+# A1RtoA2R = 1 - A1RtoE
+#
+# # A2
+# A2toA2R = 0.3 * taxaRetencao
+# A2toE = 0.13 * taxaEvasao
+# A2toA3 = 1 - A2toA2R - A2toE
+#
+# # A2R
+# A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
+# A2RtoA3R = 1 - A2RtoE
+#
+# # A3
+# A3toA3R = 0.2 * taxaRetencao
+# A3toE = 0.1 * taxaEvasao
+# A3toA4 = 1 - A3toA3R - A3toE
+#
+# # A3R
+# A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
+# A3RtoA4R = 1 - A3RtoE
+#
+# # A4
+# A4toA4R = 0.15 * taxaRetencao
+# A4toE = 0.08 * taxaEvasao
+# A4toA5 = 1 - A4toA4R - A4toE
+#
+# # A4R
+# A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
+# A4RtoA5R = 1 - A4RtoE
+#
+# # A5
+# A5toA5R = 0.2 * taxaRetencao
+# A5toE = 0.06 * taxaEvasao
+# A5toG = 1 - A5toA5R - A5toE
+#
+# # A5R
+# A5RtoA6R = 0.4
+# A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
+# A5RtoG = 1 - A5RtoA6R - A5RtoE
+#
+# # A6R
+# A6RtoA7R = 0.3
+# A6RtoE = 0.06 * taxaEvasaoR
+# A6RtoG = 1 - A6RtoE - A6RtoA7R
+#
+# # A7R
+# A7RtoE = 0.04 * taxaEvasaoR
+# A7RtoG = 1 - A7RtoE
+
 
 
 progres = [A1toA2, A2toA3, A3toA4, A4toA5, A5toG, A1RtoA2R, A2RtoA3R, A3RtoA4R, A4RtoA5R, A5RtoG]
@@ -149,6 +176,23 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, A1toT, 0.0, A1toE
      [TtoA1, TtoA2, TtoA3, TtoA4, TtoA5, TtoA1R, TtoA2R, TtoA3R, TtoA4R, TtoA5R, TtoT, 0.0, TtoE],
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
+
+# statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
+# state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+# p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
+#      [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
+#      [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A3toE],
+#      [0.0, 0.0, 0.0, 0.0, A4toA5, 0.0, 0.0, 0.0, A4toA4R, 0.0, 0.0, 0.0, 0.0, A4toE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5toA5R, A5toG, 0.0, 0.0, A5toE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RtoA4R, 0.0, 0.0, 0.0, 0.0, A3RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RtoA5R, 0.0, 0.0, 0.0, A4RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RtoA6R, 0.0, 0.0, A5RtoG, A5RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A6RtoA7R, 0.0, A6RtoG, A6RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A7RtoG, A7RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 # statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'G', 'E']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
@@ -284,14 +328,14 @@ dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="P
 plt.show()
 
 
-#Quantidade de anos para simulação
+# Quantidade de anos para simulação
 # passosSimu = 8 # Sem trancar
-passosSimu = 20 # Com trancar
+passosSimu = 15 # Com trancar
 
 # Gráfico do histórico de distribuição
 for x in range(passosSimu):
     # probalidade dos estado
-    #print(np.round(state, 3))
+    # print(np.round(state, 3))
     state = np.dot(state, p)
     stateHist = np.append(stateHist, state, axis=0)
     dfDistrHist = pd.DataFrame(stateHist, columns=statenames)
@@ -299,7 +343,7 @@ for x in range(passosSimu):
 
 dfDistrHist.plot()
 plt.show()
-#print(dfDistrHist)
+# print(dfDistrHist)
 
 
 # Simulação
@@ -327,7 +371,7 @@ for i in range(n):
     time = np.concatenate((tempo, time))
     estados = np.zeros((passosSimu,), dtype=int)
     if 'E' in arr:
-        e += 1 # quantidade para probabilidade
+        e += 1  # quantidade para probabilidade
         k = arr.index("E")
         tempo_ate_evadido.append(k + 1)
         estados[k] = 1
@@ -337,7 +381,7 @@ for i in range(n):
 
     estados = np.zeros((passosSimu,), dtype=int)
     if 'G' in arr:
-        g += 1 # quantidade para probabilidade
+        g += 1  # quantidade para probabilidade
         k = arr.index("G")
         tempo_ate_graduado.append(k + 1)
         estados[k] = 1
@@ -361,7 +405,7 @@ for i in range(n):
     estados = np.zeros((passosSimu,), dtype=int)
     count = 0
     for estado in arr:
-        if ('R' in estado):
+        if 'R' in estado:
             estados[count] = 1
         count += 1
     event_observedR = np.concatenate((event_observedR, estados))
@@ -369,23 +413,23 @@ for i in range(n):
     # Se ficou Retido em algum dos estados
     count = 0
     for estado in arr:
-        if ('R' in estado):
+        if 'R' in estado:
             tempo_ate_retido.append(count+1)
             r += 1
             break
         count += 1
 
 
-print(f"\nProbabilidade de ser retido: {r/n}")
-print(f"Probabilidade de ser trancado: {t/n}")
-print(f"Probabilidade de evasão: {e/n}")
-print(f"Probabilidade de graduação: {g/n}")
+print(f"\nProbabilidade de ser retido: {r/n*100} %")
+print(f"Probabilidade de ser trancado: {t/n*100} %")
+print(f"Probabilidade de evasão: {e/n*100} %")
+print(f"Probabilidade de graduação: {g/n*100} %")
 print(f"Tempo médio até ser retido: {np.round(np.mean(tempo_ate_retido),3)} anos")
 print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado),3)} anos")
 print(f"Tempo médio até ser evadido: {np.round(np.mean(tempo_ate_evadido),3)} anos")
 print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado),3)} anos")
 
-#lifelines
+# Gráficos Análise de Sobrevivência
 kmf = KaplanMeierFitter()
 kmf.fit(time, event_observedE, label='Evadido')
 kmf.plot_survival_function()
@@ -415,11 +459,11 @@ plt.show()
 # plt.show()
 
 
-#Desenha Cadeia de Markov
+# Desenha Cadeia de Markov
 graph = Graph()
 graph.creategraph(p)
 
-#outros
+# Outros
 # print(mc.expected_transitions(1))
 # print(mc.recurrent_states)
 # print(mc.transient_states)
