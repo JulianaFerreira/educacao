@@ -29,131 +29,131 @@ taxaProporcaoVoltar = 1.0
 # Probabilidade dos estados
 # Com Trancar
 # A1
-# A1toT = 0.1 * taxaTrancar
-# A1toA1R = 0.25 * taxaRetencao
-# A1toE = 0.12 * taxaEvasao
-# A1toA2 = 1 - A1toA1R - A1toE - A1toT
-# TtoA1 = 0.03 * taxaVoltar
-#
-# # A1R
-# A1RtoT = A1toT * taxaTrancarR * taxaProporcaoTrancar
-# A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
-# A1RtoA2R = 1 - A1RtoE - A1RtoT
-# TtoA1R = 0.02 * taxaVoltar
-#
-# # A2
-# A2toT = 0.08 * taxaTrancar
-# A2toA2R = 0.3 * taxaRetencao
-# A2toE = 0.08 * taxaEvasao
-# A2toA3 = 1 - A2toA2R - A2toE - A2toT
-# TtoA2 = 0.03 * taxaVoltar
-#
-# # A2R
-# A2RtoT = A2toT * taxaTrancarR * taxaProporcaoTrancar
-# A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
-# A2RtoA3R = 1 - A2RtoE - A2RtoT
-# TtoA2R = 0.02 * taxaVoltar
-#
-# # A3
-# A3toT = 0.04 * taxaTrancar
-# A3toA3R = 0.2 * taxaRetencao
-# A3toE = 0.1 * taxaEvasao
-# A3toA4 = 1 - A3toA3R - A3toE - A3toT
-# TtoA3 = 0.03 * taxaVoltar
-#
-# # A3R
-# A3RtoT = A3toT * taxaTrancarR * taxaProporcaoTrancar
-# A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
-# A3RtoA4R = 1 - A3RtoE - A3RtoT
-# TtoA3R = 0.02 * taxaVoltar
-#
-# # A4
-# A4toT = 0.05 * taxaTrancar
-# A4toA4R = 0.15 * taxaRetencao
-# A4toE = 0.06 * taxaEvasao
-# A4toA5 = 1 - A4toA4R - A4toE - A4toT
-# TtoA4 = 0.03 * taxaVoltar
-#
-# # A4R
-# A4RtoT = A4toT * taxaTrancarR * taxaProporcaoTrancar
-# A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
-# A4RtoA5R = 1 - A4RtoE - A4RtoT
-# TtoA4R = 0.02 * taxaVoltar
-#
-# # A5
-# A5toT = 0.02 * taxaTrancar
-# A5toA5R = 0.2 * taxaRetencao
-# A5toE = 0.03 * taxaEvasao
-# A5toG = 1 - A5toA5R - A5toE - A5toT
-# TtoA5 = 0.03 * taxaVoltar
-#
-# # A5R
-# A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
-# A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
-# A5RtoG = 1 - A5RtoE - A5RtoT
-# TtoA5R = 0.02 * taxaVoltar
-#
-# # T
-# TtoT = 0.6
-# TtoE = 0.15
+A1toT = 0.1 * taxaTrancar
+A1toA1R = 0.25 * taxaRetencao
+A1toE = 0.12 * taxaEvasao
+A1toA2 = 1 - A1toA1R - A1toE - A1toT
+TtoA1 = 0.03 * taxaVoltar
+
+# A1R
+A1RtoT = A1toT * taxaTrancarR * taxaProporcaoTrancar
+A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+A1RtoA2R = 1 - A1RtoE - A1RtoT
+TtoA1R = 0.02 * taxaVoltar
+
+# A2
+A2toT = 0.08 * taxaTrancar
+A2toA2R = 0.3 * taxaRetencao
+A2toE = 0.08 * taxaEvasao
+A2toA3 = 1 - A2toA2R - A2toE - A2toT
+TtoA2 = 0.03 * taxaVoltar
+
+# A2R
+A2RtoT = A2toT * taxaTrancarR * taxaProporcaoTrancar
+A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
+A2RtoA3R = 1 - A2RtoE - A2RtoT
+TtoA2R = 0.02 * taxaVoltar
+
+# A3
+A3toT = 0.04 * taxaTrancar
+A3toA3R = 0.2 * taxaRetencao
+A3toE = 0.1 * taxaEvasao
+A3toA4 = 1 - A3toA3R - A3toE - A3toT
+TtoA3 = 0.03 * taxaVoltar
+
+# A3R
+A3RtoT = A3toT * taxaTrancarR * taxaProporcaoTrancar
+A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
+A3RtoA4R = 1 - A3RtoE - A3RtoT
+TtoA3R = 0.02 * taxaVoltar
+
+# A4
+A4toT = 0.05 * taxaTrancar
+A4toA4R = 0.15 * taxaRetencao
+A4toE = 0.06 * taxaEvasao
+A4toA5 = 1 - A4toA4R - A4toE - A4toT
+TtoA4 = 0.03 * taxaVoltar
+
+# A4R
+A4RtoT = A4toT * taxaTrancarR * taxaProporcaoTrancar
+A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
+A4RtoA5R = 1 - A4RtoE - A4RtoT
+TtoA4R = 0.02 * taxaVoltar
+
+# A5
+A5toT = 0.02 * taxaTrancar
+A5toA5R = 0.2 * taxaRetencao
+A5toE = 0.03 * taxaEvasao
+A5toG = 1 - A5toA5R - A5toE - A5toT
+TtoA5 = 0.03 * taxaVoltar
+
+# A5R
+A5RtoT = A5toT * taxaTrancarR * taxaProporcaoTrancar
+A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
+A5RtoG = 1 - A5RtoE - A5RtoT
+TtoA5R = 0.02 * taxaVoltar
+
+# T
+TtoT = 0.6
+TtoE = 0.15
 
 
 
 # Com mais anos e sem Trancar
-# A1
-A1toA1R = 0.25 * taxaRetencao
-A1toE = 0.12 * taxaEvasao
-A1toA2 = 1 - A1toA1R - A1toE
-
-# A1R
-A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
-A1RtoA2R = 1 - A1RtoE
-
-# A2
-A2toA2R = 0.3 * taxaRetencao
-A2toE = 0.08 * taxaEvasao
-A2toA3 = 1 - A2toA2R - A2toE
-
-# A2R
-A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
-A2RtoA3R = 1 - A2RtoE
-
-# A3
-A3toA3R = 0.2 * taxaRetencao
-A3toE = 0.1 * taxaEvasao
-A3toA4 = 1 - A3toA3R - A3toE
-
-# A3R
-A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
-A3RtoA4R = 1 - A3RtoE
-
-# A4
-A4toA4R = 0.15 * taxaRetencao
-A4toE = 0.06 * taxaEvasao
-A4toA5 = 1 - A4toA4R - A4toE
-
-# A4R
-A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
-A4RtoA5R = 1 - A4RtoE
-
-# A5
-A5toA5R = 0.2 * taxaRetencao
-A5toE = 0.03 * taxaEvasao
-A5toG = 1 - A5toA5R - A5toE
-
-# A5R
-A5RtoA6R = 0.3
-A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
-A5RtoG = 1 - A5RtoA6R - A5RtoE
-
-# A6R
-A6RtoA7R = 0.2
-A6RtoE = 0.03 * taxaEvasaoR
-A6RtoG = 1 - A6RtoE - A6RtoA7R
-
-# A7R
-A7RtoE = 0.02 * taxaEvasaoR
-A7RtoG = 1 - A7RtoE
+# # A1
+# A1toA1R = 0.25 * taxaRetencao
+# A1toE = 0.12 * taxaEvasao
+# A1toA2 = 1 - A1toA1R - A1toE
+#
+# # A1R
+# A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+# A1RtoA2R = 1 - A1RtoE
+#
+# # A2
+# A2toA2R = 0.3 * taxaRetencao
+# A2toE = 0.08 * taxaEvasao
+# A2toA3 = 1 - A2toA2R - A2toE
+#
+# # A2R
+# A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
+# A2RtoA3R = 1 - A2RtoE
+#
+# # A3
+# A3toA3R = 0.2 * taxaRetencao
+# A3toE = 0.1 * taxaEvasao
+# A3toA4 = 1 - A3toA3R - A3toE
+#
+# # A3R
+# A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
+# A3RtoA4R = 1 - A3RtoE
+#
+# # A4
+# A4toA4R = 0.15 * taxaRetencao
+# A4toE = 0.06 * taxaEvasao
+# A4toA5 = 1 - A4toA4R - A4toE
+#
+# # A4R
+# A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
+# A4RtoA5R = 1 - A4RtoE
+#
+# # A5
+# A5toA5R = 0.2 * taxaRetencao
+# A5toE = 0.03 * taxaEvasao
+# A5toG = 1 - A5toA5R - A5toE
+#
+# # A5R
+# A5RtoA6R = 0.3
+# A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
+# A5RtoG = 1 - A5RtoA6R - A5RtoE
+#
+# # A6R
+# A6RtoA7R = 0.2
+# A6RtoE = 0.03 * taxaEvasaoR
+# A6RtoG = 1 - A6RtoE - A6RtoA7R
+#
+# # A7R
+# A7RtoE = 0.02 * taxaEvasaoR
+# A7RtoG = 1 - A7RtoE
 
 
 
@@ -161,38 +161,38 @@ progres = [A1toA2, A2toA3, A3toA4, A4toA5, A5toG, A1RtoA2R, A2RtoA3R, A3RtoA4R, 
 ret = [A1toA1R, A2toA2R, A3toA3R, A4toA4R, A5toA5R]
 #tranc = [A1toT, A2toT, A3toT, A4toT, A5toT, A1RtoT, A2RtoT, A3RtoT, A4RtoT, A5RtoT]
 
-# statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'T', 'G', 'E']
-# state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-# p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, A1toT, 0.0, A1toE],
-#      [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, A2toT, 0.0, A2toE],
-#      [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, A3toT, 0.0, A3toE],
-#      [0.0, 0.0, 0.0, 0.0, A4toA5, 0.0, 0.0, 0.0, A4toA4R, 0.0, A4toT, 0.0, A4toE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5toA5R, A5toT, A5toG, A5toE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, A1RtoT, 0.0, A1RtoE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, A2RtoT, 0.0, A2RtoE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RtoA4R, 0.0, A3RtoT, 0.0, A3RtoE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RtoA5R, A4RtoT, 0.0, A4RtoE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RtoT, A5RtoG, A5RtoE],
-#      [TtoA1, TtoA2, TtoA3, TtoA4, TtoA5, TtoA1R, TtoA2R, TtoA3R, TtoA4R, TtoA5R, TtoT, 0.0, TtoE],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
+statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'T', 'G', 'E']
+state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, A1toT, 0.0, A1toE],
+     [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, A2toT, 0.0, A2toE],
+     [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, A3toT, 0.0, A3toE],
+     [0.0, 0.0, 0.0, 0.0, A4toA5, 0.0, 0.0, 0.0, A4toA4R, 0.0, A4toT, 0.0, A4toE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5toA5R, A5toT, A5toG, A5toE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, A1RtoT, 0.0, A1RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, A2RtoT, 0.0, A2RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RtoA4R, 0.0, A3RtoT, 0.0, A3RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RtoA5R, A4RtoT, 0.0, A4RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RtoT, A5RtoG, A5RtoE],
+     [TtoA1, TtoA2, TtoA3, TtoA4, TtoA5, TtoA1R, TtoA2R, TtoA3R, TtoA4R, TtoA5R, TtoT, 0.0, TtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
-statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
-state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
-     [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
-     [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A3toE],
-     [0.0, 0.0, 0.0, 0.0, A4toA5, 0.0, 0.0, 0.0, A4toA4R, 0.0, 0.0, 0.0, 0.0, A4toE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5toA5R, 0.0, 0.0, A5toG, A5toE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RtoA4R, 0.0, 0.0, 0.0, 0.0, A3RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RtoA5R, 0.0, 0.0, 0.0, A4RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RtoA6R, 0.0, A5RtoG, A5RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A6RtoA7R, A6RtoG, A6RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A7RtoG, A7RtoE],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
+# statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
+# state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+# p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
+#      [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
+#      [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A3toE],
+#      [0.0, 0.0, 0.0, 0.0, A4toA5, 0.0, 0.0, 0.0, A4toA4R, 0.0, 0.0, 0.0, 0.0, A4toE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5toA5R, 0.0, 0.0, A5toG, A5toE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RtoA4R, 0.0, 0.0, 0.0, 0.0, A3RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RtoA5R, 0.0, 0.0, 0.0, A4RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RtoA6R, 0.0, A5RtoG, A5RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A6RtoA7R, A6RtoG, A6RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A7RtoG, A7RtoE],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 # statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'G', 'E']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
@@ -329,8 +329,8 @@ plt.show()
 
 
 # Quantidade de anos para simulação
-passosSimu = 10 # Sem trancar
-# passosSimu = 15 # Com trancar
+# passosSimu = 10 # Sem trancar
+passosSimu = 15 # Com trancar
 
 # Gráfico do histórico de distribuição
 for x in range(passosSimu):
