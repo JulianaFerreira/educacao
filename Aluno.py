@@ -2,20 +2,17 @@ import numpy as np
 import pandas as pd
 
 #Transition probabilities matrix
-df_Q = pd.read_csv('matriz.csv', index_col=0)
-
-#States of Markov chain
-STATES = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'G', 'E']
-
+df_Q = pd.read_csv('matrix.csv', index_col=0)
 
 class Aluno:
 
-    def __init__(self, aluno_id):
+    def __init__(self, aluno_id, states):
         self.aluno_id = aluno_id
-        self.state = 'A1'
+        self.state = states[0]
+        self.states = states
         self.nb_state = 1
         self.gen = self.markov()
-        self.history = ['A1']
+        self.history = [states[0]]
 
     def __repr__(self):
         return f"Aluno número {self.aluno_id} no estado: {self.state}"
@@ -23,12 +20,18 @@ class Aluno:
     def get_next_state(self):
         return next(self.gen)
 
+    def get_quant_trans(self):
+        return self.nb_state
+
+    def get_history(self):
+        return self.history
+
     def markov(self):
 
         while self.state != 'G' or self.state != 'E':
 
             # calculate the next state
-            next_state = np.random.choice(STATES, 1, p=df_Q.loc[f'{self.state}'])[0]
+            next_state = np.random.choice(self.states, 1, p=df_Q.loc[f'{self.state}'])[0]
 
             if next_state == 'G':
                 self.state = 'G'
@@ -38,6 +41,14 @@ class Aluno:
 
             elif next_state == 'E':
                 self.state = 'E'
+                self.history.append(self.state)
+                self.nb_state += 1
+                yield self.state
+
+            elif next_state == 'T':
+                while next_state != 'T' or next_state != self.history[-1]:
+                    next_state = np.random.choice(self.states, 1, p=df_Q.loc[f'{self.state}'])[0]
+                self.state = next_state
                 self.history.append(self.state)
                 self.nb_state += 1
                 yield self.state
