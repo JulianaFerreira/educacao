@@ -28,7 +28,7 @@ class Aluno:
 
     def markov(self):
 
-        while self.state != 'G' or self.state != 'E':
+        while self.state != 'G' and self.state != 'E':
 
             # calculate the next state
             next_state = np.random.choice(self.states, 1, p=df_Q.loc[f'{self.state}'])[0]
@@ -41,14 +41,6 @@ class Aluno:
 
             elif next_state == 'E':
                 self.state = 'E'
-                self.history.append(self.state)
-                self.nb_state += 1
-                yield self.state
-
-            elif next_state == 'T':
-                while next_state != 'T' or next_state != self.history[-1]:
-                    next_state = np.random.choice(self.states, 1, p=df_Q.loc[f'{self.state}'])[0]
-                self.state = next_state
                 self.history.append(self.state)
                 self.nb_state += 1
                 yield self.state

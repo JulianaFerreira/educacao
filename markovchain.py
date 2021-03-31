@@ -254,10 +254,14 @@ def prob_absor():
     return np.round(np.dot(R, N.T).T, 3)
 
 
-def sobrevivencia(time, event_observed, label):
+def sobrevivencia(time, event_observed, label, color):
     kmf = KaplanMeierFitter()
     kmf.fit(time, event_observed, label=label)
-    kmf.plot_survival_function()
+    kmf.plot_survival_function(color=color)
+    plt.xlabel('Tempo')
+    plt.ylabel('Probabilidade')
+    plt.suptitle("Análise de Sobrevivência", fontsize=18)
+    plt.title("IC de 95% para a Média", fontsize=10)
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
     # plt.show()
@@ -427,10 +431,10 @@ print(f"Tempo médio até ser evadido: {np.round(np.mean(tempo_ate_evadido), 3)}
 print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado), 3)} anos")
 
 
-sobrevivencia(time, event_observedE, 'Evadido')
-sobrevivencia(time, event_observedG, 'Graduado')
-sobrevivencia(time, event_observedR, 'Retido')
-sobrevivencia(time, event_observedT, 'Trancado')
+sobrevivencia(time, event_observedE, 'Evadido', "red")
+sobrevivencia(time, event_observedG, 'Graduado', "green")
+sobrevivencia(time, event_observedR, 'Retido', "orange")
+sobrevivencia(time, event_observedT, 'Trancado', "black")
 
 
 # Desenha Cadeia de Markov
