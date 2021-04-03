@@ -2,9 +2,9 @@ from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
-from graph import Graph
 from lifelines import KaplanMeierFitter
 
+from markov_diagram import Diagram
 
 taxaRetencao = 1.0
 taxaEvasao = 1.0
@@ -259,7 +259,7 @@ def sobrevivencia(time, event_observed, label, color):
     kmf.fit(time, event_observed, label=label)
     kmf.plot_survival_function(color=color)
     plt.xlabel('Tempo')
-    plt.ylabel('Probabilidade')
+    plt.ylabel('Probabilidade de Sobrevivência')
     plt.suptitle("Análise de Sobrevivência", fontsize=18)
     plt.title("IC de 95% para a Média", fontsize=10)
     plt.show()
@@ -269,8 +269,12 @@ def sobrevivencia(time, event_observed, label, color):
 # informacoes sobre a cadeia de markov
 # print(mc)
 
-matriz_transicao()
 p = np.round(p, 4)
+matriz_transicao()
+
+# Desenha Cadeia de Markov
+d = Diagram(statenames)
+d.make_markov_diagram()
 
 stateHist = state
 mc = MarkovChain(p, statenames)
@@ -295,39 +299,39 @@ for i in range(len(probGE)):
     print("\n Probabilidade graduação e evasão no estado " + statenames[i] + ":")
     print(probGE[i])
 
-# Gráfico Retenção
-barplot("Probabilidade de Retenção", ret, statenames[:5])
-plt.show()
-
-print("\n Probabilidade de Retenção: ")
-print(ret)
-
-# Gráfico Progressão
-dfGE = pd.DataFrame({'Não Retidos': progres[:5],
-                     'Retidos': progres[-5:]}, index=statenames[:5])
-dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Progressão")
-plt.show()
-
-print("\n Probabilidade de Progressão: ")
-print(np.round(progres, 4))
-
-# Gráficos Graduação e Evasão individuais
-# barplot("G", probGE.T[0], statenames[:len(statenames)-2])
-# barplot("E", probGE.T[1], statenames[:len(statenames)-2])
-
-# Gráfico Graduação e Evasão Agrupado
-e = probGE.T[1]
-g = probGE.T[0]
-
-dfGE = pd.DataFrame({'Não Retidos': e[:5],
-                     'Retidos': e[-5:]}, index=statenames[:5])
-dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Evasão")
-plt.show()
-
-dfGE = pd.DataFrame({'Não Retidos': g[:5],
-                     'Retidos': g[-5:]}, index=statenames[:5])
-dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
-plt.show()
+# # Gráfico Retenção
+# barplot("Probabilidade de Retenção", ret, statenames[:5])
+# plt.show()
+#
+# print("\n Probabilidade de Retenção: ")
+# print(ret)
+#
+# # Gráfico Progressão
+# dfGE = pd.DataFrame({'Não Retidos': progres[:5],
+#                      'Retidos': progres[-5:]}, index=statenames[:5])
+# dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Progressão")
+# plt.show()
+#
+# print("\n Probabilidade de Progressão: ")
+# print(np.round(progres, 4))
+#
+# # Gráficos Graduação e Evasão individuais
+# # barplot("G", probGE.T[0], statenames[:len(statenames)-2])
+# # barplot("E", probGE.T[1], statenames[:len(statenames)-2])
+#
+# # Gráfico Graduação e Evasão Agrupado
+# e = probGE.T[1]
+# g = probGE.T[0]
+#
+# dfGE = pd.DataFrame({'Não Retidos': e[:5],
+#                      'Retidos': e[-5:]}, index=statenames[:5])
+# dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Evasão")
+# plt.show()
+#
+# dfGE = pd.DataFrame({'Não Retidos': g[:5],
+#                      'Retidos': g[-5:]}, index=statenames[:5])
+# dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
+# plt.show()
 
 # Quantidade de anos para simulação
 passosSimu = 10  # Sem trancar
@@ -436,10 +440,6 @@ sobrevivencia(time, event_observedG, 'Graduado', "green")
 sobrevivencia(time, event_observedR, 'Retido', "orange")
 sobrevivencia(time, event_observedT, 'Trancado', "black")
 
-
-# Desenha Cadeia de Markov
-graph = Graph()
-graph.creategraph(p)
 
 # Outros
 # print(mc.expected_transitions(1))
