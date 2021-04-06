@@ -25,8 +25,15 @@ E = df['E']
 kmf = KaplanMeierFitter()
 kmf.fit(T, event_observed=E)
 
-# kmf.survival_function_
-# kmf.cumulative_density_
+#Colocar no print
+kmf.event_table
+kmf.predict([0,10])
+kmf.survival_function_
+kmf.cumulative_density_
+kmf.median_survival_time_
+kmf.confidence_interval_
+kmf.conditional_time_to_event_
+
 kmf.plot_survival_function()
 plt.show()
 kmf.plot_cumulative_density()

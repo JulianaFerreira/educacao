@@ -13,19 +13,9 @@ class Aluno:
         self.nb_state = 1
         self.gen = self.markov()
         self.history = [states[0]]
-        self.queue = []
-
-    def __repr__(self):
-        return f"Aluno número {self.aluno_id} no estado: {self.state}"
 
     def get_next_state(self):
         return next(self.gen)
-
-    def get_quant_trans(self):
-        return self.nb_state
-
-    def get_history(self):
-        return self.history
 
     def markov(self):
 

@@ -18,11 +18,8 @@ statenames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', '
 #     print()
 
 a = Aluno(1, statenames)
-#next = a.get_next_state()
-
-print(a.get_next_state())
-print(a.get_next_state())
-print(a.get_next_state())
 list(a.gen)
 states = a.history
+time = a.nb_state
 print(states)
+print(time)

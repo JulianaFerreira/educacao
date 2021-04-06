@@ -262,6 +262,7 @@ def sobrevivencia(time, event_observed, label, color):
     plt.ylabel('Probabilidade de Sobrevivência')
     plt.suptitle("Análise de Sobrevivência", fontsize=18)
     plt.title("IC de 95% para a Média", fontsize=10)
+    plt.savefig(f"imgs/plot{label}.png")
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
     # plt.show()
@@ -274,7 +275,7 @@ matriz_transicao()
 
 # Desenha Cadeia de Markov
 d = Diagram(statenames)
-d.make_markov_diagram()
+#d.make_markov_diagram()
 
 stateHist = state
 mc = MarkovChain(p, statenames)
@@ -288,66 +289,37 @@ print(N)
 print("\n Duração esperada em cada ano até a graduação ou evasão")
 print(np.round(mc.absorption_times, 3))
 
-print("\n Duração média esperada até graduação:")
+# print("\n Duração média esperada até graduação:")
 # Sem estados retidos
 # print(np.round(np.trace(np.asarray(N)), 3))
 # Com estados retidos
-print(np.round(np.trace((np.asarray(N) / 2)), 3))
+# print(np.round(np.trace((np.asarray(N) / 2)), 3))
 
 probGE = prob_absor()
 for i in range(len(probGE)):
     print("\n Probabilidade graduação e evasão no estado " + statenames[i] + ":")
     print(probGE[i])
 
-# # Gráfico Retenção
-# barplot("Probabilidade de Retenção", ret, statenames[:5])
-# plt.show()
-#
-# print("\n Probabilidade de Retenção: ")
-# print(ret)
-#
-# # Gráfico Progressão
-# dfGE = pd.DataFrame({'Não Retidos': progres[:5],
-#                      'Retidos': progres[-5:]}, index=statenames[:5])
-# dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Progressão")
-# plt.show()
-#
-# print("\n Probabilidade de Progressão: ")
-# print(np.round(progres, 4))
-#
-# # Gráficos Graduação e Evasão individuais
-# # barplot("G", probGE.T[0], statenames[:len(statenames)-2])
-# # barplot("E", probGE.T[1], statenames[:len(statenames)-2])
-#
-# # Gráfico Graduação e Evasão Agrupado
-# e = probGE.T[1]
-# g = probGE.T[0]
-#
-# dfGE = pd.DataFrame({'Não Retidos': e[:5],
-#                      'Retidos': e[-5:]}, index=statenames[:5])
-# dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Evasão")
-# plt.show()
-#
-# dfGE = pd.DataFrame({'Não Retidos': g[:5],
-#                      'Retidos': g[-5:]}, index=statenames[:5])
-# dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
-# plt.show()
 
 # Quantidade de anos para simulação
 passosSimu = 10  # Sem trancar
 # passosSimu = 18 # Com trancar
 
 # Gráfico do histórico de distribuição
-for x in range(passosSimu):
-    # probalidade dos estado
-    # print(np.round(state, 3))
-    state = np.dot(state, p)
-    stateHist = np.append(stateHist, state, axis=0)
-    dfDistrHist = pd.DataFrame(stateHist, columns=statenames)
-
-dfDistrHist.plot()
-plt.show()
+# for x in range(passosSimu):
+#     # probalidade dos estado
+#     # print(np.round(state, 3))
+#     state = np.dot(state, p)
+#     stateHist = np.append(stateHist, state, axis=0)
+#     dfDistrHist = pd.DataFrame(stateHist, columns=statenames)
+#
+# dfDistrHist.plot()
+# plt.show()
 # print(dfDistrHist)
+
+
+
+
 
 
 # Simulação
@@ -366,6 +338,14 @@ event_observedE = np.array([])
 event_observedG = np.array([])
 event_observedT = np.array([])
 event_observedR = np.array([])
+
+
+def Simu(quantAlunos):
+    print(f"\nSimulação com {quantAlunos} alunos")
+
+
+
+
 
 print(f"\nSimulação com {n} alunos")
 for i in range(n):
@@ -430,7 +410,7 @@ print(f"Probabilidade de ser trancado: {t / n * 100} %")
 print(f"Probabilidade de evasão: {e / n * 100} %")
 print(f"Probabilidade de graduação: {g / n * 100} %")
 print(f"Tempo médio até ser retido: {np.round(np.mean(tempo_ate_retido), 3)} anos")
-print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado), 3)} anos")
+#print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado), 3)} anos")
 print(f"Tempo médio até ser evadido: {np.round(np.mean(tempo_ate_evadido), 3)} anos")
 print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado), 3)} anos")
 
@@ -438,13 +418,6 @@ print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado), 3
 sobrevivencia(time, event_observedE, 'Evadido', "red")
 sobrevivencia(time, event_observedG, 'Graduado', "green")
 sobrevivencia(time, event_observedR, 'Retido', "orange")
-sobrevivencia(time, event_observedT, 'Trancado', "black")
+#sobrevivencia(time, event_observedT, 'Trancado', "grey")
 
 
-# Outros
-# print(mc.expected_transitions(1))
-# print(mc.recurrent_states)
-# print(mc.transient_states)
-# print(mc.steady_states)
-# print(mc.topological_entropy)
-# plot_walk(mc, 10, 'A1')

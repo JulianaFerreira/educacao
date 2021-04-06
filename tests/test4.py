@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
-p = pd.read_csv('matrix.csv', index_col=0)
+p = pd.read_csv('../matrix.csv', index_col=0)
 
 class Simulation:
 

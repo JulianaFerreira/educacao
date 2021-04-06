@@ -25,3 +25,4 @@ print(q_df)
 #Transition probabilities matrix
 p = pd.read_csv('matrix.csv', index_col=0)
 print(p)
+

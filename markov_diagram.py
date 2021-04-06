@@ -28,8 +28,8 @@ class Diagram:
         G = nx.MultiDiGraph()
 
         # nodes correspond to states
-        G.add_nodes_from(self.states)
-        print(f'Nodes:\n{G.nodes()}\n')
+        # G.add_nodes_from(self.states)
+        # print(f'Nodes:\n{G.nodes()}\n')
 
         # edges represent transition probabilities
         for k, v in edges_wts.items():
@@ -44,8 +44,8 @@ class Diagram:
         # create edge labels for jupyter plot but is not necessary
         edge_labels = {(n1, n2): d['label'] for n1, n2, d in G.edges(data=True)}
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-        nx.drawing.nx_pydot.write_dot(G, 'demo/markov.dot')
+        #nx.drawing.nx_pydot.write_dot(G, 'graph/markov.dot')
 
-        (graph,) = pydot.graph_from_dot_file('demo/markov.dot')
-        graph.write_png('demo/markov.png')
+        (graph,) = pydot.graph_from_dot_file('graph/markov.dot')
+        graph.write_png('graph/markov.png')
 
