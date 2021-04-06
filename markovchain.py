@@ -4,6 +4,7 @@ import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
 from lifelines import KaplanMeierFitter
 
+from Aluno import Aluno
 from markov_diagram import Diagram
 
 taxaRetencao = 1.0
@@ -256,8 +257,14 @@ def prob_absor():
 
 def sobrevivencia(time, event_observed, label, color):
     kmf = KaplanMeierFitter()
-    kmf.fit(time, event_observed, label=label)
-    kmf.plot_survival_function(color=color)
+    #kmf.fit(time, event_observed, label=label)
+
+    for i in range(len(time)):
+        kmf.fit(time[i], event_observed[i], label=label[i])
+        kmf.plot_survival_function(color=color[i])
+
+
+    #kmf.plot_survival_function(color=color)
     plt.xlabel('Tempo')
     plt.ylabel('Probabilidade de Sobrevivência')
     plt.suptitle("Análise de Sobrevivência", fontsize=18)
@@ -340,8 +347,35 @@ event_observedT = np.array([])
 event_observedR = np.array([])
 
 
-def Simu(quantAlunos):
+# def array(quantAlunos):
+
+
+def Simu(quantAlunos, matriz):
     print(f"\nSimulação com {quantAlunos} alunos")
+    e = 0
+    time = np.array([])
+    event_observedE = np.array([])
+
+    for i in range(quantAlunos):
+        a = Aluno(i, matriz)
+        list(a.gen)
+        arr = a.history
+
+        tempo = np.arange(0, a.nb_state, 1)
+        time = np.concatenate((tempo, time))
+
+        estados = np.zeros((a.nb_state,), dtype=int)
+        if 'E' in arr:
+            e += 1  # quantidade para probabilidade
+            k = arr.index("E")
+            tempo_ate_evadido.append(k)
+            estados[k] = 1
+        event_observedE = np.concatenate((event_observedE, estados))
+
+
+    return time, event_observedE
+
+
 
 
 
@@ -406,18 +440,37 @@ for i in range(n):
         count += 1
 
 print(f"\nProbabilidade de ser retido: {r / n * 100} %")
-print(f"Probabilidade de ser trancado: {t / n * 100} %")
+# print(f"Probabilidade de ser trancado: {t / n * 100} %")
 print(f"Probabilidade de evasão: {e / n * 100} %")
 print(f"Probabilidade de graduação: {g / n * 100} %")
 print(f"Tempo médio até ser retido: {np.round(np.mean(tempo_ate_retido), 3)} anos")
-#print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado), 3)} anos")
+# print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado), 3)} anos")
 print(f"Tempo médio até ser evadido: {np.round(np.mean(tempo_ate_evadido), 3)} anos")
 print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado), 3)} anos")
 
 
-sobrevivencia(time, event_observedE, 'Evadido', "red")
-sobrevivencia(time, event_observedG, 'Graduado', "green")
-sobrevivencia(time, event_observedR, 'Retido', "orange")
-#sobrevivencia(time, event_observedT, 'Trancado', "grey")
 
+
+
+
+
+sobrevivencia([time], [event_observedE], ['Evadido'], ["red"])
+sobrevivencia([time], [event_observedG], ['Graduado'], ["green"])
+sobrevivencia([time], [event_observedR], ['Retido'], ["orange"])
+# sobrevivencia(time, event_observedT, 'Trancado', "grey")
+
+
+
+# TODO passar diferentes matrizes
+time1, event_observed1 = Simu(10, 'matrix.csv')  # Exemplo Feminino
+time2, event_observed2 = Simu(10, 'matrix.csv')  # Exemplo Masculino
+
+times = [time1, time2]
+events = [event_observed1, event_observed2]
+colors = ["pink", "blue"]
+labels = ["Feminino", "Masculino"]
+
+print(time1)
+print(event_observed1)
+sobrevivencia(times, events, labels, colors)
 
