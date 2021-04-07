@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 
 
-class Aluno:
+class Student:
 
-    def __init__(self, aluno_id, matrix):
-        self.aluno_id = aluno_id
+    def __init__(self, student_id, matrix):
+        self.student_id = student_id
         self.df_Q = pd.read_csv(matrix, index_col=0)
         self.states = self.df_Q.columns
         self.state = self.states[0]

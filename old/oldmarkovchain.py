@@ -4,7 +4,7 @@ import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
 from lifelines import KaplanMeierFitter
 
-from Aluno import Aluno
+from Student import Student
 from markov_diagram import Diagram
 
 taxaRetencao = 1.0
@@ -357,7 +357,7 @@ def Simu(quantAlunos, matriz):
     event_observedE = np.array([])
 
     for i in range(quantAlunos):
-        a = Aluno(i, matriz)
+        a = Student(i, matriz)
         list(a.gen)
         arr = a.history
 

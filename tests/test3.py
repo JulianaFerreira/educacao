@@ -1,6 +1,6 @@
-from Aluno import Aluno
+from Student import Student
 
-a = Aluno(1)
+a = Student(1)
 # next = a.get_next_state()
 list(a.gen)
 states = a.history

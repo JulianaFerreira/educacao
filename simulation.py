@@ -3,9 +3,7 @@ import numpy as np
 import pandas as pd
 from pydtmc import MarkovChain, plot_graph, plot_walk
 from lifelines import KaplanMeierFitter
-
-from Aluno import Aluno
-from markov_diagram import Diagram
+from Student import Student
 
 
 # def prob_absor(p, N):
@@ -17,16 +15,11 @@ from markov_diagram import Diagram
 #
 #     return np.round(np.dot(R, N.T).T, 3)
 
-
 # informacoes sobre a cadeia de markov
 # print(mc)
 
 # p = np.round(p, 4)
 # matriz_transicao()
-#
-# # Desenha Cadeia de Markov
-# d = Diagram(statenames)
-# #d.make_markov_diagram()
 #
 # stateHist = state
 # mc = MarkovChain(p, statenames)
@@ -52,7 +45,7 @@ from markov_diagram import Diagram
 #     print(probGE[i])
 
 
-def sobrevivencia(time, event_observed, label, color):
+def sobrevivencia(time, event_observed, label, color, title):
     kmf = KaplanMeierFitter()
 
     for i in range(len(time)):
@@ -60,10 +53,10 @@ def sobrevivencia(time, event_observed, label, color):
         kmf.plot_survival_function(color=color[i])
 
     plt.xlabel('Tempo')
-    plt.ylabel('Probabilidade de Sobrevivência')
-    plt.suptitle("Análise de Sobrevivência", fontsize=18)
+    plt.ylabel('Probabilidade')
+    plt.suptitle(f"Análise de Sobrevivência: {title}", fontsize=18)
     plt.title("IC de 95% para a Média", fontsize=10)
-    plt.savefig(f"imgs/plot{label}.png")
+    plt.savefig(f"imgs/plot{title}.png")
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
     # plt.show()
@@ -90,7 +83,7 @@ def Simu(quantAlunos, matriz):
     event_observedR = np.array([])
 
     for i in range(quantAlunos):
-        a = Aluno(i, matriz)
+        a = Student(i, matriz)
         list(a.gen)
         arr = a.history
 
@@ -155,27 +148,33 @@ def Simu(quantAlunos, matriz):
 
 
 
-quantAlunos = 200
+quantAlunos = 500
 
 
 # Simulação por Gênero
-timeF, event_observedEF, event_observedGF, event_observedRF, event_observedTF = Simu(quantAlunos, 'matrixF.csv')  # Exemplo Feminino
-timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrixM.csv')  # Exemplo Masculino
+print("\nFeminino")
+timeF, event_observedEF, event_observedGF, event_observedRF, event_observedTF = Simu(quantAlunos, 'matrix/matrixF.csv')
+print("\nMasculino")
+timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrix/matrixM.csv')
 
 times = [timeF, timeM]
-events = [event_observedEF, event_observedEM]
-colors = ["pink", "blue"]
+eventsE = [event_observedEF, event_observedEM]
+eventsG = [event_observedGF, event_observedGM]
+eventsR = [event_observedRF, event_observedRM]
+colors = ["red", "blue"]
 labels = ["Feminino", "Masculino"]
 
-sobrevivencia(times, events, labels, colors)
+sobrevivencia(times, eventsE, labels, colors, "Evasão")
+sobrevivencia(times, eventsG, labels, colors, "Graduação")
+sobrevivencia(times, eventsR, labels, colors, "Retenção")
 
 
 # Simulação Geral
-time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix.csv')
-
-sobrevivencia([time], [event_observedE], ['Evadido'], ["red"])
-sobrevivencia([time], [event_observedG], ['Graduado'], ["green"])
-sobrevivencia([time], [event_observedR], ['Retido'], ["orange"])
+# time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrix.csv')
+#
+# sobrevivencia([time], [event_observedE], ['Evadido'], ["red"])
+# sobrevivencia([time], [event_observedG], ['Graduado'], ["green"])
+# sobrevivencia([time], [event_observedR], ['Retido'], ["orange"])
 # sobrevivencia([time], [event_observedT], ['Trancado'], ["grey"])
 
 

@@ -2,13 +2,11 @@ import pydot
 import networkx as nx
 import pandas as pd
 
-#Transition probabilities
-df_Q = pd.read_csv('matrix.csv', index_col=0)
-
 class Diagram:
 
-    def __init__(self, states):
-        self.states = states
+    def __init__(self, matrix):
+        self.df_Q = pd.read_csv(matrix, index_col=0)
+        self.states = self.df_Q.columns
 
     def make_markov_diagram(self):
         # create a function that maps transition probability dataframe
@@ -21,7 +19,7 @@ class Diagram:
                     edges[(idx, col)] = Q.loc[idx, col]
             return edges
 
-        edges_wts = _get_markov_edges(df_Q)
+        edges_wts = _get_markov_edges(self.df_Q)
         # pprint(edges_wts)
 
         # create graph object
@@ -44,7 +42,7 @@ class Diagram:
         # create edge labels for jupyter plot but is not necessary
         edge_labels = {(n1, n2): d['label'] for n1, n2, d in G.edges(data=True)}
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-        #nx.drawing.nx_pydot.write_dot(G, 'graph/markov.dot')
+        nx.drawing.nx_pydot.write_dot(G, 'graph/markov.dot')
 
         (graph,) = pydot.graph_from_dot_file('graph/markov.dot')
         graph.write_png('graph/markov.png')

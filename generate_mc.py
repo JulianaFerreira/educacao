@@ -2,9 +2,10 @@ import pandas as pd
 import numpy as np
 from markov_diagram import Diagram
 
-
-taxaRetencao = 1.0
-taxaEvasao = 1.0
+#Alterar aqui parametros para gerar matriz
+nomeArquivo = "matrix/matrixM.csv"
+taxaRetencao = 1.25
+taxaEvasao = 1.25
 taxaEvasaoR = 1.0
 taxaTrancar = 1.0
 taxaTrancarR = 1.0
@@ -212,9 +213,8 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 
-
-
-def matriz_transicao(arquivo, states, p):
+# Gerar csv com matriz de transicao e desenho da cadeia de markov
+def generate_csv_and_diagram(arquivo, states, p):
     q_df = pd.DataFrame(columns=states, index=states)
     i = 0
     for state in states:
@@ -222,31 +222,57 @@ def matriz_transicao(arquivo, states, p):
         i += 1
 
     q_df.to_csv(arquivo)
+
     # Desenha Cadeia de Markov
-    d = Diagram(states)
-    # TODO Passar o csv
+    d = Diagram(arquivo)
     d.make_markov_diagram()
 
-    # Progressão dos alunos entre diferentes estados
-    print("\n Matriz de Transição:")
-    print(q_df)
+
+# Cria matriz de transição passando um array com os estados transicionando
+def transition_matrix(transitions):
+    n = 1+ max(transitions) #number of states
+
+    M = [[0]*n for _ in range(n)]
+
+    for (i,j) in zip(transitions, transitions[1:]):
+        M[i][j] += 1
+
+    #now convert to probabilities:
+    for row in M:
+        s = sum(row)
+        if s > 0:
+            row[:] = [f/s for f in row]
+    return M
 
 
+# estados transicionando
+# t = [1,1,2,6,8,5,5,7,8,8,1,1,4,5,5,0,0,0,1,1,4,4,5,1,3,3,4,5,4,1,1]
+# states = np.unique(t)
+# p = transition_matrix(t)
+
+
+p = np.round(p, 4)
+generate_csv_and_diagram(nomeArquivo, states, p)
+
+
+# Transition probabilities matrix
+p = pd.read_csv(nomeArquivo, index_col=0)
+print("\n Matriz de Transição:")
+print(p)
+
+
+
+#Teste gerar matriz de transicao
 
 # states = ['A1', 'A2', 'A3', 'A4', 'A5', 'G', 'E']
 # n = [100, 90, 80, ]
 #
 # #calcula o p
 # p = 0
-
-
-p = np.round(p, 4)
-matriz_transicao("matrixtest.csv", states, p)
+#
+# transitionMatrix = np.zeros((len(states), len(states)))
 
 
 
-#Transition probabilities matrix
-p = pd.read_csv('matrixtest.csv', index_col=0)
-print(p)
 
 
