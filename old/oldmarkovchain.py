@@ -216,6 +216,21 @@ p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 
+def barplot(title, height, bars):
+    # Make a dataset:
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+    plt.title(title)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    # Show graphic
+    plt.show()
+
+
 def matriz_transicao():
     q_df = pd.DataFrame(columns=statenames, index=statenames)
     i = 0
@@ -242,11 +257,14 @@ def prob_absor():
 
 def sobrevivencia(time, event_observed, label, color):
     kmf = KaplanMeierFitter()
+    #kmf.fit(time, event_observed, label=label)
 
     for i in range(len(time)):
         kmf.fit(time[i], event_observed[i], label=label[i])
         kmf.plot_survival_function(color=color[i])
 
+
+    #kmf.plot_survival_function(color=color)
     plt.xlabel('Tempo')
     plt.ylabel('Probabilidade de Sobrevivência')
     plt.suptitle("Análise de Sobrevivência", fontsize=18)
@@ -290,28 +308,53 @@ for i in range(len(probGE)):
     print(probGE[i])
 
 
+# Quantidade de anos para simulação
+passosSimu = 10  # Sem trancar
+# passosSimu = 18 # Com trancar
+
+# Gráfico do histórico de distribuição
+# for x in range(passosSimu):
+#     # probalidade dos estado
+#     # print(np.round(state, 3))
+#     state = np.dot(state, p)
+#     stateHist = np.append(stateHist, state, axis=0)
+#     dfDistrHist = pd.DataFrame(stateHist, columns=statenames)
+#
+# dfDistrHist.plot()
+# plt.show()
+# print(dfDistrHist)
 
 
 
-def prob_and_temp(state, x, tempo, quantAlunos):
-    print(f"\nProbabilidade de ser {state}: {np.round(x / quantAlunos * 100)} %")
-    print(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} anos")
+
+
+
+# Simulação
+n = 1000
+e = 0
+g = 0
+r = 0
+t = 0
+tempo = np.arange(0, passosSimu, 1)
+time = np.array([])
+tempo_ate_retido = []
+tempo_ate_trancado = []
+tempo_ate_evadido = []
+tempo_ate_graduado = []
+event_observedE = np.array([])
+event_observedG = np.array([])
+event_observedT = np.array([])
+event_observedR = np.array([])
+
+
+# def array(quantAlunos):
 
 
 def Simu(quantAlunos, matriz):
+    print(f"\nSimulação com {quantAlunos} alunos")
     e = 0
-    g = 0
-    r = 0
-    t = 0
     time = np.array([])
-    tempo_ate_retido = []
-    tempo_ate_trancado = []
-    tempo_ate_evadido = []
-    tempo_ate_graduado = []
     event_observedE = np.array([])
-    event_observedG = np.array([])
-    event_observedT = np.array([])
-    event_observedR = np.array([])
 
     for i in range(quantAlunos):
         a = Aluno(i, matriz)
@@ -329,79 +372,102 @@ def Simu(quantAlunos, matriz):
             estados[k] = 1
         event_observedE = np.concatenate((event_observedE, estados))
 
-        estados = np.zeros((a.nb_state,), dtype=int)
-        if 'G' in arr:
-            g += 1  # quantidade para probabilidade
-            k = arr.index("G")
-            tempo_ate_graduado.append(k)
-            estados[k] = 1
-        event_observedG = np.concatenate((event_observedG, estados))
 
-        # Trancado
-        estados = np.zeros((a.nb_state,), dtype=int)
-        count = 0
-        for estado in arr:
-            if estado == 'T' and count < a.nb_state - 1:
-                estados[count] = 1
-            count += 1
-        event_observedT = np.concatenate((event_observedT, estados))
-
-        if 'T' in arr:
-            t += 1
-            k = arr.index("T")
-            tempo_ate_trancado.append(k)
-
-        # Retido
-        estados = np.zeros((a.nb_state,), dtype=int)
-        count = 0
-        for estado in arr:
-            if 'R' in estado and count < a.nb_state - 1:
-                estados[count] = 1
-            count += 1
-        event_observedR = np.concatenate((event_observedR, estados))
-
-        # Se ficou Retido em algum dos estados
-        count = 0
-        for estado in arr:
-            if 'R' in estado:
-                tempo_ate_retido.append(count)
-                r += 1
-                break
-            count += 1
-
-
-    prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
-    prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
-    prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
-    # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
-
-
-    return time, event_observedE, event_observedG, event_observedR, event_observedT
+    return time, event_observedE
 
 
 
 
-quantAlunos = 1000
 
 
-# Simulação por Gênero
-timeF, event_observedEF, event_observedGF, event_observedRF, event_observedTF = Simu(quantAlunos, 'matrixF.csv')  # Exemplo Feminino
-timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrixM.csv')  # Exemplo Masculino
 
-times = [timeF, timeM]
-events = [event_observedEF, event_observedEM]
-colors = ["pink", "blue"]
-labels = ["Feminino", "Masculino"]
+print(f"\nSimulação com {n} alunos")
+for i in range(n):
+    arr = mc.walk(passosSimu, 'A1')
 
-sobrevivencia(times, events, labels, colors)
+    # Cria Arrays para analise de sobrevivencia e Verificar se foi G, E, T ou R em algum dos estados
+    time = np.concatenate((tempo, time))
+    estados = np.zeros((passosSimu,), dtype=int)
+    if 'E' in arr:
+        e += 1  # quantidade para probabilidade
+        k = arr.index("E")
+        tempo_ate_evadido.append(k + 1)
+        estados[k + 1] = 1
+        # for k in range(len(estados)):
+        #     estados[k] = 1
+    event_observedE = np.concatenate((event_observedE, estados))
+
+    estados = np.zeros((passosSimu,), dtype=int)
+    if 'G' in arr:
+        g += 1  # quantidade para probabilidade
+        k = arr.index("G")
+        tempo_ate_graduado.append(k + 1)
+        estados[k + 1] = 1
+        # for k in range(len(estados)):
+        #     estados[k] = 1
+    event_observedG = np.concatenate((event_observedG, estados))
+
+    # Trancado
+    estados = np.zeros((passosSimu,), dtype=int)
+    count = 0
+    for estado in arr:
+        if estado == 'T' and count < passosSimu - 1:
+            estados[count + 1] = 1
+        count += 1
+    event_observedT = np.concatenate((event_observedT, estados))
+
+    if 'T' in arr:
+        t += 1
+        k = arr.index("T")
+        tempo_ate_trancado.append(k + 1)
+
+    # Retido
+    estados = np.zeros((passosSimu,), dtype=int)
+    count = 0
+    for estado in arr:
+        if 'R' in estado and count < passosSimu - 1:
+            estados[count + 1] = 1
+        count += 1
+    event_observedR = np.concatenate((event_observedR, estados))
+
+    # Se ficou Retido em algum dos estados
+    count = 0
+    for estado in arr:
+        if 'R' in estado:
+            tempo_ate_retido.append(count + 1)
+            r += 1
+            break
+        count += 1
+
+print(f"\nProbabilidade de ser retido: {r / n * 100} %")
+# print(f"Probabilidade de ser trancado: {t / n * 100} %")
+print(f"Probabilidade de evasão: {e / n * 100} %")
+print(f"Probabilidade de graduação: {g / n * 100} %")
+print(f"Tempo médio até ser retido: {np.round(np.mean(tempo_ate_retido), 3)} anos")
+# print(f"Tempo médio até ser trancado: {np.round(np.mean(tempo_ate_trancado), 3)} anos")
+print(f"Tempo médio até ser evadido: {np.round(np.mean(tempo_ate_evadido), 3)} anos")
+print(f"Tempo médio até ser graduado: {np.round(np.mean(tempo_ate_graduado), 3)} anos")
 
 
-# Simulação Geral
-time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix.csv')
+
+
+
+
 
 sobrevivencia([time], [event_observedE], ['Evadido'], ["red"])
 sobrevivencia([time], [event_observedG], ['Graduado'], ["green"])
 sobrevivencia([time], [event_observedR], ['Retido'], ["orange"])
-# sobrevivencia([time], [event_observedT], ['Trancado'], ["grey"])
+# sobrevivencia(time, event_observedT, 'Trancado', "grey")
 
 
+time1, event_observed1 = Simu(10, 'matrix.csv')  # Exemplo Feminino
+time2, event_observed2 = Simu(10, 'matrix.csv')  # Exemplo Masculino
+
+times = [time1, time2]
+events = [event_observed1, event_observed2]
+colors = ["pink", "blue"]
+labels = ["Feminino", "Masculino"]
+
+print(time1)
+print(event_observed1)
+sobrevivencia(times, events, labels, colors)

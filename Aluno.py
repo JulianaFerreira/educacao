@@ -1,18 +1,17 @@
 import numpy as np
 import pandas as pd
 
-#Transition probabilities matrix
-df_Q = pd.read_csv('matrix.csv', index_col=0)
 
 class Aluno:
 
-    def __init__(self, aluno_id, states):
+    def __init__(self, aluno_id, matrix):
         self.aluno_id = aluno_id
-        self.state = states[0]
-        self.states = states
+        self.df_Q = pd.read_csv(matrix, index_col=0)
+        self.states = self.df_Q.columns
+        self.state = self.states[0]
         self.nb_state = 1
         self.gen = self.markov()
-        self.history = [states[0]]
+        self.history = [self.states[0]]
 
     def get_next_state(self):
         return next(self.gen)
@@ -22,7 +21,7 @@ class Aluno:
         while self.state != 'G' and self.state != 'E':
 
             # calculate the next state
-            next_state = np.random.choice(self.states, 1, p=df_Q.loc[f'{self.state}'])[0]
+            next_state = np.random.choice(self.states, 1, p=self.df_Q.loc[f'{self.state}'])[0]
 
             if next_state == 'G':
                 self.state = 'G'

@@ -1,3 +1,19 @@
+# def barplot(title, height, bars):
+#     # Make a dataset:
+#     y_pos = np.arange(len(bars))
+#
+#     # Create bars
+#     plt.bar(y_pos, height)
+#     plt.title(title)
+#
+#     # Create names on the x-axis
+#     plt.xticks(y_pos, bars)
+#
+#     # Show graphic
+#     plt.show()
+
+
+
 # # Gráfico Retenção
 # barplot("Probabilidade de Retenção", ret, statenames[:5])
 # plt.show()
@@ -32,7 +48,21 @@
 # dfGE.plot.bar(rot=0, color={"Não Retidos": "green", "Retidos": "red"}, title="Probabilidade de Graduação")
 # plt.show()
 
+# Quantidade de anos para simulação
+# passosSimu = 10  # Sem trancar
+# passosSimu = 18 # Com trancar
 
+# Gráfico do histórico de distribuição
+# for x in range(passosSimu):
+#     # probalidade dos estado
+#     # print(np.round(state, 3))
+#     state = np.dot(state, p)
+#     stateHist = np.append(stateHist, state, axis=0)
+#     dfDistrHist = pd.DataFrame(stateHist, columns=statenames)
+#
+# dfDistrHist.plot()
+# plt.show()
+# print(dfDistrHist)
 
 # Outros
 # print(mc.expected_transitions(1))
