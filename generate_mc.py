@@ -4,8 +4,8 @@ from markov_diagram import Diagram
 
 #Alterar aqui parametros para gerar matriz
 nomeArquivo = "matrix/matrixM.csv"
-taxaRetencao = 1.25
-taxaEvasao = 1.25
+taxaRetencao = 1.0
+taxaEvasao = 1.0
 taxaEvasaoR = 1.0
 taxaTrancar = 1.0
 taxaTrancarR = 1.0
@@ -230,11 +230,11 @@ def generate_csv_and_diagram(arquivo, states, p):
 
 # Cria matriz de transição passando um array com os estados transicionando
 def transition_matrix(transitions):
-    n = 1+ max(transitions) #number of states
+    n = 1 + max(transitions) #number of states
 
     M = [[0]*n for _ in range(n)]
 
-    for (i,j) in zip(transitions, transitions[1:]):
+    for (i, j) in zip(transitions, transitions[1:]):
         M[i][j] += 1
 
     #now convert to probabilities:
@@ -264,13 +264,23 @@ print(p)
 
 #Teste gerar matriz de transicao
 
-# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'G', 'E']
-# n = [100, 90, 80, ]
+# states = ['A1', 'A2', 'A3', 'G', 'E']
+# n = [100, 90, 80, 70, 0]
 #
 # #calcula o p
-# p = 0
 #
-# transitionMatrix = np.zeros((len(states), len(states)))
+# p = np.zeros((len(states), len(states)))
+#
+# for i in range(len(p)-1):
+#     for j in range(len(p)-1):
+#         if j == i+1:
+#             p[i][j] = 1
+#
+# print(p)
+
+
+# df["E"] = 1.25 * df["E"]
+# df["col"] = 0.75 * df["col"]
 
 
 
