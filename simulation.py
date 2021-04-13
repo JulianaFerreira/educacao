@@ -22,7 +22,7 @@ def sobrevivencia(time, event_observed, label, color, title):
 
 
 def prob_and_temp(state, x, tempo, quantAlunos):
-    print(f"\nProbabilidade de ser {state}: {np.round(x / quantAlunos * 100)} %")
+    print(f"\nProbabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %")
     print(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} anos")
 
 
@@ -31,6 +31,7 @@ def Simu(quantAlunos, matriz):
     g = 0
     r = 0
     t = 0
+    anos = 12  # antes a.nb_state
     time = np.array([])
     tempo_ate_retido = []
     tempo_ate_trancado = []
@@ -45,11 +46,12 @@ def Simu(quantAlunos, matriz):
         a = Student(i, matriz)
         list(a.gen)
         arr = a.history
+        #anos = a.nb_state
 
-        tempo = np.arange(0, a.nb_state, 1)
+        tempo = np.arange(0, anos, 1)
         time = np.concatenate((time, tempo))
 
-        estados = np.zeros((a.nb_state,), dtype=int)
+        estados = np.zeros((anos,), dtype=int)
         if 'E' in arr:
             e += 1  # quantidade para probabilidade
             k = arr.index("E")
@@ -57,7 +59,7 @@ def Simu(quantAlunos, matriz):
             estados[k] = 1
         event_observedE = np.concatenate((event_observedE, estados))
 
-        estados = np.zeros((a.nb_state,), dtype=int)
+        estados = np.zeros((anos,), dtype=int)
         if 'G' in arr:
             g += 1  # quantidade para probabilidade
             k = arr.index("G")
@@ -66,7 +68,7 @@ def Simu(quantAlunos, matriz):
         event_observedG = np.concatenate((event_observedG, estados))
 
         # Trancado
-        estados = np.zeros((a.nb_state,), dtype=int)
+        estados = np.zeros((anos,), dtype=int)
         i = 1
         while i < len(arr):
             if arr[i] == arr[i-1]:  # se estado igual ao estado anterior
@@ -84,7 +86,7 @@ def Simu(quantAlunos, matriz):
             i += 1
 
         # Retido
-        estados = np.zeros((a.nb_state,), dtype=int)
+        estados = np.zeros((anos,), dtype=int)
         count = 0
         for estado in arr:
             if 'R' in estado:
@@ -102,23 +104,22 @@ def Simu(quantAlunos, matriz):
             count += 1
 
     prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
+    prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
-    prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
-
 
     return time, event_observedE, event_observedG, event_observedR, event_observedT
 
 
 
-quantAlunos = 1000
+quantAlunos = 10000
 
 
 # Simulação por Gênero
 print("\nFeminino")
 timeF, event_observedEF, event_observedGF, event_observedRF, event_observedTF = Simu(quantAlunos, 'matrix/matrixF.csv')
 print("\nMasculino")
-timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrix/matrixM.csv')
+timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrix/matrixM50.csv')
 
 times = [timeF, timeM]
 eventsE = [event_observedEF, event_observedEM]
@@ -128,10 +129,10 @@ eventsT = [event_observedTF, event_observedTM]
 colors = ["red", "blue"]
 labels = ["Feminino", "Masculino"]
 
-sobrevivencia(times, eventsE, labels, colors, "Evasão")
-sobrevivencia(times, eventsG, labels, colors, "Graduação")
 sobrevivencia(times, eventsR, labels, colors, "Retenção")
 sobrevivencia(times, eventsT, labels, colors, "Trancado")
+sobrevivencia(times, eventsE, labels, colors, "Evasão")
+sobrevivencia(times, eventsG, labels, colors, "Graduação")
 
 
 # Simulação Geral

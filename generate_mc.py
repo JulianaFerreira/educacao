@@ -5,11 +5,11 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixM.csv"
-taxaRetencao = 1.25
-taxaEvasao = 1.25
-taxaEvasaoR = 1.0
+nomeArquivo = "matrix/matrixF.csv"
+taxaRetencao = 1.0
+taxaEvasao = 1.0
 taxaTrancar = 1.0
+taxaEvasaoR = 1.0
 taxaTrancarR = 1.0
 taxaProporcaoEvasao = 1.5
 taxaProporcaoTrancar = 1.25
@@ -174,7 +174,7 @@ def transition_matrix(transitions):
 # p = transition_matrix(t)
 
 
-p = np.round(p, 4)
+#p = np.round(p, 4)
 generate_csv_and_diagram(nomeArquivo, states, p)
 
 
