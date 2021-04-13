@@ -110,7 +110,7 @@ def Simu(quantAlunos, matriz):
         estados = np.zeros((a.nb_state,), dtype=int)
         count = 0
         for estado in arr:
-            if estado == 'T' and count < a.nb_state - 1:
+            if estado == 'T':
                 estados[count] = 1
             count += 1
         event_observedT = np.concatenate((event_observedT, estados))
@@ -124,7 +124,7 @@ def Simu(quantAlunos, matriz):
         estados = np.zeros((a.nb_state,), dtype=int)
         count = 0
         for estado in arr:
-            if 'R' in estado and count < a.nb_state - 1:
+            if 'R' in estado:
                 estados[count] = 1
             count += 1
         event_observedR = np.concatenate((event_observedR, estados))
@@ -148,7 +148,7 @@ def Simu(quantAlunos, matriz):
 
 
 
-quantAlunos = 500
+quantAlunos = 1000
 
 
 # Simulação por Gênero
