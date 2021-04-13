@@ -2,105 +2,91 @@ import pandas as pd
 import numpy as np
 from markov_diagram import Diagram
 
+from pydtmc import MarkovChain, plot_graph, plot_walk
+
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixF.csv"
-taxaRetencao = 1.0
-taxaEvasao = 1.0
+nomeArquivo = "matrix/matrixM.csv"
+taxaRetencao = 1.25
+taxaEvasao = 1.25
 taxaEvasaoR = 1.0
 taxaTrancar = 1.0
 taxaTrancarR = 1.0
-taxaProporcaoEvasao = 1.75
-taxaProporcaoTrancar = 1.5
+taxaProporcaoEvasao = 1.5
+taxaProporcaoTrancar = 1.25
 
 
 # T - representado por self loop
-A1T = 0.06 * taxaTrancar
+A1T = 0.05 * taxaTrancar
 A1RT = A1T * taxaTrancarR * taxaProporcaoTrancar
-A2T = 0.05 * taxaTrancar
+A2T = 0.04 * taxaTrancar
 A2RT = A2T * taxaTrancarR * taxaProporcaoTrancar
-A3T = 0.04 * taxaTrancar
+A3T = 0.03 * taxaTrancar
 A3RT = A3T * taxaTrancarR * taxaProporcaoTrancar
-A4T = 0.03 * taxaTrancar
+A4T = 0.02 * taxaTrancar
 A4RT = A4T * taxaTrancarR * taxaProporcaoTrancar
 A5T = 0.02 * taxaTrancar
 A5RT = A5T * taxaTrancarR * taxaProporcaoTrancar
 A6RT = 0.01 * taxaTrancarR
 A7RT = 0.01 * taxaTrancarR
 
-
-# A1
+# Reter
 A1toA1R = 0.25 * taxaRetencao
-A1toE = 0.12 * taxaEvasao
-# A1toA2 = 1 - A1toA1R - A1toE
-A1toA2 = 1 - A1toA1R - A1toE - A1T
-
-# A1R
-A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
-# A1RtoA2R = 1 - A1RtoE
-A1RtoA2R = 1 - A1RtoE - A1RT
-
-# A2
 A2toA2R = 0.3 * taxaRetencao
-A2toE = 0.08 * taxaEvasao
-# A2toA3 = 1 - A2toA2R - A2toE
-A2toA3 = 1 - A2toA2R - A2toE - A2T
-
-# A2R
-A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
-# A2RtoA3R = 1 - A2RtoE
-A2RtoA3R = 1 - A2RtoE - A2RT
-
-# A3
 A3toA3R = 0.2 * taxaRetencao
-A3toE = 0.1 * taxaEvasao
-# A3toA4 = 1 - A3toA3R - A3toE
-A3toA4 = 1 - A3toA3R - A3toE - A3T
-
-# A3R
-A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
-# A3RtoA4R = 1 - A3RtoE
-A3RtoA4R = 1 - A3RtoE - A3RT
-
-# A4
 A4toA4R = 0.15 * taxaRetencao
-A4toE = 0.06 * taxaEvasao
-# A4toA5 = 1 - A4toA4R - A4toE
-A4toA5 = 1 - A4toA4R - A4toE - A4T
-
-# A4R
-A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
-# A4RtoA5R = 1 - A4RtoE
-A4RtoA5R = 1 - A4RtoE - A4RT
-
-# A5
 A5toA5R = 0.2 * taxaRetencao
+
+# Evadir
+A1toE = 0.12 * taxaEvasao
+A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+A2toE = 0.1 * taxaEvasao
+A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
+A3toE = 0.07 * taxaEvasao
+A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
+A4toE = 0.05 * taxaEvasao
+A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
 A5toE = 0.03 * taxaEvasao
-# A5toG = 1 - A5toA5R - A5toE
-A5toG = 1 - A5toA5R - A5toE - A5T
-
-# A5R
-A5RtoA6R = 0.3
 A5RtoE = A5toE * taxaEvasaoR * taxaProporcaoEvasao
-# A5RtoG = 1 - A5RtoA6R - A5RtoE
-A5RtoG = 1 - A5RtoA6R - A5RtoE - A5RT
+A6RtoE = 0.02 * taxaEvasaoR
+A7RtoE = 0.01 * taxaEvasaoR
 
-# A6R
+# Próximo estado
+# A1toA2 = 1 - A1toA1R - A1toE
+# A1RtoA2R = 1 - A1RtoE
+# A2toA3 = 1 - A2toA2R - A2toE
+# A2RtoA3R = 1 - A2RtoE
+# A3toA4 = 1 - A3toA3R - A3toE
+# A3RtoA4R = 1 - A3RtoE
+# A4toA5 = 1 - A4toA4R - A4toE
+# A4RtoA5R = 1 - A4RtoE
+A1toA2 = 1 - A1toA1R - A1toE - A1T
+A1RtoA2R = 1 - A1RtoE - A1RT
+A2toA3 = 1 - A2toA2R - A2toE - A2T
+A2RtoA3R = 1 - A2RtoE - A2RT
+A3toA4 = 1 - A3toA3R - A3toE - A3T
+A3RtoA4R = 1 - A3RtoE - A3RT
+A4toA5 = 1 - A4toA4R - A4toE - A4T
+A4RtoA5R = 1 - A4RtoE - A4RT
+A5RtoA6R = 0.3
 A6RtoA7R = 0.2
-A6RtoE = 0.03 * taxaEvasaoR
-# A6RtoG = 1 - A6RtoE - A6RtoA7R
-A6RtoG = 1 - A6RtoE - A6RtoA7R - A6RT
 
-# A7R
-A7RtoE = 0.02 * taxaEvasaoR
+# Graduar
+# A5toG = 1 - A5toA5R - A5toE
+# A5RtoG = 1 - A5RtoA6R - A5RtoE
+# A6RtoG = 1 - A6RtoE - A6RtoA7R
 # A7RtoG = 1 - A7RtoE
+A5toG = 1 - A5toA5R - A5toE - A5T
+A5RtoG = 1 - A5RtoA6R - A5RtoE - A5RT
+A6RtoG = 1 - A6RtoE - A6RtoA7R - A6RT
 A7RtoG = 1 - A7RtoE - A7RT
+
 
 progres = [A1toA2, A2toA3, A3toA4, A4toA5, A5toG, A1RtoA2R, A2RtoA3R, A3RtoA4R, A4RtoA5R, A5RtoG]
 ret = [A1toA1R, A2toA2R, A3toA3R, A4toA4R, A5toA5R]
 # tranc = [A1toT, A2toT, A3toT, A4toT, A5toT, A1RtoT, A2RtoT, A3RtoT, A4RtoT, A5RtoT]
 
-# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
-# state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
+state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 # p = [[0.0, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
 #      [0.0, 0.0, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
 #      [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A3toE],
@@ -117,8 +103,6 @@ ret = [A1toA1R, A2toA2R, A3toA3R, A4toA4R, A5toA5R]
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 # Com trancamento
-states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
-state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
      [0.0, A2T, A2toA3, 0.0, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
      [0.0, 0.0, A3T, A3toA4, 0.0, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, 0.0, A3toE],
@@ -223,5 +207,39 @@ print(p)
 
 
 
+#Testes
 
-
+# def prob_absor(p, N):
+#     # f=NR
+#     x = np.array(p)
+#     x1 = x[:len(x) - 2, len(x) - 2]
+#     x2 = x[:len(x) - 2, len(x) - 1]
+#     R = np.array([x1, x2])
+#
+#     return np.round(np.dot(R, N.T).T, 3)
+#
+# stateHist = state
+# mc = MarkovChain(p, states)
+#
+# # informacoes sobre a cadeia de markov
+# # print(mc)
+#
+# # O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
+# print("\n Matriz Fundamental:")
+# N = np.round(mc.fundamental_matrix, 3)
+# print(N)
+#
+# # Tempos de Absorção
+# print("\n Duração esperada em cada ano até a graduação ou evasão")
+# print(np.round(mc.absorption_times, 3))
+#
+# print("\n Duração média esperada até graduação:")
+# # Sem estados retidos
+# # print(np.round(np.trace(np.asarray(N)), 3))
+# # Com estados retidos
+# print(np.round(np.trace((np.asarray(N) / 2)), 3))
+#
+# probGE = prob_absor(p, N)
+# for i in range(len(probGE)):
+#     print("\n Probabilidade graduação e evasão no estado " + states[i] + ":")
+#     print(probGE[i])

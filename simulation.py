@@ -1,48 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
-import pandas as pd
-from pydtmc import MarkovChain, plot_graph, plot_walk
 from lifelines import KaplanMeierFitter
 from Student import Student
-
-
-# def prob_absor(p, N):
-#     # f=NR
-#     x = np.array(p)
-#     x1 = x[:len(x) - 2, len(x) - 2]
-#     x2 = x[:len(x) - 2, len(x) - 1]
-#     R = np.array([x1, x2])
-#
-#     return np.round(np.dot(R, N.T).T, 3)
-
-# informacoes sobre a cadeia de markov
-# print(mc)
-
-# p = np.round(p, 4)
-# matriz_transicao()
-#
-# stateHist = state
-# mc = MarkovChain(p, statenames)
-#
-# # O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
-# print("\n Matriz Fundamental:")
-# N = np.round(mc.fundamental_matrix, 3)
-# print(N)
-#
-# # Tempos de Absorção
-# print("\n Duração esperada em cada ano até a graduação ou evasão")
-# print(np.round(mc.absorption_times, 3))
-#
-# # print("\n Duração média esperada até graduação:")
-# # Sem estados retidos
-# # print(np.round(np.trace(np.asarray(N)), 3))
-# # Com estados retidos
-# # print(np.round(np.trace((np.asarray(N) / 2)), 3))
-#
-# probGE = prob_absor(p, N)
-# for i in range(len(probGE)):
-#     print("\n Probabilidade graduação e evasão no estado " + statenames[i] + ":")
-#     print(probGE[i])
 
 
 def sobrevivencia(time, event_observed, label, color, title):
@@ -108,17 +67,21 @@ def Simu(quantAlunos, matriz):
 
         # Trancado
         estados = np.zeros((a.nb_state,), dtype=int)
-        count = 0
-        for estado in arr:
-            if estado == 'T':
-                estados[count] = 1
-            count += 1
+        i = 1
+        while i < len(arr):
+            if arr[i] == arr[i-1]:  # se estado igual ao estado anterior
+                estados[i] = 1
+            i += 1
         event_observedT = np.concatenate((event_observedT, estados))
 
-        if 'T' in arr:
-            t += 1
-            k = arr.index("T")
-            tempo_ate_trancado.append(k)
+        # Se ficou Trancado em algum dos estados
+        i = 1
+        while i < len(arr):
+            if arr[i] == arr[i - 1]:  # se estado igual ao estado anterior
+                t += 1
+                tempo_ate_trancado.append(i)
+                break
+            i += 1
 
         # Retido
         estados = np.zeros((a.nb_state,), dtype=int)
@@ -141,7 +104,7 @@ def Simu(quantAlunos, matriz):
     prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
-    # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
+    prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
 
 
     return time, event_observedE, event_observedG, event_observedR, event_observedT
@@ -161,12 +124,14 @@ times = [timeF, timeM]
 eventsE = [event_observedEF, event_observedEM]
 eventsG = [event_observedGF, event_observedGM]
 eventsR = [event_observedRF, event_observedRM]
+eventsT = [event_observedTF, event_observedTM]
 colors = ["red", "blue"]
 labels = ["Feminino", "Masculino"]
 
 sobrevivencia(times, eventsE, labels, colors, "Evasão")
 sobrevivencia(times, eventsG, labels, colors, "Graduação")
 sobrevivencia(times, eventsR, labels, colors, "Retenção")
+sobrevivencia(times, eventsT, labels, colors, "Trancado")
 
 
 # Simulação Geral
