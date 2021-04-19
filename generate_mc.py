@@ -174,7 +174,7 @@ def transition_matrix(transitions):
 # p = transition_matrix(t)
 
 
-#p = np.round(p, 4)
+p = np.round(p, 4)
 generate_csv_and_diagram(nomeArquivo, states, p)
 
 

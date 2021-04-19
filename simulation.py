@@ -7,9 +7,11 @@ from Student import Student
 def sobrevivencia(time, event_observed, label, color, title):
     kmf = KaplanMeierFitter()
 
+    linestyles = ['-', '--', '-.', ':']
     for i in range(len(time)):
         kmf.fit(time[i], event_observed[i], label=label[i])
-        kmf.plot_survival_function(color=color[i])
+        # kmf.plot_survival_function(color=color[i])
+        kmf.plot_survival_function(linestyle=linestyles[i], color = "black")
 
     plt.xlabel('Tempo')
     plt.ylabel('Probabilidade')
@@ -31,7 +33,7 @@ def Simu(quantAlunos, matriz):
     g = 0
     r = 0
     t = 0
-    anos = 12  # antes a.nb_state
+    # anos = 12  # ou a.nb_state dentro do for
     time = np.array([])
     tempo_ate_retido = []
     tempo_ate_trancado = []
@@ -42,11 +44,15 @@ def Simu(quantAlunos, matriz):
     event_observedT = np.array([])
     event_observedR = np.array([])
 
+    event_observedGTeste = []
+    timeTeste = []
+
     for i in range(quantAlunos):
         a = Student(i, matriz)
         list(a.gen)
         arr = a.history
-        #anos = a.nb_state
+        anos = a.nb_state
+        k = 0
 
         tempo = np.arange(0, anos, 1)
         time = np.concatenate((time, tempo))
@@ -65,6 +71,9 @@ def Simu(quantAlunos, matriz):
             k = arr.index("G")
             tempo_ate_graduado.append(k)
             estados[k] = 1
+            # Teste
+            timeTeste.append(k)
+            event_observedGTeste.append(1)
         event_observedG = np.concatenate((event_observedG, estados))
 
         # Trancado
@@ -108,39 +117,55 @@ def Simu(quantAlunos, matriz):
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
 
-    return time, event_observedE, event_observedG, event_observedR, event_observedT
+    # print(g)
+    # print(tempo_ate_graduado)
+
+    # return time, event_observedE, event_observedG, event_observedR, event_observedT
+    return timeTeste, time, event_observedE, event_observedGTeste, event_observedR, event_observedT
 
 
 
-quantAlunos = 10000
+quantAlunos = 1000
 
 
-# Simulação por Gênero
-print("\nFeminino")
-timeF, event_observedEF, event_observedGF, event_observedRF, event_observedTF = Simu(quantAlunos, 'matrix/matrixF.csv')
-print("\nMasculino")
-timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrix/matrixM50.csv')
-
-times = [timeF, timeM]
-eventsE = [event_observedEF, event_observedEM]
-eventsG = [event_observedGF, event_observedGM]
-eventsR = [event_observedRF, event_observedRM]
-eventsT = [event_observedTF, event_observedTM]
-colors = ["red", "blue"]
-labels = ["Feminino", "Masculino"]
-
-sobrevivencia(times, eventsR, labels, colors, "Retenção")
-sobrevivencia(times, eventsT, labels, colors, "Trancado")
-sobrevivencia(times, eventsE, labels, colors, "Evasão")
-sobrevivencia(times, eventsG, labels, colors, "Graduação")
+# # Simulação por Gênero
+# print("\nFeminino")
+# timeF, event_observedEF, event_observedGF, event_observedRF, event_observedTF = Simu(quantAlunos, 'matrix/matrixF.csv')
+# print("\nMasculino - 25%")
+# timeM, event_observedEM, event_observedGM, event_observedRM, event_observedTM = Simu(quantAlunos, 'matrix/matrixM.csv')
+# # print("\nMasculino - 50%")
+# # timeM50, event_observedEM50, event_observedGM50, event_observedRM50, event_observedTM50 = Simu(quantAlunos, 'matrix/matrixM50.csv')
+#
+# times = [timeF, timeM]
+# eventsE = [event_observedEF, event_observedEM]
+# eventsG = [event_observedGF, event_observedGM]
+# eventsR = [event_observedRF, event_observedRM]
+# eventsT = [event_observedTF, event_observedTM]
+# colors = ["red", "blue"]
+# labels = ["Feminino", "Masculino"]
+#
+# # times = [timeF, timeM, timeM50]
+# # eventsE = [event_observedEF, event_observedEM, event_observedEM50]
+# # eventsG = [event_observedGF, event_observedGM, event_observedGM50]
+# # eventsR = [event_observedRF, event_observedRM, event_observedRM50]
+# # eventsT = [event_observedTF, event_observedTM, event_observedTM50]
+# # colors = ["red", "blue", "green"]
+# # labels = ["Feminino", "Masculino - 25%", "Masculino - 50%"]
+#
+#
+# sobrevivencia(times, eventsR, labels, colors, "Retenção")
+# sobrevivencia(times, eventsT, labels, colors, "Trancado")
+# sobrevivencia(times, eventsE, labels, colors, "Evasão")
+# sobrevivencia(times, eventsG, labels, colors, "Graduação")
 
 
 # Simulação Geral
-# time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrix.csv')
-#
-# sobrevivencia([time], [event_observedE], ['Evadido'], ["red"])
-# sobrevivencia([time], [event_observedG], ['Graduado'], ["green"])
-# sobrevivencia([time], [event_observedR], ['Retido'], ["orange"])
-# sobrevivencia([time], [event_observedT], ['Trancado'], ["grey"])
+# time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrixF.csv')
+timeTeste, time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrixF.csv')
+
+sobrevivencia([time], [event_observedE], ['Evadido'], ["red"], "Evasão")
+sobrevivencia([timeTeste], [event_observedG], ['Graduado'], ["green"], "Graduação")
+sobrevivencia([time], [event_observedR], ['Retido'], ["orange"], "Retenção")
+sobrevivencia([time], [event_observedT], ['Trancado'], ["grey"], "Trancado")
 
 
