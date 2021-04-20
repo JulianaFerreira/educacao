@@ -11,7 +11,7 @@ def sobrevivencia(time, event_observed, label, color, title):
     for i in range(len(time)):
         kmf.fit(time[i], event_observed[i], label=label[i])
         # kmf.plot_survival_function(color=color[i])
-        kmf.plot_survival_function(linestyle=linestyles[i], color = "black")
+        kmf.plot_survival_function(linestyle=linestyles[i], color="black")
 
     plt.xlabel('Tempo')
     plt.ylabel('Probabilidade')
@@ -44,15 +44,11 @@ def Simu(quantAlunos, matriz):
     event_observedT = np.array([])
     event_observedR = np.array([])
 
-    event_observedGTeste = []
-    timeTeste = []
-
     for i in range(quantAlunos):
         a = Student(i, matriz)
         list(a.gen)
         arr = a.history
         anos = a.nb_state
-        k = 0
 
         tempo = np.arange(0, anos, 1)
         time = np.concatenate((time, tempo))
@@ -71,9 +67,6 @@ def Simu(quantAlunos, matriz):
             k = arr.index("G")
             tempo_ate_graduado.append(k)
             estados[k] = 1
-            # Teste
-            timeTeste.append(k)
-            event_observedGTeste.append(1)
         event_observedG = np.concatenate((event_observedG, estados))
 
         # Trancado
@@ -120,12 +113,11 @@ def Simu(quantAlunos, matriz):
     # print(g)
     # print(tempo_ate_graduado)
 
-    # return time, event_observedE, event_observedG, event_observedR, event_observedT
-    return timeTeste, time, event_observedE, event_observedGTeste, event_observedR, event_observedT
+    return time, event_observedE, event_observedG, event_observedR, event_observedT
 
 
 
-quantAlunos = 1000
+quantAlunos = 100
 
 
 # # Simulação por Gênero
@@ -160,12 +152,38 @@ quantAlunos = 1000
 
 
 # Simulação Geral
-# time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrixF.csv')
-timeTeste, time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrixF.csv')
+time, event_observedE, event_observedG, event_observedR, event_observedT = Simu(quantAlunos, 'matrix/matrixtest.csv')
 
 sobrevivencia([time], [event_observedE], ['Evadido'], ["red"], "Evasão")
-sobrevivencia([timeTeste], [event_observedG], ['Graduado'], ["green"], "Graduação")
+sobrevivencia([time], [event_observedG], ['Graduado'], ["green"], "Graduação")
 sobrevivencia([time], [event_observedR], ['Retido'], ["orange"], "Retenção")
 sobrevivencia([time], [event_observedT], ['Trancado'], ["grey"], "Trancado")
 
+
+
+
+
+
+
+
+
+
+# Para depois
+# Teste quantidade de alunos por ano
+# list_alunos = []
+# list_quant_anos = []
+# quantAlunos = 10
+#
+# for i in range(quantAlunos):
+#     a = Student(i, "matrix/matrixtest.csv")
+#     list_alunos.append(a)
+#
+#     for i in range(3):
+#         a.get_next_state()
+#         list_alunos.append()
+#
+#
+# print(list_quant_anos[0])
+# print(list_quant_anos[1])
+# print(list_quant_anos[2])
 

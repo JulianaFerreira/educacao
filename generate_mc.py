@@ -5,9 +5,10 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixF.csv"
+nomeArquivo = "matrix/matrixtest.csv"
 taxaRetencao = 1.0
 taxaEvasao = 1.0
+taxaEvasaoA1 = 0.1
 taxaTrancar = 1.0
 taxaEvasaoR = 1.0
 taxaTrancarR = 1.0
@@ -37,8 +38,8 @@ A4toA4R = 0.15 * taxaRetencao
 A5toA5R = 0.2 * taxaRetencao
 
 # Evadir
-A1toE = 0.12 * taxaEvasao
-A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+A1toE = 0.12 * taxaEvasao * taxaEvasaoA1
+A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao * taxaEvasaoA1
 A2toE = 0.1 * taxaEvasao
 A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
 A3toE = 0.07 * taxaEvasao
@@ -118,6 +119,16 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
+
+# Simples para testes
+states = ['A1', 'A2', 'G', 'E']
+p = [[0.0, 0.7, 0.0, 0.3],
+     [0.0, 0.0, 0.8, 0.2],
+     [0.0, 0.0, 1.0, 0.0],
+     [0.0, 0.0, 0.0, 1.0]]
+
+
+
 # states = ['Y1', 'Y2', 'Y3', 'Y4', 'I', 'G', 'W']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0]])
 # p = [[0.057, 0.31, 0.0, 0.0, 0.603, 0.0, 0.03],
@@ -168,13 +179,20 @@ def transition_matrix(transitions):
     return M
 
 
+def aplicar_parametros(p):
+    p[:, 0] = 1
+
+    return p
+
+
+
 # estados transicionando
 # t = [1,1,2,6,8,5,5,7,8,8,1,1,4,5,5,0,0,0,1,1,4,4,5,1,3,3,4,5,4,1,1]
 # states = np.unique(t)
 # p = transition_matrix(t)
 
 
-p = np.round(p, 4)
+# p = np.round(p, 4)
 generate_csv_and_diagram(nomeArquivo, states, p)
 
 
