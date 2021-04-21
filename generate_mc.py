@@ -5,10 +5,10 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixtest.csv"
+nomeArquivo = "matrix/matrixPadrao.csv"
 taxaRetencao = 1.0
 taxaEvasao = 1.0
-taxaEvasaoA1 = 0.1
+taxaEvasaoA1 = 1.0
 taxaTrancar = 1.0
 taxaEvasaoR = 1.0
 taxaTrancarR = 1.0
@@ -120,12 +120,12 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 
-# Simples para testes
-states = ['A1', 'A2', 'G', 'E']
-p = [[0.0, 0.7, 0.0, 0.3],
-     [0.0, 0.0, 0.8, 0.2],
-     [0.0, 0.0, 1.0, 0.0],
-     [0.0, 0.0, 0.0, 1.0]]
+# # Simples para testes
+# states = ['A1', 'A2', 'G', 'E']
+# p = [[0.0, 0.7, 0.0, 0.3],
+#      [0.0, 0.0, 0.8, 0.2],
+#      [0.0, 0.0, 1.0, 0.0],
+#      [0.0, 0.0, 0.0, 1.0]]
 
 
 
