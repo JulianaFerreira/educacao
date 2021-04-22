@@ -9,7 +9,7 @@ class Student:
         self.df_Q = pd.read_csv(matrix, index_col=0)
         self.states = self.df_Q.columns
         self.state = self.states[0]
-        self.nb_state = 1
+        self.size = 1
         self.gen = self.markov()
         self.history = [self.states[0]]
 
@@ -26,17 +26,17 @@ class Student:
             if next_state == 'G':
                 self.state = 'G'
                 self.history.append(self.state)
-                self.nb_state += 1
+                self.size += 1
                 yield self.state
 
             elif next_state == 'E':
                 self.state = 'E'
                 self.history.append(self.state)
-                self.nb_state += 1
+                self.size += 1
                 yield self.state
 
             else:
                 self.state = next_state
                 self.history.append(self.state)
-                self.nb_state += 1
+                self.size += 1
                 yield self.state
