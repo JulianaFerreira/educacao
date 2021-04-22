@@ -5,11 +5,11 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixPadrao.csv"
+nomeArquivo = "matrix/matrixTrancamentoMenos60.csv"
 taxaRetencao = 1.0
 taxaEvasao = 1.0
 taxaEvasaoA1 = 1.0
-taxaTrancar = 1.0
+taxaTrancar = 0.4
 taxaEvasaoR = 1.0
 taxaTrancarR = 1.0
 taxaProporcaoEvasao = 1.5

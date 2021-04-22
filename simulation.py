@@ -1,3 +1,4 @@
+from lifelines.statistics import logrank_test
 from matplotlib import pyplot as plt
 import numpy as np
 from lifelines import KaplanMeierFitter
@@ -13,9 +14,9 @@ def sobrevivencia(time, event_observed, label, title):
         # kmf.plot_survival_function(color=color[i])
         kmf.plot_survival_function(linestyle=linestyles[i], color="black")
 
-    plt.xlabel('Tempo')
-    plt.ylabel('Probabilidade')
-    plt.suptitle(f"Análise de Sobrevivência: {title}", fontsize=18)
+    plt.xlabel('Tempo (em anos)')
+    plt.ylabel('Probabilidade de graduação')
+    plt.suptitle(f"{title}", fontsize=18)
     plt.title("IC de 95% para a Média", fontsize=10)
     plt.savefig(f"imgs/plot{title}.png")
     plt.show()
@@ -90,39 +91,109 @@ quantAlunos = 10000
 
 
 # Simulação por Gênero
-print("\nFeminino")
-timeF, event_observedEF = Simu(quantAlunos, 'matrix/matrixF.csv')
-print("\nMasculino - 25%")
-timeM,  event_observedEM = Simu(quantAlunos, 'matrix/matrixM.csv')
-print("\nMasculino - 50%")
-timeM50, event_observedEM50 = Simu(quantAlunos, 'matrix/matrixM50.csv')
+# print("\nFeminino")
+# timeF, event_observedEF = Simu(quantAlunos, 'matrix/matrixF.csv')
+# print("\nMasculino - 25%")
+# timeM,  event_observedEM = Simu(quantAlunos, 'matrix/matrixM.csv')
+# print("\nMasculino - 50%")
+# timeM50, event_observedEM50 = Simu(quantAlunos, 'matrix/matrixM50.csv')
+#
+# times = [timeF, timeM, timeM50]
+# events = [event_observedEF, event_observedEM, event_observedEM50]
+# labels = ["Feminino", "Masculino - 25%", "Masculino - 50%"]
+#
+# sobrevivencia(times, events, labels, "Evasão")
 
-times = [timeF, timeM, timeM50]
-events = [event_observedEF, event_observedEM, event_observedEM50]
-labels = ["Feminino", "Masculino - 25%", "Masculino - 50%"]
 
-sobrevivencia(times, events, labels, "Evasão")
+# Simulação Trancamento
+# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+# time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixTrancamentoMenos20.csv')
+# time40, event_observed_40 = Simu(quantAlunos, 'matrix/matrixTrancamentoMenos40.csv')
+# time60, event_observed_60 = Simu(quantAlunos, 'matrix/matrixTrancamentoMenos60.csv')
+#
+# times = [time, time20, time40, time60]
+# events = [event, event_observed_20, event_observed_40, event_observed_60]
+# labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
+#
+# sobrevivencia(times, events, labels, "Taxa de Trancamento")
+#
+#
+# print("logrank")
+# results = logrank_test(time, time20, event, event_observed_20)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time40, event, event_observed_40)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time60, event, event_observed_60)
+# results.print_summary()
+# print(results.p_value)
+
+
+# Simulação Retenção
+# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+# time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixRetencaoMenos20.csv')
+# time40, event_observed_40 = Simu(quantAlunos, 'matrix/matrixRetencaoMenos40.csv')
+# time60, event_observed_60 = Simu(quantAlunos, 'matrix/matrixRetencaoMenos60.csv')
+#
+# times = [time, time20, time40, time60]
+# events = [event, event_observed_20, event_observed_40, event_observed_60]
+# labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
+#
+# sobrevivencia(times, events, labels, "Taxa de Retenção")
+#
+#
+# print("logrank")
+# results = logrank_test(time, time20, event, event_observed_20)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time40, event, event_observed_40)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time60, event, event_observed_60)
+# results.print_summary()
+# print(results.p_value)
+
 
 
 
 # Simulação Evasão A1
-# time20, event_observed_e20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
-# time40, event_observed_e40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
-# time60, event_observed_e60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
+# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+# time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
+# time40, event_observed_40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
+# time60, event_observed_60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
 #
 #
-# times = [time20, time40, time60]
-# eventsE = [event_observed_e20, event_observed_e40, event_observed_e60]
-# labels = ["Menos 20%", "Menos 40%", "Menos 60%"]
+# times = [time, time20, time40, time60]
+# events = [event, event_observed_20, event_observed_40, event_observed_60]
+# labels = ["Padrão", "Menos 20%", "Menos 40%", "Menos 60%"]
 #
-# sobrevivencia(times, eventsE, labels, "Evasão")
+# sobrevivencia(times, events, labels, "Evasão A1")
+#
+#
+# print("logrank")
+# results = logrank_test(time, time20, event, event_observed_20)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time40, event, event_observed_40)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time60, event, event_observed_60)
+# results.print_summary()
+# print(results.p_value)
 
 
 
 # Simulação Geral
-# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
-#
-# sobrevivencia([time], [event], ['Evadido'], "Evasão")
+time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+
+sobrevivencia([time], [event], ['Evadido'], "Evasão")
 
 
 
