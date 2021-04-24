@@ -13,6 +13,8 @@ def sobrevivencia(time, event_observed, label, title):
         kmf.fit(time[i], event_observed[i], label=label[i])
         # kmf.plot_survival_function(color=color[i])
         kmf.plot_survival_function(linestyle=linestyles[i], color="black")
+        kmf.event_table.to_csv(f"docs/event_table{i}.csv")
+
 
     plt.xlabel('Tempo (em anos)')
     plt.ylabel('Probabilidade de graduação')
@@ -26,6 +28,9 @@ def sobrevivencia(time, event_observed, label, title):
 
 
 def prob_and_temp(state, x, tempo, quantAlunos):
+    archive = open("docs/prob_and_temp.txt", "a")
+    archive.write(f"Probabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %" + "\n")
+    archive.write(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} anos" + "\n")
     print(f"\nProbabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %")
     print(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} anos")
 
@@ -193,7 +198,7 @@ quantAlunos = 10000
 # Simulação Geral
 time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
 
-sobrevivencia([time], [event], ['Evadido'], "Evasão")
+sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
 
 
 
