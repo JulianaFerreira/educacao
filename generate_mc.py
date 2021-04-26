@@ -5,11 +5,12 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixTrancamentoMenos60.csv"
+nomeArquivo = "matrix/matrixMenos60EvasaoA1.csv"
 taxaRetencao = 1.0
 taxaEvasao = 1.0
-taxaEvasaoA1 = 1.0
-taxaTrancar = 0.4
+taxaEvasaoA1 = 0.4
+taxaEvasaoA2 = 1.0
+taxaTrancar = 1.0
 taxaEvasaoR = 1.0
 taxaTrancarR = 1.0
 taxaProporcaoEvasao = 1.5
@@ -39,8 +40,8 @@ A5toA5R = 0.2 * taxaRetencao
 
 # Evadir
 A1toE = 0.12 * taxaEvasao * taxaEvasaoA1
-A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao * taxaEvasaoA1
-A2toE = 0.1 * taxaEvasao
+A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+A2toE = 0.1 * taxaEvasao * taxaEvasaoA2
 A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
 A3toE = 0.07 * taxaEvasao
 A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
@@ -129,7 +130,7 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 
 
 
-# states = ['Y1', 'Y2', 'Y3', 'Y4', 'I', 'G', 'W']
+# states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'G', 'W']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0]])
 # p = [[0.057, 0.31, 0.0, 0.0, 0.603, 0.0, 0.03],
 #      [0.0, 0.187, 0.528, 0.0, 0.285, 0.0, 0.0],
@@ -139,11 +140,25 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
-# states = ['Inicio', 'A1', 'A2', 'A3', 'A4', 'Graduado', 'Evadido']
+#Chance de graduar 68,12%
+# states = ['Inicio', 'A1', 'A2', 'A3', 'A4', 'G', 'E']
 # state = np.array([[1, 0, 0, 0, 0, 0, 0]])
-# p = [[0.0, 0.89, 0.09, 0.02, 0.0, 0.0, 0.0], [0.0, 0.17, 0.64, 0.06, 0.0, 0.0, 0.13],
-#      [0.0, 0.0, 0.1, 0.75, 0.08, 0.0, 0.07], [0.0, 0.0, 0.0, 0.08, 0.84, 0.04, 0.04],
-#      [0.0, 0.0, 0.0, 0.0, 0.37, 0.61, 0.02], [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+# p = [[0.0, 0.89, 0.09, 0.02, 0.0, 0.0, 0.0],
+#      [0.0, 0.17, 0.64, 0.06, 0.0, 0.0, 0.13],
+#      [0.0, 0.0, 0.1, 0.75, 0.08, 0.0, 0.07],
+#      [0.0, 0.0, 0.0, 0.08, 0.84, 0.04, 0.04],
+#      [0.0, 0.0, 0.0, 0.0, 0.37, 0.61, 0.02],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
+
+# states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'G', 'E']
+# state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+# p = [[0.0, 0.89, 0.09, 0.02, 0.0, 0.0, 0.0],
+#      [0.0, 0.17, 0.64, 0.06, 0.0, 0.0, 0.13],
+#      [0.0, 0.0, 0.1, 0.75, 0.08, 0.0, 0.07],
+#      [0.0, 0.0, 0.0, 0.08, 0.84, 0.04, 0.04],
+#      [0.0, 0.0, 0.0, 0.0, 0.37, 0.61, 0.02],
+#      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 
