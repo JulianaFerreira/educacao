@@ -167,31 +167,31 @@ quantAlunos = 10000
 
 
 # Simulação Evasão A1
-time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
-time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
-time40, event_observed_40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
-time60, event_observed_60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
-
-
-times = [time, time20, time40, time60]
-events = [event, event_observed_20, event_observed_40, event_observed_60]
-labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
-
-sobrevivencia(times, events, labels, "Taxa de Evasão")
-
-
-print("logrank")
-results = logrank_test(time, time20, event, event_observed_20)
-results.print_summary()
-print(results.p_value)
-
-results = logrank_test(time, time40, event, event_observed_40)
-results.print_summary()
-print(results.p_value)
-
-results = logrank_test(time, time60, event, event_observed_60)
-results.print_summary()
-print(results.p_value)
+# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+# time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
+# time40, event_observed_40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
+# time60, event_observed_60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
+#
+#
+# times = [time, time20, time40, time60]
+# events = [event, event_observed_20, event_observed_40, event_observed_60]
+# labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
+#
+# sobrevivencia(times, events, labels, "Taxa de Evasão")
+#
+#
+# print("logrank")
+# results = logrank_test(time, time20, event, event_observed_20)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time40, event, event_observed_40)
+# results.print_summary()
+# print(results.p_value)
+#
+# results = logrank_test(time, time60, event, event_observed_60)
+# results.print_summary()
+# print(results.p_value)
 
 
 
@@ -225,9 +225,9 @@ print(results.p_value)
 
 
 # Simulação Geral
-# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
-#
-# sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
+time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+
+sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
 
 
 

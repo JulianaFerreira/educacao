@@ -5,10 +5,10 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixMenos60EvasaoA1.csv"
+nomeArquivo = "matrix/matrixBrezav.csv"
 taxaRetencao = 1.0
 taxaEvasao = 1.0
-taxaEvasaoA1 = 0.4
+taxaEvasaoA1 = 1.0
 taxaEvasaoA2 = 1.0
 taxaTrancar = 1.0
 taxaEvasaoR = 1.0
@@ -130,15 +130,16 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 
 
 
-# states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'G', 'W']
-# state = np.array([[1, 0, 0, 0, 0, 0, 0]])
-# p = [[0.057, 0.31, 0.0, 0.0, 0.603, 0.0, 0.03],
-#      [0.0, 0.187, 0.528, 0.0, 0.285, 0.0, 0.0],
-#      [0.0, 0.0, 0.012, 0.563, 0.097, 0.328, 0.0],
-#      [0.0, 0.0, 0.0, 0.039, 0.094, 0.814, 0.053],
-#      [0.001, 0.036, 0.02, 0.0, 0.0, 0.003, 0.94],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
-#      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
+#states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'G', 'W']
+states = ['A1', 'A2', 'A3', 'A4', 'T', 'G', 'W']
+state = np.array([[1, 0, 0, 0, 0, 0, 0]])
+p = [[0.057, 0.31, 0.0, 0.0, 0.603, 0.0, 0.03],
+     [0.0, 0.187, 0.528, 0.0, 0.285, 0.0, 0.0],
+     [0.0, 0.0, 0.012, 0.563, 0.097, 0.328, 0.0],
+     [0.0, 0.0, 0.0, 0.039, 0.094, 0.814, 0.053],
+     [0.001, 0.036, 0.02, 0.0, 0.0, 0.003, 0.94],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 #Chance de graduar 68,12%
 # states = ['Inicio', 'A1', 'A2', 'A3', 'A4', 'G', 'E']
