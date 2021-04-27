@@ -510,3 +510,59 @@ Probabilidade de ser Evadido: 30.4 %
 Tempo médio até ser Evadido: 3.473 anos
 Probabilidade de ser Graduado: 69.6 %
 Tempo médio até ser Graduado: 6.195 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 45.2 %
+Tempo médio até ser Trancado: 3.448 anos
+Probabilidade de ser Evadido: 25.4 %
+Tempo médio até ser Evadido: 2.998 anos
+Probabilidade de ser Graduado: 74.6 %
+Tempo médio até ser Graduado: 5.528 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 46.1 %
+Tempo médio até ser Trancado: 3.399 anos
+Probabilidade de ser Evadido: 25.7 %
+Tempo médio até ser Evadido: 2.989 anos
+Probabilidade de ser Graduado: 74.3 %
+Tempo médio até ser Graduado: 5.558 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 45.2 %
+Tempo médio até ser Trancado: 3.435 anos
+Probabilidade de ser Evadido: 25.6 %
+Tempo médio até ser Evadido: 3.004 anos
+Probabilidade de ser Graduado: 74.4 %
+Tempo médio até ser Graduado: 5.537 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 12.3 %
+Tempo médio até ser Trancado: 1.684 anos
+Probabilidade de ser Evadido: 79.3 %
+Tempo médio até ser Evadido: 2.354 anos
+Probabilidade de ser Graduado: 20.7 %
+Tempo médio até ser Graduado: 4.028 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 11.6 %
+Tempo médio até ser Trancado: 1.67 anos
+Probabilidade de ser Evadido: 79.2 %
+Tempo médio até ser Evadido: 2.36 anos
+Probabilidade de ser Graduado: 20.8 %
+Tempo médio até ser Graduado: 3.968 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 12.5 %
+Tempo médio até ser Trancado: 1.701 anos
+Probabilidade de ser Evadido: 79.3 %
+Tempo médio até ser Evadido: 2.357 anos
+Probabilidade de ser Graduado: 20.7 %
+Tempo médio até ser Graduado: 4.042 anos
+Probabilidade de ser Retido: 0.0 %
+Tempo médio até ser Retido: nan anos
+Probabilidade de ser Trancado: 12.9 %
+Tempo médio até ser Trancado: 1.688 anos
+Probabilidade de ser Evadido: 79.2 %
+Tempo médio até ser Evadido: 2.368 anos
+Probabilidade de ser Graduado: 20.8 %
+Tempo médio até ser Graduado: 4.031 anos

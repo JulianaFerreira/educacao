@@ -225,7 +225,7 @@ quantAlunos = 10000
 
 
 # Simulação Geral
-time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+time, event = Simu(quantAlunos, 'matrix/matrixBrezav.csv')
 
 sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
 
