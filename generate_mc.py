@@ -174,8 +174,8 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
-taxaRetido = 0.5
-taxaTrancado = 0.5
+taxaRetido = 0.7
+taxaTrancado = 0.3
 
 # T - representado por self loop
 A1T = 0.17 * taxaTrancado * taxaTrancar
@@ -186,8 +186,8 @@ A3T = 0.08 * taxaTrancado * taxaTrancar
 A3RT = A3T * taxaTrancarR * taxaProporcaoTrancar
 A4T = 0.37 * taxaTrancado * taxaTrancar
 A4RT = A4T * taxaTrancarR * taxaProporcaoTrancar
-A5RT = 0.37/2 * taxaTrancado * taxaTrancarR
-A6RT = 0.37/3 * taxaTrancado * taxaTrancarR
+A5RT = 0.37 * taxaTrancado * taxaTrancarR
+A6RT = 0.37/2 * taxaTrancado * taxaTrancarR
 
 # Reter
 A1toA1R = 0.17 * taxaRetido * taxaRetencao
@@ -204,8 +204,8 @@ A3toE = 0.04 * taxaEvasao
 A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
 A4toE = 0.02 * taxaEvasao
 A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
-A5RtoE = 0.02/2 * taxaEvasaoR
-A6RtoE = 0.02/3 * taxaEvasaoR
+A5RtoE = 0.02 * taxaEvasaoR
+A6RtoE = 0.02/2 * taxaEvasaoR
 
 # Próximo estado
 A1toA2 = 1 - A1toA1R - A1toE - A1T
@@ -284,7 +284,7 @@ def aplicar_parametros(p):
 # p = transition_matrix(t)
 
 
-# p = np.round(p, 4)
+p = np.round(p, 4)
 generate_csv_and_diagram(nomeArquivo, states, p)
 
 

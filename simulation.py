@@ -224,12 +224,22 @@ quantAlunos = 10000
 
 
 
+# Simulação Boumi
+# time, event = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+# time1, event1 = Simu(quantAlunos, 'matrix/matrixBoumiAlterado1.csv')
+#
+# sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
+# sobrevivencia([time1], [event1], ['Estudantes'], "Análise de Sobrevivência")
+#
+# times = [time, time1]
+# events = [event, event1]
+# labels = ["R-70% e T-30% ", "R-50% e T-50%"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência")
+
+
 # Simulação Geral
-time, event = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
 
 sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
-
-
-
-
 
