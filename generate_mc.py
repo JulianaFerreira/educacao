@@ -174,19 +174,69 @@ p = [[A1T, A1toA2, 0.0, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
 #      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
-# states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'G', 'E']
-states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'G', 'E']
-state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-p = [[0.0, 0.64, 0.06, 0.0, 0.17, 0.0, 0.0, 0.0, 0.0, 0.13],
-     [0.0, 0.0, 0.75, 0.08, 0.0, 0.1, 0.0, 0.0, 0.0, 0.07],
-     [0.0, 0.0, 0.0, 0.84, 0.0, 0.0, 0.08, 0.0, 0.04, 0.04],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.37, 0.61, 0.02],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 1 - (0.13 * taxaProporcaoEvasao), 0.0, 0.0, 0.0, (0.13 * taxaProporcaoEvasao)],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1 - (0.07 * taxaProporcaoEvasao), 0.0, 0.0, (0.07 * taxaProporcaoEvasao)],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1 - (0.04 * taxaProporcaoEvasao), 0.0, (0.04 * taxaProporcaoEvasao)],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1 - (0.02 * taxaProporcaoEvasao), (0.02 * taxaProporcaoEvasao)],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
-     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
+taxaRetido = 0.5
+taxaTrancado = 0.5
+
+# T - representado por self loop
+A1T = 0.17 * taxaTrancado * taxaTrancar
+A1RT = A1T * taxaTrancarR * taxaProporcaoTrancar
+A2T = 0.1 * taxaTrancado * taxaTrancar
+A2RT = A2T * taxaTrancarR * taxaProporcaoTrancar
+A3T = 0.08 * taxaTrancado * taxaTrancar
+A3RT = A3T * taxaTrancarR * taxaProporcaoTrancar
+A4T = 0.37 * taxaTrancado * taxaTrancar
+A4RT = A4T * taxaTrancarR * taxaProporcaoTrancar
+A5RT = 0.37/2 * taxaTrancado * taxaTrancarR
+A6RT = 0.37/3 * taxaTrancado * taxaTrancarR
+
+# Reter
+A1toA1R = 0.17 * taxaRetido * taxaRetencao
+A2toA2R = 0.1 * taxaRetido * taxaRetencao
+A3toA3R = 0.08 * taxaRetido * taxaRetencao
+A4toA4R = 0.37 * taxaRetido * taxaRetencao
+
+# Evadir
+A1toE = 0.13 * taxaEvasao * taxaEvasaoA1
+A1RtoE = A1toE * taxaEvasaoR * taxaProporcaoEvasao
+A2toE = 0.07 * taxaEvasao * taxaEvasaoA2
+A2RtoE = A2toE * taxaEvasaoR * taxaProporcaoEvasao
+A3toE = 0.04 * taxaEvasao
+A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
+A4toE = 0.02 * taxaEvasao
+A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
+A5RtoE = 0.02/2 * taxaEvasaoR
+A6RtoE = 0.02/3 * taxaEvasaoR
+
+# Próximo estado
+A1toA2 = 1 - A1toA1R - A1toE - A1T
+A1RtoA2R = 1 - A1RtoE - A1RT
+A2toA3 = 1 - A2toA2R - A2toE - A2T
+A2RtoA3R = 1 - A2RtoE - A2RT
+A3toA4 = 1 - A3toA3R - A3toE - A3T
+A3RtoA4R = 1 - A3RtoE - A3RT
+A4RtoA5R = 0.37
+A5RtoA6R = 0.37/2
+
+A4toG = 1 - A4toA4R - A4toE - A4T
+A4RtoG = 1 - A4RtoA5R - A4RtoE - A4RT
+A5RtoG = 1 - A5RtoA6R - A5RtoE - A5RT
+A6RtoG = 1 - A6RtoE - A6RT
+
+states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'G', 'E']
+state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+
+p = [[A1T, A1toA2, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
+     [0.0, A2T, A2toA3, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
+     [0.0, 0.0, A3T, A3toA4, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, A3toE],
+     [0.0, 0.0, 0.0, A4T, 0.0, 0.0, 0.0, A4toA4R, 0.0, 0.0, A4toG, A4toE],
+     [0.0, 0.0, 0.0, 0.0, A1RT, A1RtoA2R, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, A2RT, A2RtoA3R, 0.0, 0.0, 0.0, 0.0, A2RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A3RT, A3RtoA4R, 0.0, 0.0, 0.0, A3RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4RT, A4RtoA5R, 0.0, A4RtoG, A4RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A5RT, A5RtoA6R, A5RtoG, A5RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A6RT, A6RtoG, A6RtoE],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]]
 
 
 # Gerar csv com matriz de transicao e desenho da cadeia de markov
@@ -234,7 +284,7 @@ def aplicar_parametros(p):
 # p = transition_matrix(t)
 
 
-p = np.round(p, 4)
+# p = np.round(p, 4)
 generate_csv_and_diagram(nomeArquivo, states, p)
 
 
