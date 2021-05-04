@@ -8,11 +8,14 @@ from Student import Student
 def sobrevivencia(time, event_observed, label, title):
     kmf = KaplanMeierFitter()
 
-    linestyles = ['-', '--', ':', '-.']
+    color = ["red", "green", "blue"]
+    linestyles = ['-.', ':', '--', '-']
+    markers = ['x', '*', '+', 'o']
+
     for i in range(len(time)):
         kmf.fit(time[i], event_observed[i], label=label[i])
         # kmf.plot_survival_function(color=color[i])
-        kmf.plot_survival_function(linestyle=linestyles[i], color="black")
+        kmf.plot_survival_function(linestyle=linestyles[i], color="black", marker=markers[i], ci_show=False)
         kmf.event_table.to_csv(f"docs/event_table{title}.csv")
 
 
@@ -65,10 +68,6 @@ def Simu(quantAlunos, matriz):
     tempo_ate_trancado = []
     tempo_ate_evadido = []
     tempo_ate_graduado = []
-
-
-    tempo_test = []
-
 
     for i in range(quantAlunos):
         a = Student(i, matriz)
@@ -192,29 +191,37 @@ quantAlunos = 1000
 
 
 # Simulação Evasão A1
-# time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
-# time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
-# time40, event_observed_40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
-# time60, event_observed_60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
+# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+# time20, event_20, event_evadido20, event_graduado20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
+# time40, event_40, event_evadido40, event_graduado40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
+# time60, event_60, event_evadido60, event_graduado60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
 #
 #
 # times = [time, time20, time40, time60]
-# events = [event, event_observed_20, event_observed_40, event_observed_60]
+# events = [event, event_20, event_40, event_60]
 # labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
 #
-# sobrevivencia(times, events, labels, "Taxa de Evasão")
+# sobrevivencia(times, events, labels, "Todos: Taxa de Evasão no primeiro ano")
+#
+# events = [event_evadido, event_evadido20, event_evadido40, event_evadido60]
+#
+# sobrevivencia(times, events, labels, "Evadido: Taxa de Evasão no primeiro ano")
+#
+# events = [event_graduado, event_graduado20, event_graduado40, event_graduado60]
+#
+# sobrevivencia(times, events, labels, "Graduado: Taxa de Evasão no primeiro ano")
 #
 #
 # print("logrank")
-# results = logrank_test(time, time20, event, event_observed_20)
+# results = logrank_test(time, time20, event, event_20)
 # results.print_summary()
 # print(results.p_value)
 #
-# results = logrank_test(time, time40, event, event_observed_40)
+# results = logrank_test(time, time40, event, event_40)
 # results.print_summary()
 # print(results.p_value)
 #
-# results = logrank_test(time, time60, event, event_observed_60)
+# results = logrank_test(time, time60, event, event_60)
 # results.print_summary()
 # print(results.p_value)
 
@@ -266,12 +273,9 @@ quantAlunos = 1000
 # Simulação Geral
 time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
 
-#Esse primeiro aqui
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evadido','graduado','todos'], "Análise de Sobrevivência1")
-sobrevivencia([time], [event_evadido], ['Estudantes'], "Análise de Sobrevivência1")
-sobrevivencia([time], [event_graduado], ['Estudantes'], "Análise de Sobrevivência1")
-sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência2")
-sobrevivencia_densidade([time, time], [event_evadido, event_graduado], ['Evadido', 'Graduado'], "Teste")
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evadido', 'graduado', 'todos'], "Análise de Sobrevivência")
+# sobrevivencia([time], [event_evadido], ['Estudantes'], "Análise de Sobrevivência1")
+# sobrevivencia([time], [event_graduado], ['Estudantes'], "Análise de Sobrevivência1")
+# sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência2")
+# sobrevivencia_densidade([time, time], [event_evadido, event_graduado], ['Evadido', 'Graduado'], "Teste")
 
-# print(event_graduado)
-# print(event_evadido)

@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\event_table1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\event_tableAnálise de Sobrevivência1.csv">
           <value>
             <Attribute>
