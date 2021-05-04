@@ -13,17 +13,34 @@ def sobrevivencia(time, event_observed, label, title):
         kmf.fit(time[i], event_observed[i], label=label[i])
         # kmf.plot_survival_function(color=color[i])
         kmf.plot_survival_function(linestyle=linestyles[i], color="black")
-        kmf.event_table.to_csv(f"docs/event_table{i}.csv")
+        kmf.event_table.to_csv(f"docs/event_table{title}.csv")
 
 
     plt.xlabel('Tempo (em anos)')
-    plt.ylabel('Probabilidade de graduação')
+    plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=18)
     plt.title("IC de 95% para a Média", fontsize=10)
     plt.savefig(f"imgs/plot{title}.png")
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
     # plt.show()
+
+
+def sobrevivencia_densidade(time, event_observed, label, title):
+    kmf = KaplanMeierFitter()
+
+    linestyles = ['-', '--', ':', '-.']
+    for i in range(len(time)):
+        kmf.fit(time[i], event_observed[i], label=label[i])
+        # kmf.plot_survival_function(color=color[i])
+        kmf.plot_cumulative_density(linestyle=linestyles[i], color="black", ci_show=False)
+
+
+    plt.xlabel('Tempo (em anos)')
+    plt.ylabel('Probabilidade')
+    plt.suptitle(f"{title}", fontsize=18)
+    plt.savefig(f"imgs/plot{title}.png")
+    plt.show()
 
 
 
@@ -41,11 +58,16 @@ def Simu(quantAlunos, matriz):
     r = 0
     t = 0
     time = []
+    event_evadido = []
+    event_graduado = []
     event = []
     tempo_ate_retido = []
     tempo_ate_trancado = []
     tempo_ate_evadido = []
     tempo_ate_graduado = []
+
+
+    tempo_test = []
 
 
     for i in range(quantAlunos):
@@ -59,11 +81,15 @@ def Simu(quantAlunos, matriz):
             tempo_ate_evadido.append(len(arr) - 1)
             time.append(len(arr) - 1)
             event.append(1)
+            event_graduado.append(0)
+            event_evadido.append(1)
         else:  # graduado
             g += 1
             tempo_ate_graduado.append(len(arr) - 1)
             time.append(len(arr) - 1)
-            event.append(0)
+            event.append(1)
+            event_graduado.append(1)
+            event_evadido.append(0)
 
         # Se ficou Trancado em algum dos estados
         i = 1
@@ -83,16 +109,15 @@ def Simu(quantAlunos, matriz):
                 break
             count += 1
 
-    prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
-    prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
-    prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
-    prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
+    # prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
+    # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
+    # prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
+    # prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
 
-    return time, event
+    return time, event, event_evadido, event_graduado
 
 
-
-quantAlunos = 10000
+quantAlunos = 1000
 
 
 # Simulação por Gênero
@@ -239,7 +264,14 @@ quantAlunos = 10000
 
 
 # Simulação Geral
-time, event = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
 
-sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência")
+#Esse primeiro aqui
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evadido','graduado','todos'], "Análise de Sobrevivência1")
+sobrevivencia([time], [event_evadido], ['Estudantes'], "Análise de Sobrevivência1")
+sobrevivencia([time], [event_graduado], ['Estudantes'], "Análise de Sobrevivência1")
+sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência2")
+sobrevivencia_densidade([time, time], [event_evadido, event_graduado], ['Evadido', 'Graduado'], "Teste")
 
+# print(event_graduado)
+# print(event_evadido)

@@ -10,7 +10,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\event_tableAnálise de Sobrevivência1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\event_tableAnálise de Sobrevivência2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\matrixBoumiAlterado.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\matrixBoumiAlterado1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
