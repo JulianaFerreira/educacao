@@ -18,11 +18,10 @@ def sobrevivencia(time, event_observed, label, title):
         kmf.plot_survival_function(linestyle=linestyles[i], color="black", marker=markers[i], ci_show=False)
         kmf.event_table.to_csv(f"docs/event_table{title}.csv")
 
-
     plt.xlabel('Tempo (em anos)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=18)
-    plt.title("IC de 95% para a Média", fontsize=10)
+    # plt.title("IC de 95% para a Média", fontsize=10)
     plt.savefig(f"imgs/plot{title}.png")
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
@@ -91,13 +90,13 @@ def Simu(quantAlunos, matriz):
             event_evadido.append(0)
 
         # Se ficou Trancado em algum dos estados
-        i = 1
-        while i < len(arr):
-            if arr[i] == arr[i - 1]:  # se estado igual ao estado anterior
-                t += 1
-                tempo_ate_trancado.append(i)
-                break
-            i += 1
+        # i = 1
+        # while i < len(arr):
+        #     if arr[i] == arr[i - 1]:  # se estado igual ao estado anterior
+        #         t += 1
+        #         tempo_ate_trancado.append(i)
+        #         break
+        #     i += 1
 
         # Se ficou Retido em algum dos estados
         count = 0
@@ -108,10 +107,10 @@ def Simu(quantAlunos, matriz):
                 break
             count += 1
 
-    # prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
+    prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
     # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
-    # prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
-    # prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
+    prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
+    prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
 
     return time, event, event_evadido, event_graduado
 
@@ -191,39 +190,39 @@ quantAlunos = 1000
 
 
 # Simulação Evasão A1
-# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
-# time20, event_20, event_evadido20, event_graduado20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
-# time40, event_40, event_evadido40, event_graduado40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
-# time60, event_60, event_evadido60, event_graduado60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
-#
-#
-# times = [time, time20, time40, time60]
-# events = [event, event_20, event_40, event_60]
-# labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
-#
-# sobrevivencia(times, events, labels, "Todos: Taxa de Evasão no primeiro ano")
-#
-# events = [event_evadido, event_evadido20, event_evadido40, event_evadido60]
-#
-# sobrevivencia(times, events, labels, "Evadido: Taxa de Evasão no primeiro ano")
-#
-# events = [event_graduado, event_graduado20, event_graduado40, event_graduado60]
-#
-# sobrevivencia(times, events, labels, "Graduado: Taxa de Evasão no primeiro ano")
-#
-#
-# print("logrank")
-# results = logrank_test(time, time20, event, event_20)
-# results.print_summary()
-# print(results.p_value)
-#
-# results = logrank_test(time, time40, event, event_40)
-# results.print_summary()
-# print(results.p_value)
-#
-# results = logrank_test(time, time60, event, event_60)
-# results.print_summary()
-# print(results.p_value)
+time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
+time20, event_20, event_evadido20, event_graduado20 = Simu(quantAlunos, 'matrix/matrixMenos20EvasaoA1.csv')
+time40, event_40, event_evadido40, event_graduado40 = Simu(quantAlunos, 'matrix/matrixMenos40EvasaoA1.csv')
+time60, event_60, event_evadido60, event_graduado60 = Simu(quantAlunos, 'matrix/matrixMenos60EvasaoA1.csv')
+
+
+times = [time, time20, time40, time60]
+events = [event, event_20, event_40, event_60]
+labels = ["Padrão", "20% menor", "40% menor", "60% menor"]
+
+sobrevivencia(times, events, labels, "Todos: Taxa de Evasão no primeiro ano")
+
+events = [event_evadido, event_evadido20, event_evadido40, event_evadido60]
+
+sobrevivencia(times, events, labels, "Evadido: Taxa de Evasão no primeiro ano")
+
+events = [event_graduado, event_graduado20, event_graduado40, event_graduado60]
+
+sobrevivencia(times, events, labels, "Graduado: Taxa de Evasão no primeiro ano")
+
+
+print("logrank")
+results = logrank_test(time, time20, event, event_20)
+results.print_summary()
+print(results.p_value)
+
+results = logrank_test(time, time40, event, event_40)
+results.print_summary()
+print(results.p_value)
+
+results = logrank_test(time, time60, event, event_60)
+results.print_summary()
+print(results.p_value)
 
 
 
@@ -271,9 +270,9 @@ quantAlunos = 1000
 
 
 # Simulação Geral
-time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
-
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evadido', 'graduado', 'todos'], "Análise de Sobrevivência")
+# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+#
+# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 # sobrevivencia([time], [event_evadido], ['Estudantes'], "Análise de Sobrevivência1")
 # sobrevivencia([time], [event_graduado], ['Estudantes'], "Análise de Sobrevivência1")
 # sobrevivencia([time], [event], ['Estudantes'], "Análise de Sobrevivência2")
