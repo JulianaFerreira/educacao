@@ -5,8 +5,8 @@ from markov_diagram import Diagram
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
 # Alterar aqui parametros para gerar matriz
-nomeArquivo = "matrix/matrixPadrao.csv"
-taxaRetencao = 1.0
+nomeArquivo = "matrix/matrixRetencaoMenos60.csv"
+taxaRetencao = 0.4
 taxaEvasao = 1.0
 taxaEvasaoA1 = 1.0
 taxaEvasaoA2 = 1.0
