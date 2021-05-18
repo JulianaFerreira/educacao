@@ -3,6 +3,55 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="C:\Users\julif\OneDrive\Documentos\UFRPE\Mestrado\2021\Dados\df_survivability_bsi-bcc.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\aaaa.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc_test.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc_test1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc_todos.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\event_table0.csv">
           <value>
             <Attribute>
@@ -11,6 +60,20 @@
           </value>
         </entry>
         <entry key="\docs\event_table1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\event_tableAnálise de Sobrevivência da Evasão.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\event_tableAnálise de Sobrevivência da Graduação.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -38,6 +101,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\matrixBoumi.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\matrixBoumiAlterado.csv">
           <value>
             <Attribute>
@@ -46,6 +116,13 @@
           </value>
         </entry>
         <entry key="\matrix\matrixBoumiAlterado1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\matrixMenos60EvasaoA1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

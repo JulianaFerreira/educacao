@@ -10,7 +10,7 @@ def sobrevivencia(time, event_observed, label, title):
 
     color = ["red", "green", "blue"]
     linestyles = ['-.', ':', '--', '-']
-    markers = ['x', '*', '+', 'o']
+    markers = ['x', '*', '^', 'o']
 
     for i in range(len(time)):
         kmf.fit(time[i], event_observed[i], label=label[i])
@@ -111,6 +111,7 @@ def Simu(quantAlunos, matriz):
     # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
+    prob_and_temp("Vínculo", g+e, tempo_ate_graduado+tempo_ate_evadido, quantAlunos)
 
     return time, event, event_evadido, event_graduado
 
@@ -211,19 +212,21 @@ quantAlunos = 10000
 
 # Simulação Boumi
 time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
-# timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
-#
-# times = [time, timeA]
-# events = [event, eventA]
-# labels = ["Original", "Adaptado"]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência")
-#
-# results = logrank_test(time, timeA, event, eventA)
-# results.print_summary()
-# print(results.p_value)
-
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+times = [time, timeA]
+events = [event, eventA]
+labels = ["Versão do Artigo Original", "Versão com Retenção"]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
+
+results = logrank_test(time, timeA, event_evadido, event_evadidoA)
+results.print_summary()
+print(results.p_value)
+
 
 # Simulação Geral
 # time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixPadrao.csv')
