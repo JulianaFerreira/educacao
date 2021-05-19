@@ -196,21 +196,27 @@ quantAlunos = 10000
 
 
 # Simulação Boumi
-time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-
-timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
-sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-
-times = [time, timeA]
-events = [event, eventA]
-labels = ["Versão do Artigo Original", "Versão com Retenção"]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
-
-results = logrank_test(time, timeA, event_evadido, event_evadidoA)
-results.print_summary()
-print(results.p_value)
+# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
+# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+#
+# timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+# sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+#
+# times = [time, timeA]
+# events = [event, eventA]
+# labels = ["Versão do Artigo Original", "Versão Adaptada"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
+#
+# events = [event_evadido, event_evadidoA]
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
+#
+# events = [event_graduado, event_graduadoA]
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
+#
+# results = logrank_test(time, timeA, event_graduado, event_graduadoA)
+# results.print_summary()
+# print(results.p_value)
 
 
 # Simulação Geral
@@ -252,4 +258,12 @@ print(results.p_value)
 # results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
 # results.print_summary()
 # print(results.p_value)
+
+
+# Simulação BSI-BCC - Escolaridade dos Pais
+
+
+
+# Simulação BSI-BCC - Cor/Raça
+
 

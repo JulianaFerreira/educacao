@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from markov_diagram import Diagram
 
-# Gera os CSVs
+# # Gera os CSVs
 
 # CSV Principal
 # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
@@ -17,20 +17,53 @@ from markov_diagram import Diagram
 # df_todos = df.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
 # df_todos.to_csv("docs/df_survivability_bsi-bcc-ano-todos.csv")
 
-# Categorias
+# # Categorias
 
 # Sexo
 # df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
 # df_sexo_f = df[df['NM_SEXO'] == 'F']
 # df_sexo_f = df_sexo_f.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
 # df_sexo_f.to_csv("docs/df_survivability_bsi-bcc-ano-sexo_f.csv")
+#
 # df_sexo_m = df[df['NM_SEXO'] == 'M']
 # df_sexo_m = df_sexo_m.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
 # df_sexo_m.to_csv("docs/df_survivability_bsi-bcc-ano-sexo_m.csv")
 
 # Escolaridade Pais
-# df_esclr_pais_não_analfabetos = df_ano[df_ano['NM_ESCLR_MAE'] != 'ANALFABETO']
-# df_esclr_pais_analfabetos = df_ano[df_ano['NM_ESCLR_MAE'] == 'ANALFABETO']
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
+# df_esclr_pais_nao_analfabetos = df[df['NM_ESCLR_MAE'] != 'ANALFABETO']
+# df_esclr_pais_nao_analfabetos = df_esclr_pais_nao_analfabetos.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_esclr_pais_nao_analfabetos.to_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_nao_analfabetos.csv")
+#
+# df_esclr_pais_analfabetos = df[df['NM_ESCLR_MAE'] == 'ANALFABETO']
+# df_esclr_pais_alfabetos = df_esclr_pais_analfabetos.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_esclr_pais_analfabetos.to_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_analfabetos.csv")
+
+# Cor/Raça [AMARELA, BRANCA, PARDA, PRETA, INDIGENA, -]
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
+# df_cor_raca_amarela = df[df['NM_COR_RACA'] != 'AMARELA']
+# df_cor_raca_amarela = df_cor_raca_amarela.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_cor_raca_amarela.to_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_amarela.csv")
+#
+# df_cor_raca_branca = df[df['NM_COR_RACA'] != 'BRANCA']
+# df_cor_raca_branca = df_cor_raca_branca.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_cor_raca_branca.to_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_branca.csv")
+#
+# df_cor_raca_parda = df[df['NM_COR_RACA'] != 'PARDA']
+# df_cor_raca_parda = df_cor_raca_parda.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_cor_raca_parda.to_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_parda.csv")
+#
+# df_cor_raca_preta = df[df['NM_COR_RACA'] != 'PRETA']
+# df_cor_raca_preta = df_cor_raca_preta.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_cor_raca_preta.to_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_preta.csv")
+#
+# df_cor_raca_indigena = df[df['NM_COR_RACA'] != 'INDIGENA']
+# df_cor_raca_indigena = df_cor_raca_indigena.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_cor_raca_indigena.to_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_indigena.csv")
+#
+# df_cor_raca_ni = df[df['NM_COR_RACA'] != '-']
+# df_cor_raca_ni = df_cor_raca_ni.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df_cor_raca_ni.to_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_ni.csv")
 
 
 

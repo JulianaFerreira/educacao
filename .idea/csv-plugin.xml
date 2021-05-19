@@ -24,21 +24,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\docs\df_survivability_bsi-bcc-ano_todos.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\docs\df_survivability_bsi-bcc.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\docs\df_survivability_bsi-bcc_todos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

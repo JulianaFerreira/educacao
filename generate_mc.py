@@ -179,7 +179,7 @@ ret = [A1toA1R, A2toA2R, A3toA3R, A4toA4R, A5toA5R]
 A1toA1R = 0.17 * taxaRetencao
 A2toA2R = 0.1 * taxaRetencao
 A3toA3R = 0.08 * taxaRetencao
-A4toA4R = 0.37 * taxaRetencao
+A4toA4R = 0.37 * taxaRetencao - 0.08
 
 # Evadir
 A1toE = 0.13 * taxaEvasao * taxaEvasaoA1
@@ -194,15 +194,16 @@ A5RtoE = 0.02 * taxaEvasaoR
 A6RtoE = 0.02/2 * taxaEvasaoR
 
 # Próximo estado
-A1toA2 = 1 - A1toA1R - A1toE - 0.06
+A1toA2 = 1 - A1toA1R - A1toE
 A1RtoA2R = 1 - A1RtoE
-A2toA3 = 1 - A2toA2R - A2toE - 0.08
+A2toA3 = 1 - A2toA2R - A2toE
 A2RtoA3R = 1 - A2RtoE
-A3toA4 = 1 - A3toA3R - A3toE
+A3toA4 = 1 - A3toA3R - A3toE - 0.06
 A3RtoA4R = 1 - A3RtoE
 A4RtoA5R = 0.37
 A5RtoA6R = 0.37/2
 
+A3toG = 0.06
 A4toG = 1 - A4toA4R - A4toE
 A4RtoG = 1 - A4RtoA5R - A4RtoE
 A5RtoG = 1 - A5RtoA6R - A5RtoE
@@ -211,9 +212,9 @@ A6RtoG = 1 - A6RtoE
 states = ['A1', 'A2', 'A3', 'A4', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'G', 'E']
 state = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
-p = [[0.0, A1toA2, 0.06, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
-     [0.0, 0.0, A2toA3, 0.08, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
-     [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, 0.0, A3toE],
+p = [[0.0, A1toA2, 0.0, 0.0, A1toA1R, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A1toE],
+     [0.0, 0.0, A2toA3, 0.0, 0.0, A2toA2R, 0.0, 0.0, 0.0, 0.0, 0.0, A2toE],
+     [0.0, 0.0, 0.0, A3toA4, 0.0, 0.0, A3toA3R, 0.0, 0.0, 0.0, A3toG, A3toE],
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A4toA4R, 0.0, 0.0, A4toG, A4toE],
      [0.0, 0.0, 0.0, 0.0, 0.0, A1RtoA2R, 0.0, 0.0, 0.0, 0.0, 0.0, A1RtoE],
      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, A2RtoA3R, 0.0, 0.0, 0.0, 0.0, A2RtoE],
