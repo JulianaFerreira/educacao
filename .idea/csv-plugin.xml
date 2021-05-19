@@ -10,6 +10,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano-cor_raca_preta.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano-esclr_pais_analfabetos.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano-esclr_pais_nao_analfabetos.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\df_survivability_bsi-bcc-ano-sexo_f.csv">
           <value>
             <Attribute>
@@ -53,6 +74,20 @@
           </value>
         </entry>
         <entry key="\docs\event_tableAnálise de Sobrevivência.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-df_esclr_pais_analf.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-df_esclr_pais_nao_analf.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

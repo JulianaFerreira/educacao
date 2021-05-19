@@ -39,7 +39,7 @@ from markov_diagram import Diagram
 # df_esclr_pais_alfabetos = df_esclr_pais_analfabetos.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
 # df_esclr_pais_analfabetos.to_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_analfabetos.csv")
 
-# Cor/Raça [AMARELA, BRANCA, PARDA, PRETA, INDIGENA, -]
+# Cor/Raça [AMARELA, BRANCA, PARDA, PRETA, INDIGENA, -] - desconsiderados indigenas e amarelos
 # df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
 # df_cor_raca_amarela = df[df['NM_COR_RACA'] != 'AMARELA']
 # df_cor_raca_amarela = df_cor_raca_amarela.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
@@ -153,6 +153,7 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 # df_todos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-todos.csv")
 # m = quantity_matrix(df_todos, 11)
 # p = transition_matrix(m)
+# p = np.round(p, 4)
 # generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
 
 
@@ -168,10 +169,19 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo_m.csv", states, p)
 
 
+# Categoria Escolaridade dos Pais
+# df_esclr_pais_nao_analfabetos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_nao_analfabetos.csv")
+# m = quantity_matrix(df_esclr_pais_nao_analfabetos, 11)
+# p = transition_matrix(m)
+# generate_csv_and_diagram("matrix/bsi-bcc-df_esclr_pais_nao_analf.csv", states, p)
+#
+# df_esclr_pais_analfabetos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_analfabetos.csv")
+# m = quantity_matrix(df_esclr_pais_analfabetos, 11)
+# p = transition_matrix(m)
+# generate_csv_and_diagram("matrix/bsi-bcc-df_esclr_pais_analf.csv", states, p)
 
 
-
-
+# Categoria Cor/Raça - desconsiderar indigena e amarela
 
 
 

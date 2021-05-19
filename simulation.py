@@ -260,8 +260,31 @@ quantAlunos = 10000
 # print(results.p_value)
 
 
-# Simulação BSI-BCC - Escolaridade dos Pais
-
+# Simulação BSI-BCC - Escolaridade dos Pais - Problema nenhum estudante com pais analfabetos concluiu o curso
+#
+# time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-df_esclr_pais_nao_analf.csv')
+# sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência para Pais Alfabetizados")
+#
+# time_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/bsi-bcc-df_esclr_pais_analf.csv')
+# sobrevivencia([time_m, time_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência para Pais Analfabetos")
+#
+# times = [time_f, time_m]
+# events = [event_f, event_m]
+# labels = ["Pais Alfabetizados", "Pais Analfabetos"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo para Nível de Estudo dos Pais")
+#
+# events = [event_evadido_f, event_evadido_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Nível de Estudo dos Pais")
+#
+# events = [event_graduado_f, event_graduado_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Nível de Estudo dos Pais")
+#
+# results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
+# results.print_summary()
+# print(results.p_value)
 
 
 # Simulação BSI-BCC - Cor/Raça
