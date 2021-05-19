@@ -119,21 +119,6 @@ def Simu(quantAlunos, matriz):
 quantAlunos = 10000
 
 
-# Simulação por Gênero
-# print("\nFeminino")
-# timeF, event_observedEF = Simu(quantAlunos, 'matrix/matrixF.csv')
-# print("\nMasculino - 25%")
-# timeM,  event_observedEM = Simu(quantAlunos, 'matrix/matrixM.csv')
-# print("\nMasculino - 50%")
-# timeM50, event_observedEM50 = Simu(quantAlunos, 'matrix/matrixM50.csv')
-#
-# times = [timeF, timeM, timeM50]
-# events = [event_observedEF, event_observedEM, event_observedEM50]
-# labels = ["Feminino", "Masculino - 25%", "Masculino - 50%"]
-#
-# sobrevivencia(times, events, labels, "Evasão")
-
-
 # Simulação Trancamento
 # time, event = Simu(quantAlunos, 'matrix/matrixPadraoTrancado.csv')
 # time20, event_observed_20 = Simu(quantAlunos, 'matrix/matrixTrancamentoMenos20.csv')
@@ -233,4 +218,38 @@ print(results.p_value)
 #
 # sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 # sobrevivencia_densidade([time, time], [event_evadido, event_graduado], ['Evadido', 'Graduado'], "Teste")
+
+
+
+# Simulação BSI-BCC
+# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
+#
+# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+
+# Simulação BSI-BCC - Sexo
+
+# time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-sexo_f.csv')
+# sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência do Sexo Feminino")
+#
+# time_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/bsi-bcc-sexo_m.csv')
+# sobrevivencia([time_m, time_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência do Sexo Masculino")
+#
+# times = [time_f, time_m]
+# events = [event_f, event_m]
+# labels = ["Femino", "Masculino"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo para Sexo")
+#
+# events = [event_evadido_f, event_evadido_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
+#
+# events = [event_graduado_f, event_graduado_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Sexo")
+#
+# results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
+# results.print_summary()
+# print(results.p_value)
 

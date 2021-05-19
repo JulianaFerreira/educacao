@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano-sexo_f.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\df_survivability_bsi-bcc-ano.csv">
           <value>
             <Attribute>
@@ -60,6 +67,13 @@
           </value>
         </entry>
         <entry key="\docs\event_tableAnálise de Sobrevivência.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
