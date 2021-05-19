@@ -28,24 +28,45 @@ def transition_matrix(M):
 
 #criar tabela com as quantidades
 def quantity_matrix(df, n):
-    M = np.zeros((n,n))
+    n = n + 2
+    M = np.zeros((n, n))
+
+    e = []
+    c = []
+    v = []
 
     # Fazer array para e, c e v, para não dar problemas quando tiver valor 0
-    # evadido adiciona na ultima coluna e linha do duracao_vinculo
-    e = df[df['STATUS'] == 'EVADIDO']['QTD'].values
+
+    # adiciona quantidade de evadidos na tabela
+    for i in range(1, n-1):
+        x = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'EVADIDO')]
+        e.append(x.iloc[0]['QTD'])
+    e.append(0)  # linha graduado
+    e.append(0)  # linha evadido
     M[:, n-1] = e
 
     # concluido adiciona na penultima coluna e linha do duracao_vinculo
-    c = df[df['STATUS'] == 'CONCLUIDO']['QTD'].values
-    print(c)
+    # c = df[df['STATUS'] == 'CONCLUIDO']['QTD'].values
+    # print(c)
     #M[:, n-2] = c
 
-    # vinculado adiciona coluna do duracao_vinculo
-    v = df[df['STATUS'] == 'VINCULADO']['QTD'].values
-    print(v)
+    # for i in range(1, n-1):
+    #     y = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'CONCLUIDO')]
+    #     print(y)
+    #     c.append(y.iloc[0]['QTD'])
+    # c.append(0)  # linha graduado
+    # c.append(0)  # linha evadido
+    # M[:, n-2] = c
+
+    # adiciona quantidade de vinculados na tabela
+    for i in range(1, n-1):
+        x = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'VINCULADO')]
+        v.append(x.iloc[0]['QTD'])
+    v.append(0)  # linha graduado
+    v.append(0)  # linha evadido
     for i in range(n):
         for j in range(n):
-            if j == i+1:
+            if j == i + 1:
                 M[i, j] = v[i]
 
     print(M)
