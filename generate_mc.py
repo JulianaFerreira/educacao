@@ -204,6 +204,7 @@ A4RtoA5R = 0.37
 A5RtoA6R = 0.37/2
 
 A3toG = 0.06
+A3RtoG = 0.06
 A4toG = 1 - A4toA4R - A4toE
 A4RtoG = 1 - A4RtoA5R - A4RtoE
 A5RtoG = 1 - A5RtoA6R - A5RtoE
@@ -283,62 +284,39 @@ print("\n Matriz de Transição:")
 print(p)
 
 
-
-#Teste gerar matriz de transicao
-
-# states = ['A1', 'A2', 'A3', 'G', 'E']
-# n = [100, 90, 80, 70, 0]
-#
-# #calcula o p
-#
-# p = np.zeros((len(states), len(states)))
-#
-# for i in range(len(p)-1):
-#     for j in range(len(p)-1):
-#         if j == i+1:
-#             p[i][j] = 1
-#
-# print(p)
-
-
-# df["E"] = 1.25 * df["E"]
-# df["col"] = 0.75 * df["col"]
-
-
-
 # Testes
 
-# def prob_absor(p, N):
-#     # f=NR
-#     x = np.array(p)
-#     x1 = x[:len(x) - 2, len(x) - 2]
-#     x2 = x[:len(x) - 2, len(x) - 1]
-#     R = np.array([x1, x2])
-#
-#     return np.round(np.dot(R, N.T).T, 3)
-#
-# stateHist = state
-# mc = MarkovChain(p, states)
-#
-# # informacoes sobre a cadeia de markov
-# # print(mc)
-#
-# # O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
-# print("\n Matriz Fundamental:")
-# N = np.round(mc.fundamental_matrix, 3)
-# print(N)
-#
-# # Tempos de Absorção
-# print("\n Duração esperada em cada ano até a graduação ou evasão")
-# print(np.round(mc.absorption_times, 3))
-#
-# print("\n Duração média esperada até graduação:")
-# # Sem estados retidos
-# print(np.round(np.trace(np.asarray(N)), 3))
-# # Com estados retidos
-# # print(np.round(np.trace((np.asarray(N) / 2)), 3))
-#
-# probGE = prob_absor(p, N)
-# for i in range(len(probGE)):
-#     print("\n Probabilidade graduação e evasão no estado " + states[i] + ":")
-#     print(probGE[i])
+def prob_absor(p, N):
+    # f=NR
+    x = np.array(p)
+    x1 = x[:len(x) - 2, len(x) - 2]
+    x2 = x[:len(x) - 2, len(x) - 1]
+    R = np.array([x1, x2])
+
+    return np.round(np.dot(R, N.T).T, 3)
+
+stateHist = state
+mc = MarkovChain(p, states)
+
+# informacoes sobre a cadeia de markov
+# print(mc)
+
+# O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
+print("\n Matriz Fundamental:")
+N = np.round(mc.fundamental_matrix, 3)
+print(N)
+
+# Tempos de Absorção
+print("\n Duração esperada em cada ano até a graduação ou evasão")
+print(np.round(mc.absorption_times, 3))
+
+print("\n Duração média esperada até graduação:")
+# Sem estados retidos
+print(np.round(np.trace(np.asarray(N)), 3))
+# Com estados retidos
+# print(np.round(np.trace((np.asarray(N) / 2)), 3))
+
+probGE = prob_absor(p, N)
+for i in range(len(probGE)):
+    print("\n Probabilidade graduação e evasão no estado " + states[i] + ":")
+    print(probGE[i])

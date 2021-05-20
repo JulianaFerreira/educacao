@@ -16,33 +16,33 @@ def sobrevivencia(time, event_observed, label, title):
         kmf.fit(time[i], event_observed[i], label=label[i])
         # kmf.plot_survival_function(color=color[i])
         kmf.plot_survival_function(linestyle=linestyles[i], color="black", marker=markers[i], ci_show=False)
-        kmf.event_table.to_csv(f"docs/event_table{title}.csv")
+        # kmf.event_table.to_csv(f"docs/event_table{title}.csv")
 
     plt.xlabel('Tempo (em anos)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=12)
     # plt.title("IC de 95% para a Média", fontsize=10)
-    plt.savefig(f"imgs/plot{title}.png")
+    # plt.savefig(f"imgs/plot{title}.png")
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
     # plt.show()
 
 
-def sobrevivencia_densidade(time, event_observed, label, title):
-    kmf = KaplanMeierFitter()
-
-    linestyles = ['-', '--', ':', '-.']
-    for i in range(len(time)):
-        kmf.fit(time[i], event_observed[i], label=label[i])
-        # kmf.plot_survival_function(color=color[i])
-        kmf.plot_cumulative_density(linestyle=linestyles[i], color="black", ci_show=False)
-
-
-    plt.xlabel('Tempo (em anos)')
-    plt.ylabel('Probabilidade')
-    plt.suptitle(f"{title}", fontsize=18)
-    plt.savefig(f"imgs/plot{title}.png")
-    plt.show()
+# def sobrevivencia_densidade(time, event_observed, label, title):
+#     kmf = KaplanMeierFitter()
+#
+#     linestyles = ['-', '--', ':', '-.']
+#     for i in range(len(time)):
+#         kmf.fit(time[i], event_observed[i], label=label[i])
+#         # kmf.plot_survival_function(color=color[i])
+#         kmf.plot_cumulative_density(linestyle=linestyles[i], color="black", ci_show=False)
+#
+#
+#     plt.xlabel('Tempo (em anos)')
+#     plt.ylabel('Probabilidade')
+#     plt.suptitle(f"{title}", fontsize=18)
+#     plt.savefig(f"imgs/plot{title}.png")
+#     plt.show()
 
 
 
@@ -196,27 +196,27 @@ quantAlunos = 10000
 
 
 # Simulação Boumi
-# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
-# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-#
-# timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
-# sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-#
-# times = [time, timeA]
-# events = [event, eventA]
-# labels = ["Versão do Artigo Original", "Versão Adaptada"]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
-#
-# events = [event_evadido, event_evadidoA]
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
-#
-# events = [event_graduado, event_graduadoA]
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
-#
-# results = logrank_test(time, timeA, event_graduado, event_graduadoA)
-# results.print_summary()
-# print(results.p_value)
+time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+times = [time, timeA]
+events = [event, eventA]
+labels = ["Versão do Artigo Original", "Versão Adaptada"]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
+
+events = [event_evadido, event_evadidoA]
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
+
+events = [event_graduado, event_graduadoA]
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
+
+results = logrank_test(time, timeA, event_graduado, event_graduadoA)
+results.print_summary()
+print(results.p_value)
 
 
 # Simulação Geral
@@ -289,4 +289,29 @@ quantAlunos = 10000
 
 # Simulação BSI-BCC - Cor/Raça
 
-
+# print("Branca")
+# time_branca, event_branca, event_evadido_branca, event_graduado_branca = Simu(10000, 'matrix/bsi-bcc-df_cor_raca_branca.csv')
+# sobrevivencia([time_branca, time_branca, time_branca], [event_evadido_branca, event_graduado_branca, event_branca], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência para Cor Branca")
+#
+# print("Preta")
+# time_preta, event_preta, event_evadido_preta, event_graduado_preta = Simu(10000, 'matrix/bsi-bcc-df_cor_raca_preta.csv')
+# sobrevivencia([time_preta, time_preta, time_preta], [event_evadido_preta, event_graduado_preta, event_preta], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência para Cor Preta")
+#
+# print("Parda")
+# time_parda, event_parda, event_evadido_parda, event_graduado_parda = Simu(10000, 'matrix/bsi-bcc-df_cor_raca_parda.csv')
+# sobrevivencia([time_parda, time_parda, time_parda], [event_evadido_parda, event_graduado_parda, event_parda], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência para Cor Parda")
+#
+#
+# times = [time_branca, time_preta, time_parda]
+# events = [event_branca, event_preta, event_parda]
+# labels = ["Branca", "Preta", "Parda"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo para Cor/Raça")
+#
+# events = [event_evadido_branca, event_evadido_preta, event_evadido_parda]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Cor/Raça")
+#
+# events = [event_graduado_branca, event_graduado_preta, event_graduado_parda]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Cor/Raça")

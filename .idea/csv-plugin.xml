@@ -38,6 +38,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano-todos.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\df_survivability_bsi-bcc-ano.csv">
           <value>
             <Attribute>

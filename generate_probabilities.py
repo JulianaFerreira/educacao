@@ -99,8 +99,6 @@ def quantity_matrix(df, n):
     c = []
     v = []
 
-    # Fazer array para e, c e v, para não dar problemas quando tiver valor 0
-
     # adiciona quantidade de evadidos na tabela
     for i in range(1, n-1):
         x = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'EVADIDO')]
@@ -112,11 +110,7 @@ def quantity_matrix(df, n):
     e.append(0)  # linha evadido
     M[:, n-1] = e
 
-    # concluido adiciona na penultima coluna e linha do duracao_vinculo
-    # c = df[df['STATUS'] == 'CONCLUIDO']['QTD'].values
-    # print(c)
-    #M[:, n-2] = c
-
+    # adiciona quantidade de vinculados na tabela
     for i in range(1, n-1):
         x = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'CONCLUIDO')]
         if x.QTD.empty:
@@ -144,9 +138,24 @@ def quantity_matrix(df, n):
     return M
 
 
+# def aplicar_parametros(p, taxa_evasão):
+#
+#     print(p)
+#     n = len(p)
+#
+#     p.iloc[:, n-1] = 1
+#
+#     print(p)
+#
+#     return p
 
 states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G', 'E']
-# taxaEvasao = 1.0
+
+# p = pd.read_csv("matrix/bsi-bcc.csv", index_col=0)
+# taxa_evasao = 1.0
+# new_p = aplicar_parametros(p, taxa_evasao)
+# print(new_p)
+# generate_csv_and_diagram("matrix/bsi-bcc.csv", states, new_p)
 
 
 # Todos Estudantes
@@ -182,7 +191,25 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 
 
 # Categoria Cor/Raça - desconsiderar indigena e amarela
-
+# df_cor_raca_branca = pd.read_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_branca.csv")
+# m = quantity_matrix(df_cor_raca_branca, 11)
+# p = transition_matrix(m)
+# generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_branca.csv", states, p)
+#
+# df_cor_raca_preta = pd.read_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_preta.csv")
+# m = quantity_matrix(df_cor_raca_preta, 11)
+# p = transition_matrix(m)
+# generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_preta.csv", states, p)
+#
+# df_cor_raca_parda = pd.read_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_parda.csv")
+# m = quantity_matrix(df_cor_raca_parda, 11)
+# p = transition_matrix(m)
+# generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_parda.csv", states, p)
+#
+# df_cor_raca_ni = pd.read_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_ni.csv")
+# m = quantity_matrix(df_cor_raca_ni, 11)
+# p = transition_matrix(m)
+# generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_ni.csv", states, p)
 
 
 
