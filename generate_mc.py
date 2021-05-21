@@ -261,13 +261,6 @@ def transition_matrix(transitions):
     return M
 
 
-def aplicar_parametros(p):
-    p[:, 0] = 1
-
-    return p
-
-
-
 # estados transicionando
 # t = [1,1,2,6,8,5,5,7,8,8,1,1,4,5,5,0,0,0,1,1,4,4,5,1,3,3,4,5,4,1,1]
 # states = np.unique(t)
@@ -286,37 +279,37 @@ print(p)
 
 # Testes
 
-def prob_absor(p, N):
-    # f=NR
-    x = np.array(p)
-    x1 = x[:len(x) - 2, len(x) - 2]
-    x2 = x[:len(x) - 2, len(x) - 1]
-    R = np.array([x1, x2])
-
-    return np.round(np.dot(R, N.T).T, 3)
-
-stateHist = state
-mc = MarkovChain(p, states)
-
-# informacoes sobre a cadeia de markov
-# print(mc)
-
-# O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
-print("\n Matriz Fundamental:")
-N = np.round(mc.fundamental_matrix, 3)
-print(N)
-
-# Tempos de Absorção
-print("\n Duração esperada em cada ano até a graduação ou evasão")
-print(np.round(mc.absorption_times, 3))
-
-print("\n Duração média esperada até graduação:")
-# Sem estados retidos
-print(np.round(np.trace(np.asarray(N)), 3))
-# Com estados retidos
-# print(np.round(np.trace((np.asarray(N) / 2)), 3))
-
-probGE = prob_absor(p, N)
-for i in range(len(probGE)):
-    print("\n Probabilidade graduação e evasão no estado " + states[i] + ":")
-    print(probGE[i])
+# def prob_absor(p, N):
+#     # f=NR
+#     x = np.array(p)
+#     x1 = x[:len(x) - 2, len(x) - 2]
+#     x2 = x[:len(x) - 2, len(x) - 1]
+#     R = np.array([x1, x2])
+#
+#     return np.round(np.dot(R, N.T).T, 3)
+#
+# stateHist = state
+# mc = MarkovChain(p, states)
+#
+# # informacoes sobre a cadeia de markov
+# # print(mc)
+#
+# # O tempo esperado que um aluno passa em um determinado estado e a duração prevista do estudo
+# print("\n Matriz Fundamental:")
+# N = np.round(mc.fundamental_matrix, 3)
+# print(N)
+#
+# # Tempos de Absorção
+# print("\n Duração esperada em cada ano até a graduação ou evasão")
+# print(np.round(mc.absorption_times, 3))
+#
+# print("\n Duração média esperada até graduação:")
+# # Sem estados retidos
+# print(np.round(np.trace(np.asarray(N)), 3))
+# # Com estados retidos
+# # print(np.round(np.trace((np.asarray(N) / 2)), 3))
+#
+# probGE = prob_absor(p, N)
+# for i in range(len(probGE)):
+#     print("\n Probabilidade graduação e evasão no estado " + states[i] + ":")
+#     print(probGE[i])

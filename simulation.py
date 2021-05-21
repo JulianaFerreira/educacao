@@ -67,24 +67,37 @@ def Simu(quantAlunos, matriz):
     tempo_ate_trancado = []
     tempo_ate_evadido = []
     tempo_ate_graduado = []
+    tempo_A1 = []
+    tempo_A2 = []
+    tempo_A3 = []
+    tempo_A4 = []
 
     for i in range(quantAlunos):
         a = Student(i, matriz)
-        list(a.gen)
+        list(a.gen)  # não apagar!
         arr = a.history
         anos = a.size
 
+        # Tempo por ano
+        tempo_A1.append(anos - 1)
+        if anos-2 > 0:
+            tempo_A2.append(anos - 2)
+        if anos-3 > 0:
+            tempo_A3.append(anos - 3)
+        if anos-4 > 0:
+            tempo_A4.append(anos - 4)
+
         if arr[anos-1] == 'E':  # evadido
             e += 1
-            tempo_ate_evadido.append(len(arr) - 1)
-            time.append(len(arr) - 1)
+            tempo_ate_evadido.append(anos - 1)
+            time.append(anos - 1)
             event.append(1)
             event_graduado.append(0)
             event_evadido.append(1)
         else:  # graduado
             g += 1
-            tempo_ate_graduado.append(len(arr) - 1)
-            time.append(len(arr) - 1)
+            tempo_ate_graduado.append(anos - 1)
+            time.append(anos - 1)
             event.append(1)
             event_graduado.append(1)
             event_evadido.append(0)
@@ -112,6 +125,12 @@ def Simu(quantAlunos, matriz):
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
     prob_and_temp("Vínculo", g+e, tempo_ate_graduado+tempo_ate_evadido, quantAlunos)
+
+    print("\nTempos por ano")
+    print(f"Tempo médio até perder o vínculo A1: {np.round(np.mean(tempo_A1), 3)} anos")
+    print(f"Tempo médio até perder o vínculo A2: {np.round(np.mean(tempo_A2), 3)} anos")
+    print(f"Tempo médio até perder o vínculo A3: {np.round(np.mean(tempo_A3), 3)} anos")
+    print(f"Tempo médio até perder o vínculo A4: {np.round(np.mean(tempo_A4), 3)} anos")
 
     return time, event, event_evadido, event_graduado
 
@@ -196,27 +215,27 @@ quantAlunos = 10000
 
 
 # Simulação Boumi
-time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-
-timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
-sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-
-times = [time, timeA]
-events = [event, eventA]
-labels = ["Versão do Artigo Original", "Versão Adaptada"]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
-
-events = [event_evadido, event_evadidoA]
-sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
-
-events = [event_graduado, event_graduadoA]
-sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
-
-results = logrank_test(time, timeA, event_graduado, event_graduadoA)
-results.print_summary()
-print(results.p_value)
+# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
+# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+#
+# timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
+# sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+#
+# times = [time, timeA]
+# events = [event, eventA]
+# labels = ["Versão do Artigo Original", "Versão Adaptada"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
+#
+# events = [event_evadido, event_evadidoA]
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
+#
+# events = [event_graduado, event_graduadoA]
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
+#
+# results = logrank_test(time, timeA, event_graduado, event_graduadoA)
+# results.print_summary()
+# print(results.p_value)
 
 
 # Simulação Geral
@@ -228,9 +247,9 @@ print(results.p_value)
 
 
 # Simulação BSI-BCC
-# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
-#
-# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
+
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 
 
 # Simulação BSI-BCC - Sexo
@@ -257,10 +276,21 @@ print(results.p_value)
 #
 # results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
 # results.print_summary()
+# print("\nEvasão")
+# print(results.p_value)
+#
+# results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
+# results.print_summary()
+# print("\nGraduação")
+# print(results.p_value)
+#
+# results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
+# results.print_summary()
+# print("\nVínculo")
 # print(results.p_value)
 
 
-# Simulação BSI-BCC - Escolaridade dos Pais - Problema nenhum estudante com pais analfabetos concluiu o curso
+# Simulação BSI-BCC - Escolaridade dos Pais - Problema: nenhum estudante com pais analfabetos concluiu o curso
 #
 # time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-df_esclr_pais_nao_analf.csv')
 # sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência para Pais Alfabetizados")

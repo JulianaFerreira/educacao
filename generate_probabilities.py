@@ -138,21 +138,22 @@ def quantity_matrix(df, n):
     return M
 
 
-# def aplicar_parametros(p, taxa_evasão):
-#
-#     print(p)
-#     n = len(p)
-#
-#     p.iloc[:, n-1] = 1
-#
-#     print(p)
-#
-#     return p
+# TODO Falta corrigir o valor do progresso entre anos
+def aplicar_parametros(p, taxa_evasao):
+
+    print(p)
+    n = len(p)
+
+    p.iloc[:, n-1] = p.iloc[:, n-1] * taxa_evasao
+
+    print(p)
+
+    return p
 
 states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G', 'E']
 
 # p = pd.read_csv("matrix/bsi-bcc.csv", index_col=0)
-# taxa_evasao = 1.0
+# taxa_evasao = 1.5
 # new_p = aplicar_parametros(p, taxa_evasao)
 # print(new_p)
 # generate_csv_and_diagram("matrix/bsi-bcc.csv", states, new_p)
@@ -162,7 +163,7 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 # df_todos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-todos.csv")
 # m = quantity_matrix(df_todos, 11)
 # p = transition_matrix(m)
-# p = np.round(p, 4)
+# # p = np.round(p, 4)
 # generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
 
 
@@ -210,10 +211,5 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 # m = quantity_matrix(df_cor_raca_ni, 11)
 # p = transition_matrix(m)
 # generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_ni.csv", states, p)
-
-
-
-
-
 
 
