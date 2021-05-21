@@ -110,7 +110,7 @@ def quantity_matrix(df, n):
     e.append(0)  # linha evadido
     M[:, n-1] = e
 
-    # adiciona quantidade de vinculados na tabela
+    # adiciona quantidade de graduados na tabela
     for i in range(1, n-1):
         x = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'CONCLUIDO')]
         if x.QTD.empty:
@@ -137,16 +137,18 @@ def quantity_matrix(df, n):
 
     return M
 
-
-# TODO Falta corrigir o valor do progresso entre anos
 def aplicar_parametros(p, taxa_evasao):
+    taxa_progresso = 2 - taxa_evasao
 
-    print(p)
     n = len(p)
 
+    new_value = p.iloc[:, n-1] * taxa_progresso
     p.iloc[:, n-1] = p.iloc[:, n-1] * taxa_evasao
 
-    print(p)
+    for i in range(n):
+        for j in range(n):
+            if j == i + 1:
+                p.iloc[i, j] = p.iloc[i, j] - new_value[i]
 
     return p
 
@@ -156,7 +158,7 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 # taxa_evasao = 1.5
 # new_p = aplicar_parametros(p, taxa_evasao)
 # print(new_p)
-# generate_csv_and_diagram("matrix/bsi-bcc.csv", states, new_p)
+# generate_csv_and_diagram("matrix/bsi-bcc-taxa_evasao.csv", states, new_p)
 
 
 # Todos Estudantes

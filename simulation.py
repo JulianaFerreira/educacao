@@ -215,27 +215,38 @@ quantAlunos = 10000
 
 
 # Simulação Boumi
-# time, event, event_evadido, event_graduado = Simu(quantAlunos, 'matrix/matrixBoumi.csv')
-# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-#
-# timeA, eventA, event_evadidoA, event_graduadoA = Simu(quantAlunos, 'matrix/matrixBoumiAlterado.csv')
-# sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
-#
-# times = [time, timeA]
-# events = [event, eventA]
-# labels = ["Versão do Artigo Original", "Versão Adaptada"]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
-#
-# events = [event_evadido, event_evadidoA]
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
-#
-# events = [event_graduado, event_graduadoA]
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
-#
-# results = logrank_test(time, timeA, event_graduado, event_graduadoA)
-# results.print_summary()
-# print(results.p_value)
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/matrixBoumi.csv')
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+timeA, eventA, event_evadidoA, event_graduadoA = Simu(10000, 'matrix/matrixBoumiAlterado.csv')
+sobrevivencia([timeA, timeA, timeA], [event_evadidoA, event_graduadoA, eventA], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+
+times = [time, timeA]
+events = [event, eventA]
+labels = ["Versão do Artigo Original", "Versão Adaptada"]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo")
+
+events = [event_evadido, event_evadidoA]
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Evasão")
+
+events = [event_graduado, event_graduadoA]
+sobrevivencia(times, events, labels, "Análise de Sobrevivência do Graduação")
+
+print("Graduado")
+results = logrank_test(time, timeA, event_graduado, event_graduadoA)
+results.print_summary()
+print(results.p_value)
+
+print("Vinculado")
+results = logrank_test(time, timeA, event, eventA)
+results.print_summary()
+print(results.p_value)
+
+print("Evadido")
+results = logrank_test(time, timeA, event_evadido, event_evadidoA)
+results.print_summary()
+print(results.p_value)
 
 
 # Simulação Geral
@@ -247,9 +258,9 @@ quantAlunos = 10000
 
 
 # Simulação BSI-BCC
-time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
-
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
+#
+# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 
 
 # Simulação BSI-BCC - Sexo
@@ -262,7 +273,7 @@ sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evas
 #
 # times = [time_f, time_m]
 # events = [event_f, event_m]
-# labels = ["Femino", "Masculino"]
+# labels = ["Feminino", "Masculino"]
 #
 # sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo para Sexo")
 #
