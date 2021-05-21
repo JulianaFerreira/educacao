@@ -191,7 +191,7 @@ A3RtoE = A3toE * taxaEvasaoR * taxaProporcaoEvasao
 A4toE = 0.02 * taxaEvasao
 A4RtoE = A4toE * taxaEvasaoR * taxaProporcaoEvasao
 A5RtoE = 0.02 * taxaEvasaoR
-A6RtoE = 0.02/2 * taxaEvasaoR
+A6RtoE = 0.02 * taxaEvasaoR
 
 # Próximo estado
 A1toA2 = 1 - A1toA1R - A1toE
@@ -201,7 +201,7 @@ A2RtoA3R = 1 - A2RtoE
 A3toA4 = 1 - A3toA3R - A3toE - 0.04
 A3RtoA4R = 1 - A3RtoE - 0.04
 A4RtoA5R = 0.37
-A5RtoA6R = 0.37/2
+A5RtoA6R = 0.37
 
 A3toG = 0.04
 A3RtoG = 0.04

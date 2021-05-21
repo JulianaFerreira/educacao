@@ -45,8 +45,8 @@ A6R -> E  [key=0, label="0.02", weight="0.02"];
 A7R -> A8R  [key=0, label="0.37", weight="0.37"];
 A7R -> G  [key=0, label="0.61", weight="0.61"];
 A7R -> E  [key=0, label="0.02", weight="0.02"];
-A8R -> G  [key=0, label="0.99", weight="0.99"];
-A8R -> E  [key=0, label="0.01", weight="0.01"];
+A8R -> G  [key=0, label="0.98", weight="0.98"];
+A8R -> E  [key=0, label="0.02", weight="0.02"];
 G -> G  [key=0, label="1.0", weight="1.0"];
 E -> E  [key=0, label="1.0", weight="1.0"];
 }
