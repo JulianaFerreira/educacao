@@ -66,6 +66,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-completo-test.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-completo.csv">
           <value>
             <Attribute>

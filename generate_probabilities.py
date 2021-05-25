@@ -241,38 +241,68 @@ def transition_matrix_test(transitions):
 
 # CSV Principal
 # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
-# df.info()
+# # df.info()
 #
-# # CSV duracao_vinculo por ano
-# df['DURACAO_VINCULO'] = (round((df['DURACAO_VINCULO']/2)+0.4)).astype(int)
-# df['DURACAO_VINCULO'] = df['DURACAO_VINCULO'] - 1
-# df.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
-
-# Dataframe com apenas estudantes que já se graduaram ou evadiram
-# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
+# # Usar apenas alunos evadidos e concluidos
 # df_evadidos = df[df['STATUS'] == 'EVADIDO']
 # df_graduados = df[df['STATUS'] == 'CONCLUIDO']
 # df_desvinculados = pd.concat([df_evadidos, df_graduados])
-# result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
-# result.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
-
+# df_result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
+#
 # duracao_graduado = df_graduados['DURACAO_VINCULO'].mean()
 # duracao_evadido = df_evadidos['DURACAO_VINCULO'].mean()
+#
+# # Apagar alunos reintegrados
+# erros = []
+#
+# count = 1
+# for i in range(len(df_result)):
+#     if count == df_result.iloc[i].DURACAO_VINCULO_x:
+#         count = count + 1
+#     else:
+#         if df_result.iloc[i-1].STATUS_x == 'EVADIDO' or df_result.iloc[i-1].STATUS_x == 'CONCLUIDO':
+#             count = 2
+#         else:
+#             count = 1
+#             item = df_result.iloc[i].NU_MATR_CURSO
+#             if not item in erros:
+#                 erros.append(item)
+#
+# for i in range(len(erros)):
+#     df_result = df_result[df_result['NU_MATR_CURSO'] != erros[i]]
+#
+#
+# # CSV duracao_vinculo por ano
+# df_result['DURACAO_VINCULO_x'] = (round((df_result['DURACAO_VINCULO_x']/2)+0.4)).astype(int)
+# df_result['DURACAO_VINCULO_x'] = df_result['DURACAO_VINCULO_x'] - 1
+# df_result.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
+
+
+df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
 
 # Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
-# df.loc[df['RETIDO'] == True, 'DURACAO_VINCULO'] = df['DURACAO_VINCULO'] + 11
-# df.loc[df['STATUS'] == 'EVADIDO', 'DURACAO_VINCULO'] = 22
-# df.loc[df['STATUS'] == 'CONCLUIDO', 'DURACAO_VINCULO'] = 23
-# df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO'], keep='last')
+# TODO testar trocar posição do drop_duplicates, esta com erro 1 ano a menos
+df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO_x'], keep='last')
+df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 11
+df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 22
+df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 23
 
+df.to_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 
 
 # Gera matriz de transição
-# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
-# t = df['DURACAO_VINCULO_x']
-# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'A11R', 'E', 'G']
-# p = transition_matrix_test(t)
-#
-# p = np.round(p, 4)
-# generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
+df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+t = df['DURACAO_VINCULO_x']
+states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
+p = transition_matrix_test(t)
+
+#Excluir linhas com probabilidade 0 e as respectivas colunas
+
+
+# Apagar linhas dos anos 8 a 11
+
+
+
+# # p = np.round(p, 4)
+generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
 

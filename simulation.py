@@ -258,47 +258,47 @@ quantAlunos = 10000
 
 
 # Simulação BSI-BCC
-# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
-#
-# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-bcc-completo-test.csv')
+
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 
 
 # Simulação BSI-BCC - Sexo
 
-time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-sexo_f.csv')
-sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência do Sexo Feminino")
-
-time_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/bsi-bcc-sexo_m.csv')
-sobrevivencia([time_m, time_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência do Sexo Masculino")
-
-times = [time_f, time_m]
-events = [event_f, event_m]
-labels = ["Feminino", "Masculino"]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo para Sexo")
-
-events = [event_evadido_f, event_evadido_m]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
-
-events = [event_graduado_f, event_graduado_m]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Sexo")
-
-results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
-results.print_summary()
-print("\nEvasão")
-print(results.p_value)
-
-results = logrank_test(time_f, time_m, event_graduado_f, event_graduado_m)
-results.print_summary()
-print("\nGraduação")
-print(results.p_value)
-
-results = logrank_test(time_f, time_m, event_f, event_m)
-results.print_summary()
-print("\nVínculo")
-print(results.p_value)
+# time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-sexo_f.csv')
+# sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência do Sexo Feminino")
+#
+# time_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/bsi-bcc-sexo_m.csv')
+# sobrevivencia([time_m, time_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência do Sexo Masculino")
+#
+# times = [time_f, time_m]
+# events = [event_f, event_m]
+# labels = ["Feminino", "Masculino"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência do Vínculo para Sexo")
+#
+# events = [event_evadido_f, event_evadido_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
+#
+# events = [event_graduado_f, event_graduado_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Sexo")
+#
+# results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
+# results.print_summary()
+# print("\nEvasão")
+# print(results.p_value)
+#
+# results = logrank_test(time_f, time_m, event_graduado_f, event_graduado_m)
+# results.print_summary()
+# print("\nGraduação")
+# print(results.p_value)
+#
+# results = logrank_test(time_f, time_m, event_f, event_m)
+# results.print_summary()
+# print("\nVínculo")
+# print(results.p_value)
 
 
 # Simulação BSI-BCC - Escolaridade dos Pais - Problema: nenhum estudante com pais analfabetos concluiu o curso
