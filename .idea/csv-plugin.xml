@@ -31,13 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\docs\df_survivability_bsi-bcc-ano-estados.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\docs\df_survivability_bsi-bcc-ano-sexo_f.csv">
           <value>
             <Attribute>
@@ -59,27 +52,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\docs\df_survivability_bsi-bcc-completo.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\docs\df_survivability_bsi-bcc-retidos-ano.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\docs\df_survivability_bsi-bcc-retidos.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\docs\df_survivability_bsi-bcc.csv">
           <value>
             <Attribute>
@@ -94,28 +66,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\docs\event_tableAnálise de Sobrevivência da Evasão.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\docs\event_tableAnálise de Sobrevivência da Graduação.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\docs\event_tableAnálise de Sobrevivência.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\matrix\bsi-bcc-completo-todos.csv">
+        <entry key="\matrix\bsi-bcc-completo.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
