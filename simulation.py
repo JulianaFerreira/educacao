@@ -79,25 +79,25 @@ def Simu(quantAlunos, matriz):
         anos = a.size
 
         # Tempo por ano
-        tempo_A1.append(anos - 1)
+        tempo_A1.append(anos)
         if anos-2 > 0:
-            tempo_A2.append(anos - 2)
+            tempo_A2.append(anos-1)
         if anos-3 > 0:
-            tempo_A3.append(anos - 3)
+            tempo_A3.append(anos-2)
         if anos-4 > 0:
-            tempo_A4.append(anos - 4)
+            tempo_A4.append(anos-3)
 
         if arr[anos-1] == 'E':  # evadido
             e += 1
-            tempo_ate_evadido.append(anos - 1)
-            time.append(anos - 1)
+            tempo_ate_evadido.append(anos)
+            time.append(anos-1)
             event.append(1)
             event_graduado.append(0)
             event_evadido.append(1)
         else:  # graduado
             g += 1
-            tempo_ate_graduado.append(anos - 1)
-            time.append(anos - 1)
+            tempo_ate_graduado.append(anos)
+            time.append(anos-1)
             event.append(1)
             event_graduado.append(1)
             event_evadido.append(0)
@@ -258,7 +258,7 @@ quantAlunos = 10000
 
 
 # Simulação BSI-BCC
-time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-bcc-completo-test.csv')
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-completo-test.csv')
 
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 

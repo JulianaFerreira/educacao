@@ -238,6 +238,7 @@ def transition_matrix_test(transitions):
 
 
 # Teste com retidos
+# TODO verificar tempos
 
 # CSV Principal
 # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
@@ -281,11 +282,10 @@ def transition_matrix_test(transitions):
 df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
 
 # Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
-# TODO testar trocar posição do drop_duplicates, esta com erro 1 ano a menos
 df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO_x'], keep='last')
-df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 11
-df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 22
-df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 23
+df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 10
+df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 20
+df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 21
 
 df.to_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 
