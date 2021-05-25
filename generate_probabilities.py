@@ -152,7 +152,8 @@ def aplicar_parametros(p, taxa_evasao):
 
     return p
 
-states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G', 'E']
+# TODO trocar os estados aqui
+# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G', 'E']
 
 # p = pd.read_csv("matrix/bsi-bcc.csv", index_col=0)
 # taxa_evasao = 1.5
@@ -214,4 +215,61 @@ states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G
 # p = transition_matrix(m)
 # generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_ni.csv", states, p)
 
+
+# Cria matriz de transição passando um array com os estados transicionando
+def transition_matrix_test(transitions):
+    n = 1 + max(transitions)  # number of states
+
+    M = [[0] * n for _ in range(n)]
+
+    for (i, j) in zip(transitions, transitions[1:]):
+        M[i][j] += 1
+
+    print(M)
+
+    # now convert to probabilities:
+    for row in M:
+        s = sum(row)
+        if s > 0:
+            row[:] = [f / s for f in row]
+
+    return M
+
+
+
+# Teste com retidos
+
+# CSV Principal
+# df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+# df.info()
+
+# CSV duracao_vinculo por ano
+# df['DURACAO_VINCULO'] = (round((df['DURACAO_VINCULO']/2)+0.4)).astype(int)
+# df['DURACAO_VINCULO'] = df['DURACAO_VINCULO'] - 1
+# df.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
+
+# Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
+# df.loc[df['RETIDO'] == True, 'DURACAO_VINCULO'] = df['DURACAO_VINCULO'] + 11
+# df.loc[df['STATUS'] == 'EVADIDO', 'DURACAO_VINCULO'] = 22
+# df.loc[df['STATUS'] == 'CONCLUIDO', 'DURACAO_VINCULO'] = 23
+# df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO'], keep='last')
+#
+# # Dataframe com apenas estudantes que já se graduaram ou evadiram
+# df_evadidos = df[df['STATUS'] == 'EVADIDO']
+# df_graduados = df[df['STATUS'] == 'CONCLUIDO']
+# df_desvinculados = pd.concat([df_evadidos, df_graduados])
+#
+# result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
+#
+# result.to_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+
+# Gera matriz de transição
+df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+t = df['DURACAO_VINCULO_x']
+states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'A11R', 'G', 'E']
+p = transition_matrix_test(t)
+
+p = np.round(p, 4)
+generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
 

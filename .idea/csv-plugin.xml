@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-ano-estados.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\df_survivability_bsi-bcc-ano-sexo_f.csv">
           <value>
             <Attribute>
@@ -46,6 +53,27 @@
           </value>
         </entry>
         <entry key="\docs\df_survivability_bsi-bcc-ano.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-completo.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-retidos-ano.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-retidos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -81,6 +109,13 @@
           </value>
         </entry>
         <entry key="\docs\event_tableAnálise de Sobrevivência.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-completo-todos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
