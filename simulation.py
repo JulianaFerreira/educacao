@@ -258,7 +258,7 @@ quantAlunos = 10000
 
 
 # Simulação BSI-BCC
-time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-bcc-completo.csv')
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-completo.csv')
 
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
 

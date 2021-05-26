@@ -2,15 +2,16 @@ import pandas as pd
 import numpy as np
 from markov_diagram import Diagram
 
-# # Gera os CSVs
+# Gera os CSVs
 
-# CSV Principal
-# df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+# # CSV Principal
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-quant.csv")
 # df.info()
-
-# CSV duracao_vinculo por ano
+#
+# # CSV duracao_vinculo por ano
 # df['DURACAO_VINCULO'] = round((df['DURACAO_VINCULO']/2)+0.4)
-# df.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
+# df = df.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
+# df.to_csv("docs/df_survivability_bsi-bcc-quant-ano.csv")
 
 # CSV para todos os estudantes
 # df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
@@ -88,6 +89,7 @@ def quantity_matrix(df, n):
     e = []
     c = []
     v = []
+    r = []
 
     # adiciona quantidade de evadidos na tabela
     for i in range(1, n-1):
@@ -99,6 +101,7 @@ def quantity_matrix(df, n):
     e.append(0)  # linha graduado
     e.append(0)  # linha evadido
     M[:, n-1] = e
+    print(e)
 
     # adiciona quantidade de graduados na tabela
     for i in range(1, n-1):
@@ -125,6 +128,20 @@ def quantity_matrix(df, n):
             if j == i + 1:
                 M[i, j] = v[i]
 
+    # adiciona quantidade de retido na tabela
+    for i in range(1, n - 1):
+        x = df.loc[(df['DURACAO_VINCULO'] == i) & (df['STATUS'] == 'RETIDO')]
+        if x.QTD.empty:
+            r.append(0)
+        else:
+            r.append(x.iloc[0]['QTD'])
+    r.append(0)  # linha graduado
+    r.append(0)  # linha evadido
+    for i in range(11, n-1):
+        for j in range(11, n-1):
+            if j == i + 1:
+                M[i, j] = r[i]
+
     return M
 
 def aplicar_parametros(p, taxa_evasao):
@@ -142,8 +159,8 @@ def aplicar_parametros(p, taxa_evasao):
 
     return p
 
-# TODO trocar os estados aqui
-# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'G', 'E']
+
+# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'G', 'E']
 
 # p = pd.read_csv("matrix/bsi-bcc.csv", index_col=0)
 # taxa_evasao = 1.5
@@ -153,11 +170,11 @@ def aplicar_parametros(p, taxa_evasao):
 
 
 # Todos Estudantes
-# df_todos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-todos.csv")
-# m = quantity_matrix(df_todos, 11)
+# df_todos = pd.read_csv("docs/df_survivability_bsi-bcc-quant-ano.csv")
+# m = quantity_matrix(df_todos, 22)
 # p = transition_matrix(m)
-# # p = np.round(p, 4)
-# generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
+# p = np.round(p, 4)
+# generate_csv_and_diagram("docs/df_survivability_bsi-bcc-quant-ano.csv", states, p)
 
 
 # Categoria Sexo
@@ -223,7 +240,7 @@ def transition_matrix_test(transitions):
 
 # TODO verificar tempos
 
-# CSV Principal
+# # CSV Principal
 # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
 # # df.info()
 #
@@ -262,19 +279,24 @@ def transition_matrix_test(transitions):
 # df_result.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
 
 
-# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
-#
-# # Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
-# df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO_x'], keep='last')
-# df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 10
-# df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 20
-# df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 21
-#
+df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
+x1 = len(df[(df.DURACAO_VINCULO_x == 0) & (df.STATUS_x == 'EVADIDO')].index)
+
+# TODO corrigir
+# Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
+df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO_x'], keep='last')
+df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 10
+df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 20
+df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 21
+
+x2 = len(df[(df.DURACAO_VINCULO_x == 0) & (df.STATUS_x == 'EVADIDO')].index)
+
 # df.to_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 
 
 # Gera matriz de transição
 # df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+# x = len(df[(df.DURACAO_VINCULO_x == 1) & (df.STATUS_y == 'EVADIDO')].index)
 # t = df['DURACAO_VINCULO_x']
 # states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
 # p = transition_matrix_test(t)
@@ -285,77 +307,81 @@ def transition_matrix_test(transitions):
 # generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
 
 
-# df = pd.read_csv("matrix/bsi-bcc-completo.csv")
-# df.drop(['A8', 'A9', 'A10'], inplace=True, axis=1)
-# # df.drop(['A8', 'A9', 'A10'], inplace=True, axis=0)
 
 
 
 
+# # # # Criar csv com quantidades # # # #
 
-
-# # # # Teste com quantidades # # # #
-
-
-# DURACAO_VINCULO | STATUS | QTD
-# Primeiro ano [0, 193, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0]
-
-# CSV Principal
-df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
-# df.info()
-
-# Usar apenas alunos evadidos e concluidos
-df_evadidos = df[df['STATUS'] == 'EVADIDO']
-df_graduados = df[df['STATUS'] == 'CONCLUIDO']
-df_desvinculados = pd.concat([df_evadidos, df_graduados])
-
-
-# TODO ta errado aqui
-df_result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
-
-# duracao_graduado = df_graduados['DURACAO_VINCULO'].mean()
-# duracao_evadido = df_evadidos['DURACAO_VINCULO'].mean()
-
-
-# Apagar alunos reintegrados
-erros = []
-
-count = 1
-for i in range(len(df_result)):
-    if count == df_result.iloc[i].DURACAO_VINCULO_x:
-        count = count + 1
-    else:
-        if df_result.iloc[i-1].STATUS_x == 'EVADIDO' or df_result.iloc[i-1].STATUS_x == 'CONCLUIDO':
-            count = 2
-        else:
-            count = 1
-            item = df_result.iloc[i].NU_MATR_CURSO
-            if not item in erros:
-                erros.append(item)
-
-for i in range(len(erros)):
-    df_result = df_result[df_result['NU_MATR_CURSO'] != erros[i]]
-
-
-
-
-# Coloca retido nos estados
-
-df_result.loc[df['RETIDO'] == True, 'STATUS_x'] = 'RETIDO'
-
-linhas = []
-
-aaaaa = df_result[(df_result.DURACAO_VINCULO_x == 2) & (df_result.STATUS_x == 'EVADIDO')]
-aaaaa2 = df[(df.DURACAO_VINCULO == 2) & (df.STATUS == 'EVADIDO')]
-
-
-# for i in range(21):
-#     linha = [i, df_result.STATUS, count]
-
-
-# index = ['DURACAO_VINCULO', 'STATUS', 'QTD']
+# # CSV Principal
+# df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+# # df.info()
 #
-# df_quantidade = pd.DataFrame(index=index)
-
-# df.to_csv("docs/df_survivability_bsi-bcc-ano-quantidades.csv")
+# # Usar apenas alunos evadidos e concluidos
+# df_evadidos = df[df['STATUS'] == 'EVADIDO']
+# df_graduados = df[df['STATUS'] == 'CONCLUIDO']
+# df_desvinculados = pd.concat([df_evadidos, df_graduados])
+#
+# df_result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
+#
+# # duracao_graduado = df_graduados['DURACAO_VINCULO'].mean()
+# # duracao_evadido = df_evadidos['DURACAO_VINCULO'].mean()
+#
+#
+# # Apagar alunos reintegrados
+# erros = []
+#
+# count = 1
+# for i in range(len(df_result)):
+#     if count == df_result.iloc[i].DURACAO_VINCULO_x:
+#         count = count + 1
+#     else:
+#         if df_result.iloc[i-1].STATUS_x == 'EVADIDO' or df_result.iloc[i-1].STATUS_x == 'CONCLUIDO':
+#             count = 2
+#         else:
+#             count = 1
+#             item = df_result.iloc[i].NU_MATR_CURSO
+#             if not item in erros:
+#                 erros.append(item)
+#
+# for i in range(len(erros)):
+#     df_result = df_result[df_result['NU_MATR_CURSO'] != erros[i]]
+#
+#
+#
+#
+# # Coloca retido nos estados
+#
+# linhas = []
+#
+# # vinculados sem retenção
+# for i in range(1, 22):
+#     quant = len(df_result[(df_result.DURACAO_VINCULO_x == i) & (df_result.STATUS_x == 'VINCULADO') & (df_result.RETIDO_x == False)].index)
+#     linha = [i, 'VINCULADO', quant]
+#     linhas.append(linha)
+#
+# # vinculados com retenção
+# for i in range(1, 22):
+#     quant = len(df_result[(df_result.DURACAO_VINCULO_x == i) & (df_result.STATUS_x == 'VINCULADO') & (df_result.RETIDO_x == True)].index)
+#     linha = [i, 'RETIDO', quant]
+#     linhas.append(linha)
+#
+# # EVADIDO
+# for i in range(1, 22):
+#     quant = len(df_result[(df_result.DURACAO_VINCULO_x == i) & (df_result.STATUS_x == 'EVADIDO')].index)
+#     linha = [i, 'EVADIDO', quant]
+#     linhas.append(linha)
+#
+# # CONCLUIDO
+# for i in range(1, 22):
+#     quant = len(df_result[(df_result.DURACAO_VINCULO_x == i) & (df_result.STATUS_x == 'CONCLUIDO')].index)
+#     linha = [i, 'CONCLUIDO', quant]
+#     linhas.append(linha)
+#
+#
+# columns = ['DURACAO_VINCULO', 'STATUS', 'QTD']
+#
+# df_quantidade = pd.DataFrame(linhas, columns=columns)
+#
+# df_quantidade.to_csv("docs/df_survivability_bsi-bcc-quant.csv")
 
