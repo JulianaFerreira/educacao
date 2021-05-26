@@ -225,8 +225,6 @@ def transition_matrix_test(transitions):
     for (i, j) in zip(transitions, transitions[1:]):
         M[i][j] += 1
 
-    print(M)
-
     # now convert to probabilities:
     for row in M:
         s = sum(row)
@@ -279,15 +277,15 @@ def transition_matrix_test(transitions):
 # df_result.to_csv("docs/df_survivability_bsi-bcc-ano.csv")
 
 
-df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
-
-# Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
-df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO_x'], keep='last')
-df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 10
-df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 20
-df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 21
-
-df.to_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
+#
+# # Transforma DURACAO_VINCULO para um formato de estados com informação de retido, graduado e evadido
+# df = df.drop_duplicates(subset=['NU_MATR_CURSO', 'DURACAO_VINCULO_x'], keep='last')
+# df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 10
+# df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 20
+# df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 21
+#
+# df.to_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 
 
 # Gera matriz de transição
@@ -295,14 +293,14 @@ df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 t = df['DURACAO_VINCULO_x']
 states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
 p = transition_matrix_test(t)
+p[20] = np.zeros(22)
+p[21] = np.zeros(22)
 
-#Excluir linhas com probabilidade 0 e as respectivas colunas
-
-
-# Apagar linhas dos anos 8 a 11
-
-
-
-# # p = np.round(p, 4)
+# p = np.round(p, 4)
 generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
+
+
+# df = pd.read_csv("matrix/bsi-bcc-completo.csv")
+# df.drop(['A8', 'A9', 'A10'], inplace=True, axis=1)
+# # df.drop(['A8', 'A9', 'A10'], inplace=True, axis=0)
 
