@@ -29,16 +29,6 @@ from markov_diagram import Diagram
 # df_sexo_m = df_sexo_m.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
 # df_sexo_m.to_csv("docs/df_survivability_bsi-bcc-ano-sexo_m.csv")
 
-# Escolaridade Pais
-# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
-# df_esclr_pais_nao_analfabetos = df[df['NM_ESCLR_MAE'] != 'ANALFABETO']
-# df_esclr_pais_nao_analfabetos = df_esclr_pais_nao_analfabetos.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
-# df_esclr_pais_nao_analfabetos.to_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_nao_analfabetos.csv")
-#
-# df_esclr_pais_analfabetos = df[df['NM_ESCLR_MAE'] == 'ANALFABETO']
-# df_esclr_pais_alfabetos = df_esclr_pais_analfabetos.groupby(['DURACAO_VINCULO', 'STATUS'])['QTD'].sum()
-# df_esclr_pais_analfabetos.to_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_analfabetos.csv")
-
 # Cor/Raça [AMARELA, BRANCA, PARDA, PRETA, INDIGENA, -] - desconsiderados indigenas e amarelos
 # df = pd.read_csv("docs/df_survivability_bsi-bcc-ano.csv")
 # df_cor_raca_amarela = df[df['NM_COR_RACA'] != 'AMARELA']
@@ -182,18 +172,6 @@ def aplicar_parametros(p, taxa_evasao):
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo_m.csv", states, p)
 
 
-# Categoria Escolaridade dos Pais
-# df_esclr_pais_nao_analfabetos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_nao_analfabetos.csv")
-# m = quantity_matrix(df_esclr_pais_nao_analfabetos, 11)
-# p = transition_matrix(m)
-# generate_csv_and_diagram("matrix/bsi-bcc-df_esclr_pais_nao_analf.csv", states, p)
-#
-# df_esclr_pais_analfabetos = pd.read_csv("docs/df_survivability_bsi-bcc-ano-esclr_pais_analfabetos.csv")
-# m = quantity_matrix(df_esclr_pais_analfabetos, 11)
-# p = transition_matrix(m)
-# generate_csv_and_diagram("matrix/bsi-bcc-df_esclr_pais_analf.csv", states, p)
-
-
 # Categoria Cor/Raça - desconsiderar indigena e amarela
 # df_cor_raca_branca = pd.read_csv("docs/df_survivability_bsi-bcc-ano-cor_raca_branca.csv")
 # m = quantity_matrix(df_cor_raca_branca, 11)
@@ -216,6 +194,13 @@ def aplicar_parametros(p, taxa_evasao):
 # generate_csv_and_diagram("matrix/bsi-bcc-df_cor_raca_ni.csv", states, p)
 
 
+
+
+
+
+# # # # Teste com retidos # # # #
+
+
 # Cria matriz de transição passando um array com os estados transicionando
 def transition_matrix_test(transitions):
     n = 1 + max(transitions)  # number of states
@@ -224,6 +209,8 @@ def transition_matrix_test(transitions):
 
     for (i, j) in zip(transitions, transitions[1:]):
         M[i][j] += 1
+
+    print(M)
 
     # now convert to probabilities:
     for row in M:
@@ -234,8 +221,6 @@ def transition_matrix_test(transitions):
     return M
 
 
-
-# Teste com retidos
 # TODO verificar tempos
 
 # CSV Principal
@@ -289,18 +274,88 @@ def transition_matrix_test(transitions):
 
 
 # Gera matriz de transição
-df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
-t = df['DURACAO_VINCULO_x']
-states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
-p = transition_matrix_test(t)
-p[20] = np.zeros(22)
-p[21] = np.zeros(22)
-
-# p = np.round(p, 4)
-generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+# t = df['DURACAO_VINCULO_x']
+# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
+# p = transition_matrix_test(t)
+# p[20] = np.zeros(22)
+# p[21] = np.zeros(22)
+#
+# # p = np.round(p, 4)
+# generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
 
 
 # df = pd.read_csv("matrix/bsi-bcc-completo.csv")
 # df.drop(['A8', 'A9', 'A10'], inplace=True, axis=1)
 # # df.drop(['A8', 'A9', 'A10'], inplace=True, axis=0)
+
+
+
+
+
+
+# # # # Teste com quantidades # # # #
+
+
+# DURACAO_VINCULO | STATUS | QTD
+# Primeiro ano [0, 193, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0]
+
+# CSV Principal
+df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+# df.info()
+
+# Usar apenas alunos evadidos e concluidos
+df_evadidos = df[df['STATUS'] == 'EVADIDO']
+df_graduados = df[df['STATUS'] == 'CONCLUIDO']
+df_desvinculados = pd.concat([df_evadidos, df_graduados])
+
+
+# TODO ta errado aqui
+df_result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
+
+# duracao_graduado = df_graduados['DURACAO_VINCULO'].mean()
+# duracao_evadido = df_evadidos['DURACAO_VINCULO'].mean()
+
+
+# Apagar alunos reintegrados
+erros = []
+
+count = 1
+for i in range(len(df_result)):
+    if count == df_result.iloc[i].DURACAO_VINCULO_x:
+        count = count + 1
+    else:
+        if df_result.iloc[i-1].STATUS_x == 'EVADIDO' or df_result.iloc[i-1].STATUS_x == 'CONCLUIDO':
+            count = 2
+        else:
+            count = 1
+            item = df_result.iloc[i].NU_MATR_CURSO
+            if not item in erros:
+                erros.append(item)
+
+for i in range(len(erros)):
+    df_result = df_result[df_result['NU_MATR_CURSO'] != erros[i]]
+
+
+
+
+# Coloca retido nos estados
+
+df_result.loc[df['RETIDO'] == True, 'STATUS_x'] = 'RETIDO'
+
+linhas = []
+
+aaaaa = df_result[(df_result.DURACAO_VINCULO_x == 2) & (df_result.STATUS_x == 'EVADIDO')]
+aaaaa2 = df[(df.DURACAO_VINCULO == 2) & (df.STATUS == 'EVADIDO')]
+
+
+# for i in range(21):
+#     linha = [i, df_result.STATUS, count]
+
+
+# index = ['DURACAO_VINCULO', 'STATUS', 'QTD']
+#
+# df_quantidade = pd.DataFrame(index=index)
+
+# df.to_csv("docs/df_survivability_bsi-bcc-ano-quantidades.csv")
 
