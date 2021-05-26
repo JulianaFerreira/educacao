@@ -289,12 +289,40 @@ def transition_matrix_test(transitions):
 
 # Gera matriz de transição
 df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
-t = df['DURACAO_VINCULO_x']
+
+# # Sexo
+# df_sexo_f = df[df['NM_SEXO_x'] == 'F']
+# df_sexo_m = df[df['NM_SEXO_x'] == 'M']
+#
+# # Cor
+# df_cor_branca = df[df['NM_COR_RACA_x'] == 'BRANCA']
+# df_cor_preta = df[df['NM_COR_RACA_x'] == 'PRETA']
+# df_cor_parda = df[df['NM_COR_RACA_x'] == 'PARDA']
+#
+# # Curso
+# df_curso_bsi = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+# df_curso_bcc = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+
 states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
+
+t = df['DURACAO_VINCULO_x']
 p = transition_matrix_test(t)
 p[20] = np.zeros(22)
 p[21] = np.zeros(22)
 
-# p = np.round(p, 4)
-generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
+# Reduzir taxa de evasão em 50%
+p_taxa_de_evasao = p
 
+# p = np.round(p, 2)
+# generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
+generate_csv_and_diagram("matrix/bsi-bcc-completo-evasao-menos-50-ano12.csv", states, p)
+
+# generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
+#
+# generate_csv_and_diagram("matrix/bsi-bcc-cor-branca.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-cor-preta.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-cor-parda.csv", states, p)
+#
+# generate_csv_and_diagram("matrix/bsi-bcc-curso-bsi.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-curso-bcc.csv", states, p)

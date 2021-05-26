@@ -124,13 +124,13 @@ def Simu(quantAlunos, matriz):
     # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
-    prob_and_temp("Vínculo", g+e, tempo_ate_graduado+tempo_ate_evadido, quantAlunos)
+    prob_and_temp("Desvinculado", g+e, tempo_ate_graduado+tempo_ate_evadido, quantAlunos)
 
     print("\nTempos por ano")
-    print(f"Tempo médio até perder o vínculo A1: {np.round(np.mean(tempo_A1), 3)} anos")
-    print(f"Tempo médio até perder o vínculo A2: {np.round(np.mean(tempo_A2), 3)} anos")
-    print(f"Tempo médio até perder o vínculo A3: {np.round(np.mean(tempo_A3), 3)} anos")
-    print(f"Tempo médio até perder o vínculo A4: {np.round(np.mean(tempo_A4), 3)} anos")
+    print(f"Tempo médio até ser desvinculado A1: {np.round(np.mean(tempo_A1), 3)} anos")
+    print(f"Tempo médio até ser desvinculado A2: {np.round(np.mean(tempo_A2), 3)} anos")
+    print(f"Tempo médio até ser desvinculado A3: {np.round(np.mean(tempo_A3), 3)} anos")
+    print(f"Tempo médio até ser desvinculado A4: {np.round(np.mean(tempo_A4), 3)} anos")
 
     return time, event, event_evadido, event_graduado
 
@@ -260,7 +260,7 @@ quantAlunos = 10000
 # Simulação BSI-BCC
 time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-completo.csv')
 
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'vínculo'], "Análise de Sobrevivência")
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evadido', 'graduado', 'desvinculado'], "Análise de Sobrevivência")
 
 
 # Simulação BSI-BCC - Sexo
