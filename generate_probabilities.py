@@ -234,9 +234,6 @@ def transition_matrix_test(transitions):
 
     return M
 
-
-# TODO verificar tempos
-
 # # CSV Principal
 # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
 # # df.info()
@@ -247,9 +244,11 @@ def transition_matrix_test(transitions):
 # df_desvinculados = pd.concat([df_evadidos, df_graduados])
 # df_result = pd.merge(df, df_desvinculados, on="NU_MATR_CURSO")
 #
-# duracao_graduado = df_graduados['DURACAO_VINCULO'].mean()
-# duracao_evadido = df_evadidos['DURACAO_VINCULO'].mean()
-#
+# # # Pegar dados do csv para comparar
+# # duracao_graduado = df_graduados['DURACAO_VINCULO'].mean()
+# # duracao_evadido = df_evadidos['DURACAO_VINCULO'].mean()
+# # retidos = df_desvinculados[df_desvinculados['RETIDO'] == True]
+
 # # Apagar alunos reintegrados
 # erros = []
 #
@@ -288,7 +287,7 @@ def transition_matrix_test(transitions):
 
 
 # Gera matriz de transição
-df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
+# df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 
 # # Sexo
 # df_sexo_f = df[df['NM_SEXO_x'] == 'F']
@@ -303,19 +302,16 @@ df = pd.read_csv("docs/df_survivability_bsi-bcc-ano-estados.csv")
 # df_curso_bsi = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
 # df_curso_bcc = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
-states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
-
-t = df['DURACAO_VINCULO_x']
-p = transition_matrix_test(t)
-p[20] = np.zeros(22)
-p[21] = np.zeros(22)
-
-# Reduzir taxa de evasão em 50%
-p_taxa_de_evasao = p
+# states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
+#
+# t = df['DURACAO_VINCULO_x']
+# p = transition_matrix_test(t)
+# p[20] = np.zeros(22)
+# p[21] = np.zeros(22)
 
 # p = np.round(p, 2)
 # generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc-completo-evasao-menos-50-ano12.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-completo-evasao-menos-50-ano12.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
