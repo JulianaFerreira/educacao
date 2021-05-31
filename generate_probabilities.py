@@ -303,7 +303,7 @@ def transition_matrix_test(transitions):
 # df_curso_bcc = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 # states = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A1R', 'A2R', 'A3R', 'A4R', 'A5R', 'A6R', 'A7R', 'A8R', 'A9R', 'A10R', 'E', 'G']
-#
+
 # t = df['DURACAO_VINCULO_x']
 # p = transition_matrix_test(t)
 # p[20] = np.zeros(22)
@@ -312,6 +312,7 @@ def transition_matrix_test(transitions):
 # p = np.round(p, 2)
 # generate_csv_and_diagram("matrix/bsi-bcc-completo.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-completo-evasao-menos-50-ano12.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-completo-retencao.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
