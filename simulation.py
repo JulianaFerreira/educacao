@@ -182,7 +182,10 @@ quantAlunos = 10000
 
 
 # Simulação Geral
-time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
+# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-sem-retencao.csv')
+# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-20091.csv')
+# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015-todos.csv')
 
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
 
