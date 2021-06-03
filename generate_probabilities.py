@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from markov_diagram import Diagram
 
-
 # Gerar csv com matriz de transicao e desenho da cadeia de markov
 def generate_csv_and_diagram(arquivo, states, p):
     q_df = pd.DataFrame(columns=states, index=states)
@@ -46,12 +45,6 @@ def transition_matrix(transitions):
 
     print(M)
 
-    # Gambiarra para fazer com estudantes que ainda não evadiram ou graduaram -  não apague!
-    for i in range(len(M)):
-        for j in range(len(M)):
-            if j == 0:
-                M[i][j] = 0
-
     # converte para probabilidades:
     for row in M:
         s = sum(row)
@@ -77,8 +70,6 @@ def apagar_reintegrados(df):
                 if not item in erros:
                     erros.append(item)
 
-    print(erros)
-
     for i in range(len(erros)):
         df = df[df['NU_MATR_CURSO'] != erros[i]]
 
@@ -101,26 +92,21 @@ def gerar_csv_matriz_probab(dados):
     df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
             df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
 
-    # df = evade_ou_conclu(df)
-    # df.rename(columns={'STATUS_x': 'STATUS', 'DURACAO_VINCULO_x': 'DURACAO_VINCULO', 'RETIDO_x': 'RETIDO', 'RETIDO_x': 'RETIDO'})
+    df = evade_ou_conclu(df)
 
-    # df = apagar_reintegrados(df)
-    # Reintegrados
-    erros = [200610330, 200632094, 200632584, 200659979, 200678895, 200626145, 200632598, 200632612, 200650641, 200650658, 200659166, 200664331, 200695510]
-    for i in range(len(erros)):
-        df = df[df['NU_MATR_CURSO'] != erros[i]]
+    df = apagar_reintegrados(df)
 
     return df
 
 
 def altera_duracao_estados(df):
     # Começa pelo 0 para criar matriz
-    df['DURACAO_VINCULO'] = df['DURACAO_VINCULO'] - 1
+    df['DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] - 1
 
     # Altera DURACAO_VINCULO conforme status e retido
-    df.loc[df['RETIDO'] == True, 'DURACAO_VINCULO'] = df['DURACAO_VINCULO'] + 22
-    df.loc[df['STATUS'] == 'EVADIDO', 'DURACAO_VINCULO'] = 44
-    df.loc[df['STATUS'] == 'CONCLUIDO', 'DURACAO_VINCULO'] = 45
+    df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 22
+    df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 44
+    df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 45
 
     return df
 
@@ -130,7 +116,7 @@ df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
 df = altera_duracao_estados(df)
 
 # Ano
-df = df.loc[df['CD_PERD_ADMIS'] < 2015]
+df = df.loc[df['CD_PERD_ADMIS_x'] < 2015]
 
 # # Sexo
 # df = df[df['NM_SEXO_x'] == 'F']
@@ -152,10 +138,15 @@ states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S
 # Sem retido
 # states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'E', 'G']
 
-t = df['DURACAO_VINCULO']
+t = df['DURACAO_VINCULO_x']
 p = transition_matrix(t)
 p[44] = np.zeros(46)
 p[45] = np.zeros(46)
+
+#TODO aqui
+# Diminuir probabilidade de evadir e reter nos primeiros dois anos
+
+
 
 # p = np.round(p, 2)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao.csv", states, p)
@@ -163,7 +154,6 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-ate-2015.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc-ate-2015-todos.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)

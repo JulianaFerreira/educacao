@@ -1,3 +1,4 @@
+import pandas as pd
 from lifelines.statistics import logrank_test
 from matplotlib import pyplot as plt
 import numpy as np
@@ -49,9 +50,9 @@ def sobrevivencia(time, event_observed, label, title):
 def prob_and_temp(state, x, tempo, quantAlunos):
     archive = open("docs/prob_and_temp.txt", "a")
     archive.write(f"Probabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %" + "\n")
-    archive.write(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} anos" + "\n")
+    archive.write(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} semestres" + "\n")
     print(f"\nProbabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %")
-    print(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} anos")
+    print(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} semestres")
 
 
 def Simu(quantAlunos, matriz):
@@ -184,8 +185,7 @@ quantAlunos = 10000
 # Simulação Geral
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-sem-retencao.csv')
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-20091.csv')
-# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
-time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015-todos.csv')
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
 
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
 
