@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-20092.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-ate-2015-todos.csv">
           <value>
             <Attribute>
@@ -31,7 +38,35 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-prob-evasao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-sem-retencao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-test1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-test2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-test3.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

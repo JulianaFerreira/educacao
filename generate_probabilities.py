@@ -110,6 +110,50 @@ def altera_duracao_estados(df):
 
     return df
 
+def alterar_prob_evasao(p):
+    evasao = []
+    evasaoR = []
+
+    # pega e altera para 50% valor de E
+    for i in range(4):
+        evasao.append(p[i][len(p) - 2] / 2)
+
+    for i in range(22, 26):
+        evasaoR.append(p[i][len(p) - 2] / 2)
+
+    # coloca novo valor alterado
+    for i in range(4):
+        p[i][len(p) - 2] = evasao[i]
+
+    for i in range(22, 26):
+        p[i][len(p) - 2] = evasaoR[i - 22]
+
+    for i in range(len(p)-1):
+        for j in range(len(p)-1):
+            if i < 4:
+                if j == i + 1:
+                    p[i][j] = p[i][j] + evasao[i] / 2
+                    p[i][j + 22] = p[i][j + 22] + evasao[i] / 2
+            elif i > 21 and i < 26:
+                if j == i + 1:
+                    p[i][j] = p[i][j] + evasaoR[i-22]
+
+    return p
+
+
+def alterar_prob_retencao(p):
+    retencao = []
+
+    # pegar e alterar valor retenção
+    for i in range(4):
+        for j in range(len(p)-1):
+            if j == i + 1:
+                retencao.append(p[i][j+22]/2)
+                p[i][j+22] = retencao[i]
+                p[i][j] = p[i][j] + retencao[i]
+
+    return p
+
 
 df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
 
@@ -143,17 +187,17 @@ p = transition_matrix(t)
 p[44] = np.zeros(46)
 p[45] = np.zeros(46)
 
-#TODO aqui
-# Diminuir probabilidade de evadir e reter nos primeiros dois anos
-
-
+# Alterar probabilidades de Reter e Evadir
+# p = alterar_prob_evasao(p)
+# p = alterar_prob_retencao(p)
 
 # p = np.round(p, 2)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-ate-2015.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
@@ -165,3 +209,32 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-curso-bsi.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-curso-bcc.csv", states, p)
 
+
+# Média das matrizes - NÃO ESTA FUNCIONANDO
+# df1 = pd.read_csv("matrix/bsi-bcc-20091.csv", index_col=0).to_numpy()
+# df2 = pd.read_csv("matrix/bsi-bcc-20092.csv", index_col=0).to_numpy()
+# df3 = pd.read_csv("matrix/bsi-bcc-20101.csv", index_col=0).to_numpy()
+# df4 = pd.read_csv("matrix/bsi-bcc-20102.csv", index_col=0).to_numpy()
+# df5 = pd.read_csv("matrix/bsi-bcc-20111.csv", index_col=0).to_numpy()
+# df6 = pd.read_csv("matrix/bsi-bcc-20112.csv", index_col=0).to_numpy()
+# df7 = pd.read_csv("matrix/bsi-bcc-20121.csv", index_col=0).to_numpy()
+# df8 = pd.read_csv("matrix/bsi-bcc-20122.csv", index_col=0).to_numpy()
+# df9 = pd.read_csv("matrix/bsi-bcc-20131.csv", index_col=0).to_numpy()
+# df10 = pd.read_csv("matrix/bsi-bcc-20132.csv", index_col=0).to_numpy()
+# df11 = pd.read_csv("matrix/bsi-bcc-20141.csv", index_col=0).to_numpy()
+# df12 = pd.read_csv("matrix/bsi-bcc-20142.csv", index_col=0).to_numpy()
+#
+# semestres = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12]
+#
+# p = df1
+# for i in range(1, len(semestres)):
+#     x = semestres[i]
+#     for j in range(len(p)):
+#         sum1 = df1[j].sum()
+#         sum2 = x[j].sum()
+#         if sum2 != 0 and sum1 != 0:
+#             p[j] = (p[j] + x[j]) / 2
+#
+#
+# # p = np.mean(np.array([df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12]), axis=0)
+# generate_csv_and_diagram("matrix/bsi-bcc-test3.csv", states, p)
