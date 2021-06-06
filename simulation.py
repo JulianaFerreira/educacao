@@ -95,6 +95,9 @@ def Simu(quantAlunos, matriz):
         if anos-6 > 0:
             tempo_A6.append(anos-5)
 
+        if anos-1 > 20:
+            anos = 20
+
         if arr[anos-1] == 'E':  # evadido
             e += 1
             tempo_ate_evadido.append(anos)
@@ -144,6 +147,7 @@ def Simu(quantAlunos, matriz):
     print(f"Tempo médio até ser desvinculado A5: {np.round(np.mean(tempo_A5), 3)} anos")
     print(f"Tempo médio até ser desvinculado A6: {np.round(np.mean(tempo_A6), 3)} anos")
 
+
     return time, event, event_evadido, event_graduado
 
 
@@ -188,8 +192,9 @@ quantAlunos = 10000
 # Simulação Geral
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-20091.csv')
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
-#
-# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015-test-todos.csv')
+
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
 
 
 # Simulação BSI-BCC - Evasão
@@ -260,25 +265,25 @@ quantAlunos = 10000
 
 # Simulação BSI-BCC - Sexo
 
-time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-sexo-f.csv')
-sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência do Sexo Feminino")
-
-time_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/bsi-bcc-sexo-m.csv')
-sobrevivencia([time_m, time_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência do Sexo Masculino")
-
-times = [time_f, time_m]
-events = [event_f, event_m]
-labels = ["Feminino", "Masculino"]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Sexo")
-
-events = [event_evadido_f, event_evadido_m]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
-
-events = [event_graduado_f, event_graduado_m]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Sexo")
+# time_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/bsi-bcc-sexo-f.csv')
+# sobrevivencia([time_f, time_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência do Sexo Feminino")
+#
+# time_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/bsi-bcc-sexo-m.csv')
+# sobrevivencia([time_m, time_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência do Sexo Masculino")
+#
+# times = [time_f, time_m]
+# events = [event_f, event_m]
+# labels = ["Feminino", "Masculino"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Sexo")
+#
+# events = [event_evadido_f, event_evadido_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
+#
+# events = [event_graduado_f, event_graduado_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação para Sexo")
 #
 # results = logrank_test(time_f, time_m, event_evadido_f, event_evadido_m)
 # results.print_summary()

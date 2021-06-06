@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-ate-2015-test-todos.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-ate-2015-todos.csv">
           <value>
             <Attribute>
