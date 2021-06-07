@@ -19,7 +19,7 @@ def sobrevivencia(time, event_observed, label, title):
         kmf.plot_survival_function(linestyle=linestyles[i], color="black", marker=markers[i], ci_show=False)
         # kmf.event_table.to_csv(f"docs/event_table{title}.csv")
 
-    plt.xlabel('Tempo (períodos)')
+    plt.xlabel('Tempo (semestres)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=12)
     # plt.title("IC de 95% para a Média", fontsize=10)
