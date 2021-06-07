@@ -16,23 +16,6 @@ def generate_csv_and_diagram(arquivo, states, p):
     d = Diagram(arquivo)
     d.make_markov_diagram()
 
-
-def aplicar_parametros(p, taxa_evasao):
-    taxa_progresso = 2 - taxa_evasao
-
-    n = len(p)
-
-    new_value = p.iloc[:, n-1] * taxa_progresso
-    p.iloc[:, n-1] = p.iloc[:, n-1] * taxa_evasao
-
-    for i in range(n):
-        for j in range(n):
-            if j == i + 1:
-                p.iloc[i, j] = p.iloc[i, j] - new_value[i]
-
-    return p
-
-
 # Cria matriz de transição passando um array com os estados transicionando
 def transition_matrix(transitions):
     n = 1 + max(transitions)  # numero de estados
@@ -45,7 +28,7 @@ def transition_matrix(transitions):
 
     print(M)
 
-    # converte para probabilidades:
+    # converte para probabilidades
     for row in M:
         s = sum(row)
         if s > 0:
@@ -114,7 +97,7 @@ def alterar_prob_evasao(p):
     evasao = []
     evasaoR = []
 
-    # pega e altera para 50% valor de E
+    # pega e altera para 50% valor de E nos primeiros 4 períodos
     for i in range(4):
         evasao.append(p[i][len(p) - 2] / 2)
 
@@ -144,7 +127,7 @@ def alterar_prob_evasao(p):
 def alterar_prob_retencao(p):
     retencao = []
 
-    # pegar e alterar valor retenção
+    # pegar e alterar valor da retenção em 50% até o período 4
     for i in range(4):
         for j in range(len(p)-1):
             if j == i + 1:
@@ -196,7 +179,7 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc-ate-2015.csv", states, p)
+generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
