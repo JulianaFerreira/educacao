@@ -33,8 +33,6 @@ S17R;
 S18R;
 S19R;
 S20R;
-S21R;
-S22R;
 E;
 G;
 S1 -> S2  [key=0, label="0.6801346801346801", weight="0.6801346801346801"];
@@ -129,8 +127,7 @@ S18R -> G  [key=0, label="0.04", weight="0.04"];
 S19R -> S20R  [key=0, label="0.6875", weight="0.6875"];
 S19R -> E  [key=0, label="0.125", weight="0.125"];
 S19R -> G  [key=0, label="0.1875", weight="0.1875"];
-S20R -> S21R  [key=0, label="0.5", weight="0.5"];
+S20R -> S20R  [key=0, label="0.5", weight="0.5"];
 S20R -> E  [key=0, label="0.125", weight="0.125"];
 S20R -> G  [key=0, label="0.375", weight="0.375"];
-S21R -> S22R  [key=0, label="1.0", weight="1.0"];
 }

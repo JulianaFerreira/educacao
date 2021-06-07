@@ -196,7 +196,7 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-ate-2015.csv", states, p)
+generate_csv_and_diagram("matrix/bsi-bcc-ate-2015.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
@@ -208,33 +208,3 @@ p[45] = np.zeros(46)
 #
 # generate_csv_and_diagram("matrix/bsi-bcc-curso-bsi.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-curso-bcc.csv", states, p)
-
-
-# Média das matrizes - NÃO ESTA FUNCIONANDO
-# df1 = pd.read_csv("matrix/bsi-bcc-20091.csv", index_col=0).to_numpy()
-# df2 = pd.read_csv("matrix/bsi-bcc-20092.csv", index_col=0).to_numpy()
-# df3 = pd.read_csv("matrix/bsi-bcc-20101.csv", index_col=0).to_numpy()
-# df4 = pd.read_csv("matrix/bsi-bcc-20102.csv", index_col=0).to_numpy()
-# df5 = pd.read_csv("matrix/bsi-bcc-20111.csv", index_col=0).to_numpy()
-# df6 = pd.read_csv("matrix/bsi-bcc-20112.csv", index_col=0).to_numpy()
-# df7 = pd.read_csv("matrix/bsi-bcc-20121.csv", index_col=0).to_numpy()
-# df8 = pd.read_csv("matrix/bsi-bcc-20122.csv", index_col=0).to_numpy()
-# df9 = pd.read_csv("matrix/bsi-bcc-20131.csv", index_col=0).to_numpy()
-# df10 = pd.read_csv("matrix/bsi-bcc-20132.csv", index_col=0).to_numpy()
-# df11 = pd.read_csv("matrix/bsi-bcc-20141.csv", index_col=0).to_numpy()
-# df12 = pd.read_csv("matrix/bsi-bcc-20142.csv", index_col=0).to_numpy()
-#
-# semestres = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12]
-#
-# p = df1
-# for i in range(1, len(semestres)):
-#     x = semestres[i]
-#     for j in range(len(p)):
-#         sum1 = df1[j].sum()
-#         sum2 = x[j].sum()
-#         if sum2 != 0 and sum1 != 0:
-#             p[j] = (p[j] + x[j]) / 2
-#
-#
-# # p = np.mean(np.array([df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12]), axis=0)
-# generate_csv_and_diagram("matrix/bsi-bcc-test3.csv", states, p)

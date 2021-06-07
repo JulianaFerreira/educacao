@@ -19,7 +19,7 @@ def sobrevivencia(time, event_observed, label, title):
         kmf.plot_survival_function(linestyle=linestyles[i], color="black", marker=markers[i], ci_show=False)
         # kmf.event_table.to_csv(f"docs/event_table{title}.csv")
 
-    plt.xlabel('Tempo (em anos)')
+    plt.xlabel('Tempo (períodos)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=12)
     # plt.title("IC de 95% para a Média", fontsize=10)
@@ -192,9 +192,9 @@ quantAlunos = 10000
 # Simulação Geral
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-20091.csv')
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
-time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015-test-todos.csv')
-
-sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
+# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015-todos.csv')
+#
+# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
 
 
 # Simulação BSI-BCC - Evasão
@@ -242,25 +242,25 @@ sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evas
 
 
 # Simulação BSI-BCC - Evasão e Retenção
-# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
-# sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
-#
-# time_taxa_evasao, event_taxa_evasao, event_evadido_taxa_evasao, event_graduado_taxa_evasao = Simu(10000, 'matrix/bsi-bcc-prob-evasao-retencao.csv')
-# sobrevivencia([time_taxa_evasao, time_taxa_evasao, time_taxa_evasao], [event_evadido_taxa_evasao, event_graduado_taxa_evasao, event_taxa_evasao], ['evasão', 'graduação', 'desvinculação'], "50% da probabilidade de retenção e evasão nos anos 1 e 2")
-#
-# times = [time, time_taxa_evasao]
-# events = [event, event_taxa_evasao]
-# labels = ["Padrão", "50% menor"]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação")
-#
-# events = [event_evadido, event_evadido_taxa_evasao]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
-#
-# events = [event_graduado, event_graduado_taxa_evasao]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação")
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2015.csv')
+sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
+
+time_taxa_evasao, event_taxa_evasao, event_evadido_taxa_evasao, event_graduado_taxa_evasao = Simu(10000, 'matrix/bsi-bcc-prob-evasao-retencao.csv')
+sobrevivencia([time_taxa_evasao, time_taxa_evasao, time_taxa_evasao], [event_evadido_taxa_evasao, event_graduado_taxa_evasao, event_taxa_evasao], ['evasão', 'graduação', 'desvinculação'], "50% da probabilidade de retenção e evasão nos anos 1 e 2")
+
+times = [time, time_taxa_evasao]
+events = [event, event_taxa_evasao]
+labels = ["Padrão", "50% menor"]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação")
+
+events = [event_evadido, event_evadido_taxa_evasao]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
+
+events = [event_graduado, event_graduado_taxa_evasao]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Graduação")
 
 
 # Simulação BSI-BCC - Sexo
