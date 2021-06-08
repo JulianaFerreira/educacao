@@ -24,6 +24,10 @@ def sobrevivencia(time, event_observed, label, title):
     plt.suptitle(f"{title}", fontsize=12)
     # plt.title("IC de 95% para a Média", fontsize=10)
     # plt.savefig(f"imgs/plot{title}.png")
+
+    # Corte pelo semestre no gráfico
+    # plt.xlim(xmax=10.2)
+
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
     # plt.show()
@@ -95,9 +99,9 @@ def Simu(quantAlunos, matriz):
         if semestres-6 > 0:
             tempo_A6.append(semestres-5)
 
-        # Colocar o semestre de corte aqui
-        if semestres-1 > 20:
-            semestres = 20
+        # Colocar o semestre de corte aqui ou na linha 29 para fazer pelo gráfico
+        # if semestres-1 > 10:
+        #     semestres = 10
 
         if arr[semestres-1] == 'E':  # evadido
             e += 1
@@ -154,9 +158,6 @@ def Simu(quantAlunos, matriz):
 
 
     return time, event, event_evadido, event_graduado
-
-
-quantAlunos = 10000
 
 
 # Simulação Boumi

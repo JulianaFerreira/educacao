@@ -17,13 +17,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\docs\event_table0.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\matrix\bsi-bcc-20091.csv">
           <value>
             <Attribute>
@@ -95,13 +88,6 @@
           </value>
         </entry>
         <entry key="\matrix\bsi-bcc.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\matrix\matrix.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
