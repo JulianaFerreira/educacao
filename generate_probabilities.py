@@ -75,6 +75,9 @@ def gerar_csv_matriz_probab(dados):
     df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
             df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
 
+    # Remover retidos no primeiro periodo
+    df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
+
     df = evade_ou_conclu(df)
 
     df = apagar_reintegrados(df)

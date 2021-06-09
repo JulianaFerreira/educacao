@@ -17,6 +17,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bcc-2010.1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bcc.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-2010.1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-20091.csv">
           <value>
             <Attribute>
@@ -31,7 +52,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-20122.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-20131.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-ate-2015-test-todos.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-ate-2015-teste-aaa.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -88,6 +130,13 @@
           </value>
         </entry>
         <entry key="\matrix\bsi-bcc.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

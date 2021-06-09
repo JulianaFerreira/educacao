@@ -81,6 +81,9 @@ def gerar_csv_matriz_probab(dados):
     df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
             df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
 
+    # Remover retidos no primeiro periodo
+    df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
+
     #df = evade_ou_conclu(df)
 
     #df = apagar_reintegrados(df)
@@ -157,17 +160,17 @@ df = altera_duracao_estados(df)
 df = df.loc[df['CD_PERD_ADMIS'] < 2015]
 
 # # Sexo
-# df = df[df['NM_SEXO_x'] == 'F']
-# df = df[df['NM_SEXO_x'] == 'M']
+# df = df[df['NM_SEXO'] == 'F']
+# df = df[df['NM_SEXO'] == 'M']
 #
 # # Cor
-# df = df[df['NM_COR_RACA_x'] == 'BRANCA']
-# df = df[df['NM_COR_RACA_x'] == 'PRETA']
-# df = df[df['NM_COR_RACA_x'] == 'PARDA']
+# df = df[df['NM_COR_RACA'] == 'BRANCA']
+# df = df[df['NM_COR_RACA'] == 'PRETA']
+# df = df[df['NM_COR_RACA'] == 'PARDA']
 #
 # # Curso
-# df = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
-# df = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 # Com retido
 states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'S22',
@@ -190,9 +193,10 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-ate-2015.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-ate-2015-teste-aaa.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc-ate-2015-todos.csv", states, p)
+# generate_csv_and_diagram("matrix/bcc-2010.1.csv", states, p)
+generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
