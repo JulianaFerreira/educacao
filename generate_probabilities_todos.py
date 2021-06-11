@@ -157,7 +157,7 @@ df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
 df = altera_duracao_estados(df)
 
 # Ano
-df = df.loc[df['CD_PERD_ADMIS'] < 2015]
+df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
 # # Sexo
 # df = df[df['NM_SEXO'] == 'F']
@@ -194,9 +194,9 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-ate-2015-teste-aaa.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-20101.csv", states, p)
 # generate_csv_and_diagram("matrix/bcc-2010.1.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
+generate_csv_and_diagram("matrix/bsi-bcc-ate-2013.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)

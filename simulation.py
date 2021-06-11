@@ -22,11 +22,12 @@ def sobrevivencia(time, event_observed, label, title):
     plt.xlabel('Tempo (semestres)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=12)
+    plt.xticks(range(0, 21))
     # plt.title("IC de 95% para a Média", fontsize=10)
     # plt.savefig(f"imgs/plot{title}.png")
 
     # Corte pelo semestre no gráfico
-    # plt.xlim(xmax=10.2)
+    # plt.xlim(xmax=15.2)
 
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
@@ -100,8 +101,8 @@ def Simu(quantAlunos, matriz):
             tempo_A6.append(semestres-5)
 
         # Colocar o semestre de corte aqui ou na linha 29 para fazer pelo gráfico
-        # if semestres-1 > 10:
-        #     semestres = 10
+        if semestres-1 > 20:
+            semestres = 20
 
         if arr[semestres-1] == 'E':  # evadido
             e += 1
@@ -196,10 +197,9 @@ def Simu(quantAlunos, matriz):
 
 
 # Simulação Geral
-# time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-20091.csv')
-# time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bcc-2010.1.csv')
-# time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-bcc-ate-2015-teste-aaa.csv')
-time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc.csv')
+# time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-bcc-2010.2.csv')
+# time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-2010.1.csv')
+time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
 
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
 

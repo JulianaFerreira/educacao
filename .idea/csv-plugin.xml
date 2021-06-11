@@ -52,6 +52,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-2010.2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-20101.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-20122.csv">
           <value>
             <Attribute>
@@ -60,6 +74,13 @@
           </value>
         </entry>
         <entry key="\matrix\bsi-bcc-20131.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-ate-2013.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
