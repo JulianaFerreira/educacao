@@ -19,7 +19,7 @@ dist_retencao = []
 periodos = [2009.1, 2009.2, 2010.1, 2010.2, 2011.1, 2011.2, 2012.1, 2012.2, 2013.1, 2013.2]
 
 for i in range(len(periodos)):
-    df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado.csv")
+    df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
     df = df.loc[df['CD_PERD_ADMIS'] == periodos[i]]
 
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
@@ -54,7 +54,7 @@ for i in range(len(periodos)):
     tempo_retencao.append(tempo_retidos)
 
 
-df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado.csv")
+df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
 df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
 df_retidos = df.loc[df['RETIDO'] == True]
@@ -89,8 +89,8 @@ tempo_r_mean, tempo_r_min, tempo_r_max = mean_confidence_interval(tempo_retencao
 # mean and standard deviation
 mu, std = norm.fit(dist_retencao)
 
-# Plot the histogram.
-plt.hist(dist_retencao, bins=len(dist_graduacao.unique()), density=True, alpha=0.6, color='b')
+# Plot the histogram
+plt.hist(dist_retencao, bins=len(dist_retencao.unique()), density=True, alpha=0.6, color='b')
 print(dist_retencao.unique())
 
 # Plot the PDF.

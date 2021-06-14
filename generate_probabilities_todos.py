@@ -42,6 +42,14 @@ def transition_matrix(transitions):
 
     return M
 
+def apagar_reintegrados_test(df):
+    erros = [200610330, 200632094, 200632584, 200659979, 200678895, 200626145, 200632598, 200632612, 200650641,
+             200650658, 200659166, 200664331, 200695510]
+
+    for i in range(len(erros)):
+        df = df[df['NU_MATR_CURSO'] != erros[i]]
+
+    return df
 
 def apagar_reintegrados(df):
     erros = []
@@ -87,11 +95,7 @@ def gerar_csv_matriz_probab(dados):
     #df = evade_ou_conclu(df)
 
     #df = apagar_reintegrados(df)
-    erros = [200610330, 200632094, 200632584, 200659979, 200678895, 200626145, 200632598, 200632612, 200650641, 200650658,
-     200659166, 200664331, 200695510]
-
-    for i in range(len(erros)):
-        df = df[df['NU_MATR_CURSO'] != erros[i]]
+    df = apagar_reintegrados_test(df)
 
     return df
 

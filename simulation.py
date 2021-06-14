@@ -22,12 +22,12 @@ def sobrevivencia(time, event_observed, label, title):
     plt.xlabel('Tempo (semestres)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=12)
-    plt.xticks(range(0, 21))
+    plt.xticks(range(1, 21))
     # plt.title("IC de 95% para a Média", fontsize=10)
     # plt.savefig(f"imgs/plot{title}.png")
 
     # Corte pelo semestre no gráfico
-    # plt.xlim(xmax=15.2)
+    plt.xlim(xmax=20.2)
 
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
@@ -51,11 +51,10 @@ def sobrevivencia(time, event_observed, label, title):
 #     plt.show()
 
 
-
 def prob_and_temp(state, x, tempo, quantAlunos):
-    archive = open("docs/prob_and_temp.txt", "a")
-    archive.write(f"Probabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %" + "\n")
-    archive.write(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} semestres" + "\n")
+    # archive = open("docs/prob_and_temp.txt", "a")
+    # archive.write(f"Probabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %" + "\n")
+    # archive.write(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} semestres" + "\n")
     print(f"\nProbabilidade de ser {state}: {np.round(x / quantAlunos * 100, 1)} %")
     print(f"Tempo médio até ser {state}: {np.round(np.mean(tempo), 3)} semestres")
 
@@ -107,14 +106,14 @@ def Simu(quantAlunos, matriz):
         if arr[semestres-1] == 'E':  # evadido
             e += 1
             tempo_ate_evadido.append(semestres)
-            time.append(semestres-1)
+            time.append(semestres)
             event.append(1)
             event_graduado.append(0)
             event_evadido.append(1)
         elif arr[semestres-1] == 'G':  # graduado
             g += 1
             tempo_ate_graduado.append(semestres)
-            time.append(semestres-1)
+            time.append(semestres)
             event.append(1)
             event_graduado.append(1)
             event_evadido.append(0)
@@ -135,7 +134,7 @@ def Simu(quantAlunos, matriz):
         #     i += 1
 
         # Se ficou Retido em algum dos estados
-        count = 0
+        count = 1
         for estado in arr:
             if 'R' in estado:
                 tempo_ate_retido.append(count)
@@ -198,7 +197,6 @@ def Simu(quantAlunos, matriz):
 
 # Simulação Geral
 # time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-bcc-2010.2.csv')
-# time, event, event_evadido, event_graduado = Simu(1000, 'matrix/bsi-2010.1.csv')
 time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
 
 sobrevivencia([time, time, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")

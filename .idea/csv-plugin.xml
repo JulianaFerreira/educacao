@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\docs\df_survivability_bsi-bcc-teste-1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\docs\df_survivability_bsi-bcc.csv">
           <value>
             <Attribute>
