@@ -24,7 +24,8 @@ for i in range(len(periodos)):
 
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
     df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
-    df_retidos = df.loc[df['RETIDO'] == True]
+    df_retidos = df[df['STATUS'] != "EVADIDO"]
+    df_retidos = df_retidos.loc[df['RETIDO'] == True]
 
     quant_todos = len(df.NU_MATR_CURSO.unique())
     quant_evadidos = len(df_evadidos.NU_MATR_CURSO.unique())
@@ -57,7 +58,8 @@ for i in range(len(periodos)):
 df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
 df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
-df_retidos = df.loc[df['RETIDO'] == True]
+df_retidos = df[df['STATUS'] != "EVADIDO"]
+df_retidos = df_retidos.loc[df['RETIDO'] == True]
 df_retidos_tempo = df_retidos.drop_duplicates(subset=['NU_MATR_CURSO'])
 dist_retencao = df_retidos_tempo["DURACAO_VINCULO"]
 

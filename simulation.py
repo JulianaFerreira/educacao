@@ -22,7 +22,7 @@ def sobrevivencia(time, event_observed, label, title):
     plt.xlabel('Tempo (semestres)')
     plt.ylabel('Probabilidade')
     plt.suptitle(f"{title}", fontsize=12)
-    plt.xticks(range(1, 21))
+    plt.xticks(range(0, 21))
     # plt.title("IC de 95% para a Média", fontsize=10)
     # plt.savefig(f"imgs/plot{title}.png")
 
@@ -70,7 +70,6 @@ def Simu(quantAlunos, matriz):
     event_graduado = []
     event = []
     tempo_ate_retido = []
-    tempo_ate_trancado = []
     tempo_ate_evadido = []
     tempo_ate_graduado = []
     tempo_A1 = []
@@ -103,10 +102,17 @@ def Simu(quantAlunos, matriz):
         if semestres-1 > 20:
             semestres = 20
 
+        ###### Regras de Tempo ########
+        # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
+        # semestres - 1 na evasão pq conta no siga apenas no inicio do semestre seguinte
+        # graduação conta no final do semestre, então considera o último semestre do aluno
+        # retenção é no inicio do semestre seguinte por isso o count começa no 0
+        # probabilidade de retenção está certa, já que não pode contar quem ficou retido no ano que evadiu
+        # lembrar dessas informações quando for validar os dados!
         if arr[semestres-1] == 'E':  # evadido
             e += 1
-            tempo_ate_evadido.append(semestres)
-            time.append(semestres)
+            tempo_ate_evadido.append(semestres-1)
+            time.append(semestres-1)
             event.append(1)
             event_graduado.append(0)
             event_evadido.append(1)
@@ -122,19 +128,10 @@ def Simu(quantAlunos, matriz):
             event.append(0)
             event_graduado.append(0)
             event_evadido.append(0)
-            time.append(semestres - 1)
-
-        # Se ficou Trancado em algum dos estados
-        # i = 1
-        # while i < len(arr):
-        #     if arr[i] == arr[i - 1]:  # se estado igual ao estado anterior
-        #         t += 1
-        #         tempo_ate_trancado.append(i)
-        #         break
-        #     i += 1
+            time.append(semestres)
 
         # Se ficou Retido em algum dos estados
-        count = 1
+        count = 0
         for estado in arr:
             if 'R' in estado:
                 tempo_ate_retido.append(count)
@@ -143,7 +140,6 @@ def Simu(quantAlunos, matriz):
             count += 1
 
     prob_and_temp("Retido", r, tempo_ate_retido, quantAlunos)
-    # prob_and_temp("Trancado", t, tempo_ate_trancado, quantAlunos)
     prob_and_temp("Evadido", e, tempo_ate_evadido, quantAlunos)
     prob_and_temp("Graduado", g, tempo_ate_graduado, quantAlunos)
     prob_and_temp("Desvinculado", g+e, tempo_ate_graduado+tempo_ate_evadido, quantAlunos)
