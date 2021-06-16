@@ -87,6 +87,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bsi-bcc-ate-2013-evasao-retencao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-ate-2013-evasao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-ate-2013-retencao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bsi-bcc-ate-2013.csv">
           <value>
             <Attribute>

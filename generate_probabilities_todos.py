@@ -189,8 +189,8 @@ p[44] = np.zeros(46)
 p[45] = np.zeros(46)
 
 # Alterar probabilidades de Reter e Evadir
-# p = alterar_prob_evasao(p)
-# p = alterar_prob_retencao(p)
+p = alterar_prob_evasao(p)
+p = alterar_prob_retencao(p)
 
 # p = np.round(p, 2)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao.csv", states, p)
@@ -200,7 +200,7 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-ate-2015-teste-aaa.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-20101.csv", states, p)
 # generate_csv_and_diagram("matrix/bcc-2010.1.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc-ate-2013.csv", states, p)
+generate_csv_and_diagram("matrix/bsi-bcc-ate-2013-evasao-retencao.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
