@@ -64,24 +64,23 @@ def prob_and_temp(state, x, tempo, quantAlunos):
 def stacked_bar_plot(n, vinculados, graduados, evadidos):
     periodos = list(range(0, n))
 
+    colors = ['darkgray', 'gray', 'dimgray', 'lightgray']
     plt.figure(figsize=(9, 7))
-    plt.bar(periodos, graduados, color="green", label="Graduados")
-    plt.bar(periodos, vinculados, color="yellow", bottom=np.array(graduados), label="Vinculados")
-    plt.bar(periodos, evadidos, color="red", bottom=np.array(graduados) + np.array(vinculados), label="Evadidos")
+    plt.bar(periodos, graduados, color=colors[1], label="Graduados")
+    plt.bar(periodos, evadidos, color=colors[0], bottom=np.array(graduados), label="Evadidos")
+    plt.bar(periodos, vinculados, color=colors[3], bottom=np.array(graduados) + np.array(evadidos), label="Vinculados")
 
     plt.legend(loc="lower left", bbox_to_anchor=(0.8, 1.0))
     plt.xticks(range(0, n))
-    # plt.yticks(np.arange(0, 1.1, step=0.1))
+    plt.yticks(np.arange(0, 101, step=10))
     plt.show()
 
 
-def quant_semester(tempo_evadidos, tempo_graduados):
+def quant_semester(quant_alunos, tempo_evadidos, tempo_graduados):
     n = 21
     quant_vinculados = np.zeros(n)
     quant_evadidos = np.zeros(n)
     quant_graduados = np.zeros(n)
-
-    #TODO passar para porcentagem, adicionar retidos e calcular vinculados
 
     for i in range(len(tempo_evadidos)):
         tempo = tempo_evadidos[i]
@@ -96,6 +95,15 @@ def quant_semester(tempo_evadidos, tempo_graduados):
 
     for i in range(n-1):
         quant_graduados[i+1] = quant_graduados[i+1] + quant_graduados[i]
+
+    for i in range(n):
+        quant_vinculados[i] = quant_alunos - quant_graduados[i] - quant_evadidos[i]
+
+    # Converte para probabilidades
+    for i in range(n):
+        quant_vinculados[i] = quant_vinculados[i]/quant_alunos * 100
+        quant_evadidos[i] = quant_evadidos[i]/quant_alunos * 100
+        quant_graduados[i] = quant_graduados[i]/quant_alunos * 100
 
     stacked_bar_plot(n, quant_vinculados, quant_graduados, quant_evadidos)
 
@@ -203,7 +211,7 @@ def Simu(quantAlunos, matriz):
     print(f"Tempo médio até ser desvinculado S5: {np.round(np.mean(tempo_A5), 3)} semestres")
     print(f"Tempo médio até ser desvinculado S6: {np.round(np.mean(tempo_A6), 3)} semestres")
 
-    quant_semester(tempo_ate_evadido, tempo_ate_graduado)
+    quant_semester(quantAlunos, tempo_ate_evadido, tempo_ate_graduado)
 
     #return time, event, event_evadido, event_graduado
     return time, time_evadido, time_graduado, event, event_evadido, event_graduado
@@ -248,7 +256,7 @@ def Simu(quantAlunos, matriz):
 
 # Simulação Geral
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(100, 'matrix/bsi-bcc-ate-2013.csv')
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
 
 sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'graduação', 'desvinculação'], "Análise de Sobrevivência")
 
