@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\bcc-ate-2013.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\bcc.csv">
           <value>
             <Attribute>
@@ -39,6 +46,13 @@
           </value>
         </entry>
         <entry key="\matrix\bsi-2010.1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-ate-2013.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
