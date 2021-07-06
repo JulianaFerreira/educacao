@@ -170,11 +170,11 @@ df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 # # Cor
 # df = df[df['NM_COR_RACA'] == 'BRANCA']
 # df = df[df['NM_COR_RACA'] == 'PRETA']
-# df = df[df['NM_COR_RACA'] == 'PARDA']
+df = df[df['NM_COR_RACA'] == 'PARDA']
 #
 # # Curso
 # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
-df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 # Com retido
 states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'S22',
@@ -202,8 +202,8 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bcc-2010.1.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-ate-2013-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-ate-2013.csv", states, p)
-generate_csv_and_diagram("matrix/bcc-ate-2013.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-ate-2013-teste123.csv", states, p)
+# generate_csv_and_diagram("matrix/bcc-ate-2013.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-ate-2013.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
