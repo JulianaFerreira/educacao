@@ -22,10 +22,12 @@ for i in range(len(periodos)):
     df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
     df = df.loc[df['CD_PERD_ADMIS'] == periodos[i]]
 
+    # df_cor = df.loc[df['NM_COR_RACA'] == 'PRETA']
+
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
     df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
     df_retidos = df[df['STATUS'] != "EVADIDO"]
-    df_retidos = df_retidos.loc[df['RETIDO'] == True]
+    df_retidos = df_retidos.loc[df_retidos['RETIDO'] == True]
 
     quant_todos = len(df.NU_MATR_CURSO.unique())
     quant_evadidos = len(df_evadidos.NU_MATR_CURSO.unique())
@@ -84,6 +86,10 @@ prob_r_mean, prob_r_min, prob_r_max = mean_confidence_interval(prob_retidos)
 tempo_g_mean, tempo_g_min, tempo_g_max = mean_confidence_interval(tempo_graduacao)
 tempo_e_mean, tempo_e_min, tempo_e_max = mean_confidence_interval(tempo_evasao)
 tempo_r_mean, tempo_r_min, tempo_r_max = mean_confidence_interval(tempo_retencao)
+
+#x = [10,12,14,11,11]
+x = [3,3,11,7,2,5,13,5,6,2]
+tempo_x_mean, tempo_x_min, tempo_x_max = mean_confidence_interval(x)
 
 
 # Fit a normal distribution to
