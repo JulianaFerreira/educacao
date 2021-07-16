@@ -3,6 +3,7 @@ import scipy.stats
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+import scipy.stats as st
 import seaborn as sns
 
 prob_evadidos = []
@@ -18,15 +19,20 @@ dist_retencao = []
 
 periodos = [2009.1, 2009.2, 2010.1, 2010.2, 2011.1, 2011.2, 2012.1, 2012.2, 2013.1, 2013.2]
 
+
 for i in range(len(periodos)):
     df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
     df = df.loc[df['CD_PERD_ADMIS'] == periodos[i]]
 
-    # df_cor = df.loc[df['NM_COR_RACA'] == 'PRETA']
+    # df = df.loc[df['NM_COR_RACA'] == 'PRETA']
+    # df = df[df['NM_SEXO'] == 'M']
+    # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+    # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
+    df_evadidos["DURACAO_VINCULO"] = df_evadidos["DURACAO_VINCULO"] - 1  # Correção - tempo da evasão faz menos 1
     df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
-    df_retidos = df[df['STATUS'] != "EVADIDO"]
+    df_retidos = df[df['STATUS'] != "EVADIDO"]  # Correção para tempo de retenção, no último período evade e não retem
     df_retidos = df_retidos.loc[df_retidos['RETIDO'] == True]
 
     quant_todos = len(df.NU_MATR_CURSO.unique())
@@ -57,19 +63,6 @@ for i in range(len(periodos)):
     tempo_retencao.append(tempo_retidos)
 
 
-df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
-df = df.loc[df['CD_PERD_ADMIS'] < 2014]
-
-df_retidos = df[df['STATUS'] != "EVADIDO"]
-df_retidos = df_retidos.loc[df['RETIDO'] == True]
-df_retidos_tempo = df_retidos.drop_duplicates(subset=['NU_MATR_CURSO'])
-dist_retencao = df_retidos_tempo["DURACAO_VINCULO"]
-
-df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
-dist_evasao = df_evadidos["DURACAO_VINCULO"]
-
-df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
-dist_graduacao = df_graduados["DURACAO_VINCULO"]
 
 def mean_confidence_interval(data, confidence=0.95):
     a = 1.0 * np.array(data)
@@ -87,9 +80,28 @@ tempo_g_mean, tempo_g_min, tempo_g_max = mean_confidence_interval(tempo_graduaca
 tempo_e_mean, tempo_e_min, tempo_e_max = mean_confidence_interval(tempo_evasao)
 tempo_r_mean, tempo_r_min, tempo_r_max = mean_confidence_interval(tempo_retencao)
 
-#x = [10,12,14,11,11]
-x = [3,3,11,7,2,5,13,5,6,2]
-tempo_x_mean, tempo_x_min, tempo_x_max = mean_confidence_interval(x)
+
+
+
+
+
+
+
+### Gráfico da Distribuição com a normal
+
+df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
+df = df.loc[df['CD_PERD_ADMIS'] < 2014]
+
+df_retidos = df[df['STATUS'] != "EVADIDO"]
+df_retidos = df_retidos.loc[df['RETIDO'] == True]
+df_retidos_tempo = df_retidos.drop_duplicates(subset=['NU_MATR_CURSO'])
+dist_retencao = df_retidos_tempo["DURACAO_VINCULO"]
+
+df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
+dist_evasao = df_evadidos["DURACAO_VINCULO"]
+
+df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
+dist_graduacao = df_graduados["DURACAO_VINCULO"]
 
 
 # Fit a normal distribution to

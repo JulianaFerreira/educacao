@@ -11,7 +11,7 @@ df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 # df = df.loc[df['NM_COR_RACA'] == 'BRANCA']
 # df = df[df['NM_SEXO'] == 'M']
 # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
-df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 
 item_counts = df["DURACAO_VINCULO"].value_counts()
