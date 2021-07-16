@@ -148,8 +148,8 @@ def Simu(quantAlunos, matriz):
         semestres = a.size
 
         # Colocar o semestre de corte aqui ou na linha 31 para fazer pelo gráfico
-        # if semestres > 14:
-        #     semestres = 14
+        # if semestres > 20:
+        #     semestres = 20
 
         ###### Regras de Tempo ########
         # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
@@ -368,27 +368,27 @@ def Simu(quantAlunos, matriz):
 
 # Simulação BSI-BCC - Sexo
 
-time_f, time_evadido_f, time_graduado_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-sexo-f.csv')
-sobrevivencia([time_evadido_f, time_graduado_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência do Sexo Feminino")
-
-time_m, time_evadido_m, time_graduado_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-sexo-m.csv')
-sobrevivencia([time_evadido_m, time_graduado_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência do Sexo Masculino")
-
-times = [time_f, time_m]
-events = [event_f, event_m]
-labels = ["Feminino", "Masculino"]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Sexo")
-
-times = [time_evadido_f, time_evadido_m]
-events = [event_evadido_f, event_evadido_m]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
-
-times = [time_graduado_f, time_graduado_m]
-events = [event_graduado_f, event_graduado_m]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Sexo")
+# time_f, time_evadido_f, time_graduado_f, event_f, event_evadido_f, event_graduado_f = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-sexo-f.csv')
+# sobrevivencia([time_evadido_f, time_graduado_f, time_f], [event_evadido_f, event_graduado_f, event_f], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência do Sexo Feminino")
+#
+# time_m, time_evadido_m, time_graduado_m, event_m, event_evadido_m, event_graduado_m = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-sexo-m.csv')
+# sobrevivencia([time_evadido_m, time_graduado_m, time_m], [event_evadido_m, event_graduado_m, event_m], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência do Sexo Masculino")
+#
+# times = [time_f, time_m]
+# events = [event_f, event_m]
+# labels = ["Feminino", "Masculino"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Sexo")
+#
+# times = [time_evadido_f, time_evadido_m]
+# events = [event_evadido_f, event_evadido_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Sexo")
+#
+# times = [time_graduado_f, time_graduado_m]
+# events = [event_graduado_f, event_graduado_m]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Sexo")
 #
 # print("Desvinculação:")
 # t, p = ttest_ind(time_f, time_m)
@@ -438,36 +438,36 @@ sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão p
 
 # Simulação BSI-BCC - Curso
 
-# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-ate-2013.csv')
-# sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
-#
-# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/bcc-ate-2013.csv')
-# sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
-#
-# times = [time, time1]
-# events = [event, event1]
-# labels = ["Curso 1", "Curso 2"]
-#
-# print("Desvinculação:")
-# t, p = ttest_ind(time, time1)
-# print(p)
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
-#
-# times = [time_evadido, time_evadido1]
-# events = [event_evadido, event_evadido1]
-#
-# print("Evasão:")
-# t, p = ttest_ind(time_evadido, time_evadido1)
-# print(p)
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Categoria Curso")
-#
-# times = [time_graduado, time_graduado1]
-# events = [event_graduado, event_graduado1]
-#
-# print("Conclusão:")
-# t, p = ttest_ind(time_graduado, time_graduado1)
-# print(p)
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Categoria Curso")
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-ate-2013.csv')
+sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
+
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
+sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
+
+times = [time, time1]
+events = [event, event1]
+labels = ["BSI", "BCC"]
+
+print("Desvinculação:")
+t, p = ttest_ind(time, time1)
+print(p)
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
+
+times = [time_evadido, time_evadido1]
+events = [event_evadido, event_evadido1]
+
+print("Evasão:")
+t, p = ttest_ind(time_evadido, time_evadido1)
+print(p)
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Categoria Curso")
+
+times = [time_graduado, time_graduado1]
+events = [event_graduado, event_graduado1]
+
+print("Conclusão:")
+t, p = ttest_ind(time_graduado, time_graduado1)
+print(p)
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Categoria Curso")

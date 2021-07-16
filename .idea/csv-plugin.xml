@@ -255,6 +255,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\corte_pareto_95\bsi-bcc-sexo-m.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\tests\matrix.csv">
           <value>
             <Attribute>
