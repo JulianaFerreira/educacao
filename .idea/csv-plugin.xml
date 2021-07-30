@@ -227,6 +227,55 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\matrix\corte_pareto_80\bcc-ate-2013.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_80\bsi-ate-2013.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_80\bsi-bcc-cor-branca.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_80\bsi-bcc-cor-parda.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_80\bsi-bcc-cor-preta.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_80\bsi-bcc-sexo-f.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_80\bsi-bcc-sexo-m.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\matrix\corte_pareto_95\bcc-ate-2013.csv">
           <value>
             <Attribute>
@@ -242,6 +291,27 @@
           </value>
         </entry>
         <entry key="\matrix\corte_pareto_95\bsi-bcc-ate-2013.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_95\bsi-bcc-cor-branca.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_95\bsi-bcc-cor-parda.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\corte_pareto_95\bsi-bcc-cor-preta.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

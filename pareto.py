@@ -14,7 +14,7 @@ df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 
-item_counts = df["DURACAO_VINCULO"].value_counts()
+item_counts = df["DURACAO_VINCULO"].value_counts().sort_index()
 print(item_counts)
 
 df = pd.DataFrame({'estudantes': item_counts})
@@ -32,5 +32,5 @@ ax2.yaxis.set_major_formatter(PercentFormatter())
 
 ax.tick_params(axis="y", colors="C0")
 ax2.tick_params(axis="y", colors="C1")
-plt.title("BCC")
+plt.title("Geral")
 plt.show()

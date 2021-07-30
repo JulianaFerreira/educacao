@@ -28,7 +28,7 @@ for i in range(len(periodos)):
     df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
     df = df.loc[df['CD_PERD_ADMIS'] == periodos[i]]
 
-    # df = df.loc[df['NM_COR_RACA'] == 'PRETA']
+    # df = df.loc[df['NM_COR_RACA'] == 'PARDA']
     # df = df[df['NM_SEXO'] == 'M']
     # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
     # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
@@ -112,9 +112,9 @@ print("Desvinculação:")
 print(prob_d_mean, prob_d_min, prob_d_max )
 print(tempo_d_mean, tempo_d_min, tempo_d_max)
 
-
-
-
+# Automatizar
+# df_ic = pd.DataFrame(columns=['min', 'mean', 'max', 'min', 'mean', 'max'], index= ['Retenção', 'Evasão', 'Conclusão', 'Desvinculação'])
+# df_ic.to_csv("docs/ic.csv")
 
 
 
