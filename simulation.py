@@ -61,6 +61,32 @@ def sobrevivencia(time, event_observed, label, title):
 #     plt.savefig(f"imgs/plot{title}.png")
 #     plt.show()
 
+def real_data():
+    df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+    df = df.loc[df['CD_PERD_ADMIS'] < 2014]
+
+    # df = df.loc[df['NM_COR_RACA'] == 'PARDA']
+    # df = df[df['NM_SEXO'] == 'M']
+    # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+    # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+
+    df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
+    df_evadidos['DURACAO_VINCULO'] = df_evadidos['DURACAO_VINCULO'] - 1
+    tempo_evasao = df_evadidos["DURACAO_VINCULO"].values
+
+    df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
+    df_graduados['DURACAO_VINCULO'] = df_graduados['DURACAO_VINCULO']
+    tempo_conclusao = df_graduados["DURACAO_VINCULO"].values
+
+    tempo_desvinculacao = np.concatenate((tempo_evasao, tempo_conclusao))
+
+    evento_desvinculacao = np.ones(len(tempo_desvinculacao))
+    evento_evasao = np.ones(len(tempo_evasao))
+    evento_conclusao = np.ones(len(tempo_conclusao))
+
+    return tempo_desvinculacao, tempo_evasao, tempo_conclusao, evento_desvinculacao, evento_evasao, evento_conclusao
+
+
 
 def prob_and_temp(state, x, tempo, quantAlunos):
     # archive = open("docs/prob_and_temp.txt", "a")
@@ -259,28 +285,34 @@ def Simu(quantAlunos, matriz):
 # Simulação BSI-BCC - Geral
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
 
-# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
-# sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência")
-#
-# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
-# sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão','desvinculação'], "Análise de Sobrevivência")
-#
-# times = [time, time1]
-# events = [event, event1]
-# labels = ["Referência", "Corte tempo 14"]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação")
-#
-# times = [time_evadido, time_evadido1]
-# events = [event_evadido, event_evadido1]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
-#
-# times = [time_graduado, time_graduado1]
-# events = [event_graduado, event_graduado1]
-#
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão")
-#
+# TODO testar com os cortes para cada categoria e testar passando o corte nos dados
+
+# Com dados reais
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data()
+
+#time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
+sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência")
+
+#time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
+sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão','desvinculação'], "Análise de Sobrevivência")
+
+times = [time, time1]
+events = [event, event1]
+labels = ["Dados", "Modelo"]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação")
+
+times = [time_evadido, time_evadido1]
+events = [event_evadido, event_evadido1]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
+
+times = [time_graduado, time_graduado1]
+events = [event_graduado, event_graduado1]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão")
+
 # print("Desvinculação:")
 # t, p = ttest_ind(time, time1)
 # print(p)
@@ -406,34 +438,34 @@ def Simu(quantAlunos, matriz):
 
 # Simulação BSI-BCC - Cor/Raça
 
-print("Branca")
-time_branca, time_evadido_branca, time_graduado_branca, event_branca, event_evadido_branca, event_graduado_branca = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-branca.csv')
-sobrevivencia([time_evadido_branca, time_graduado_branca, time_branca], [event_evadido_branca, event_graduado_branca, event_branca], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Branca")
-
-print("Preta")
-time_preta, time_evadido_preta, time_graduado_preta, event_preta, event_evadido_preta, event_graduado_preta = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-preta.csv')
-sobrevivencia([time_evadido_preta, time_graduado_preta, time_preta], [event_evadido_preta, event_graduado_preta, event_preta], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Preta")
-
-print("Parda")
-time_parda, time_evadido_parda, time_graduado_parda, event_parda, event_evadido_parda, event_graduado_parda = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-parda.csv')
-sobrevivencia([time_evadido_parda, time_graduado_parda, time_parda], [event_evadido_parda, event_graduado_parda, event_parda], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Parda")
-
-
-times = [time_branca, time_preta, time_parda]
-events = [event_branca, event_preta, event_parda]
-labels = ["Branca", "Preta", "Parda"]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Cor")
-
-times = [time_evadido_branca, time_evadido_preta, time_evadido_parda]
-events = [event_evadido_branca, event_evadido_preta, event_evadido_parda]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Cor")
-
-times = [time_graduado_branca, time_graduado_preta, time_graduado_parda]
-events = [event_graduado_branca, event_graduado_preta, event_graduado_parda]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Cor")
+# print("Branca")
+# time_branca, time_evadido_branca, time_graduado_branca, event_branca, event_evadido_branca, event_graduado_branca = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-branca.csv')
+# sobrevivencia([time_evadido_branca, time_graduado_branca, time_branca], [event_evadido_branca, event_graduado_branca, event_branca], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Branca")
+#
+# print("Preta")
+# time_preta, time_evadido_preta, time_graduado_preta, event_preta, event_evadido_preta, event_graduado_preta = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-preta.csv')
+# sobrevivencia([time_evadido_preta, time_graduado_preta, time_preta], [event_evadido_preta, event_graduado_preta, event_preta], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Preta")
+#
+# print("Parda")
+# time_parda, time_evadido_parda, time_graduado_parda, event_parda, event_evadido_parda, event_graduado_parda = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-parda.csv')
+# sobrevivencia([time_evadido_parda, time_graduado_parda, time_parda], [event_evadido_parda, event_graduado_parda, event_parda], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Parda")
+#
+#
+# times = [time_branca, time_preta, time_parda]
+# events = [event_branca, event_preta, event_parda]
+# labels = ["Branca", "Preta", "Parda"]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Cor")
+#
+# times = [time_evadido_branca, time_evadido_preta, time_evadido_parda]
+# events = [event_evadido_branca, event_evadido_preta, event_evadido_parda]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Cor")
+#
+# times = [time_graduado_branca, time_graduado_preta, time_graduado_parda]
+# events = [event_graduado_branca, event_graduado_preta, event_graduado_parda]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Cor")
 
 
 # Simulação BSI-BCC - Curso
