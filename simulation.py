@@ -65,8 +65,8 @@ def real_data():
     df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
     df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
-    # df = df.loc[df['NM_COR_RACA'] == 'PARDA']
-    # df = df[df['NM_SEXO'] == 'M']
+    df = df.loc[df['NM_COR_RACA'] == 'PRETA']
+    # df = df[df['NM_SEXO'] == 'F']
     # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
     # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
@@ -285,16 +285,14 @@ def Simu(quantAlunos, matriz):
 # Simulação BSI-BCC - Geral
 # time, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
 
-# TODO testar com os cortes para cada categoria e testar passando o corte nos dados
-
 # Com dados reais
 time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data()
 
-#time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
+#time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(20000, 'matrix/bsi-bcc-ate-2013.csv')
 sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência")
 
-#time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
-time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/bsi-bcc-ate-2013.csv')
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(20000, 'matrix/corte_pareto_95/bsi-bcc-cor-preta.csv')
+#time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(20000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
 sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão','desvinculação'], "Análise de Sobrevivência")
 
 times = [time, time1]
