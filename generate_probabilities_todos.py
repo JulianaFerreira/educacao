@@ -28,7 +28,7 @@ def transition_matrix(transitions):
 
     print(M)
 
-    # Gambiarra para fazer com estudantes que ainda não evadiram ou graduaram -  não apague!
+    # Conta para estudantes que ainda não evadiram ou graduaram -  não apague!
     for i in range(len(M)):
         for j in range(len(M)):
             if j == 0:
@@ -42,7 +42,7 @@ def transition_matrix(transitions):
 
     return M
 
-def apagar_reintegrados_test(df):
+def apagar_reintegrados(df):
     erros = [200610330, 200632094, 200632584, 200659979, 200678895, 200626145, 200632598, 200632612, 200650641,
              200650658, 200659166, 200664331, 200695510]
 
@@ -51,26 +51,26 @@ def apagar_reintegrados_test(df):
 
     return df
 
-def apagar_reintegrados(df):
-    erros = []
-
-    count = 1
-    for i in range(len(df)):
-        if count == df.iloc[i].DURACAO_VINCULO_x:
-            count = count + 1
-        else:
-            if df.iloc[i-1].STATUS_x == 'EVADIDO' or df.iloc[i-1].STATUS_x == 'CONCLUIDO':
-                count = 2
-            else:
-                count = 1
-                item = df.iloc[i].NU_MATR_CURSO
-                if not item in erros:
-                    erros.append(item)
-
-    for i in range(len(erros)):
-        df = df[df['NU_MATR_CURSO'] != erros[i]]
-
-    return df
+# def apagar_reintegrados(df):
+#     erros = []
+#
+#     count = 1
+#     for i in range(len(df)):
+#         if count == df.iloc[i].DURACAO_VINCULO_x:
+#             count = count + 1
+#         else:
+#             if df.iloc[i-1].STATUS_x == 'EVADIDO' or df.iloc[i-1].STATUS_x == 'CONCLUIDO':
+#                 count = 2
+#             else:
+#                 count = 1
+#                 item = df.iloc[i].NU_MATR_CURSO
+#                 if not item in erros:
+#                     erros.append(item)
+#
+#     for i in range(len(erros)):
+#         df = df[df['NU_MATR_CURSO'] != erros[i]]
+#
+#     return df
 
 
 def evade_ou_conclu(df):
@@ -85,17 +85,18 @@ def evade_ou_conclu(df):
 def gerar_csv_matriz_probab(dados):
     df = pd.read_csv(dados)
 
-    # Corrigir a coluna de retidos
-    df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
-            df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
+    # Não precisa mais dessa parte
+    # # Corrigir a coluna de retidos
+    # df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
+    #         df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
+    #
+    # # Corrigir retidos trancados no primeiro periodo
+    # df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
 
-    # Remover retidos no primeiro periodo
-    df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
+    # Se quise fazer apenas com estudantes que já evadiram ou concluiram
+    # df = evade_ou_conclu(df)
 
-    #df = evade_ou_conclu(df)
-
-    #df = apagar_reintegrados(df)
-    df = apagar_reintegrados_test(df)
+    df = apagar_reintegrados(df)
 
     return df
 
@@ -170,10 +171,10 @@ df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 # # Cor
 # df = df[df['NM_COR_RACA'] == 'BRANCA']
 # df = df[df['NM_COR_RACA'] == 'PRETA']
-df = df[df['NM_COR_RACA'] == 'PARDA']
+# df = df[df['NM_COR_RACA'] == 'PARDA']
 #
 # # Curso
-# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
 # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 # Com retido

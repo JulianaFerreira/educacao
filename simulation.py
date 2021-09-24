@@ -181,7 +181,7 @@ def Simu(quantAlunos, matriz):
         # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
         # semestres - 1 na evasão pq conta apenas no inicio do semestre seguinte
         # graduação conta no final do semestre
-        # retenção é no inicio do semestre seguinte por isso o count começa no 0
+        # retenção é no inicio do semestre atual(mudou) por isso o count começa no 1
         # probabilidade de retenção está certa, já que não pode contar quem iria ficar retido no ano que evadiu
         # lembrar dessas informações quando for validar os dados!
         if arr[semestres-1] == 'E':  # evadido
@@ -205,6 +205,7 @@ def Simu(quantAlunos, matriz):
             # time.append(semestres)
 
         # Se ficou Retido em algum dos estados
+        # TODO quando refizer as matrizes trocar o count para começar do 1
         count = 0
         for estado in arr:
             if 'R' in estado:
@@ -478,16 +479,16 @@ times = [time, time1]
 events = [event, event1]
 labels = ["BSI", "BCC"]
 
-print("Desvinculação:")
-t, p = ttest_ind(time, time1)
-print(p)
+# print("Desvinculação:")
+# t, p = ttest_ind(time, time1)
+# print(p)
 
 sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
 
 times = [time_evadido, time_evadido1]
 events = [event_evadido, event_evadido1]
 
-print("Evasão:")
+print("Teste de Hipótese para Evasão:")
 t, p = ttest_ind(time_evadido, time_evadido1)
 print(p)
 
@@ -496,8 +497,8 @@ sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para
 times = [time_graduado, time_graduado1]
 events = [event_graduado, event_graduado1]
 
-print("Conclusão:")
-t, p = ttest_ind(time_graduado, time_graduado1)
-print(p)
+# print("Conclusão:")
+# t, p = ttest_ind(time_graduado, time_graduado1)
+# print(p)
 
 sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Categoria Curso")

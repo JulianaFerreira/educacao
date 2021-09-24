@@ -1,5 +1,5 @@
 import pandas as pd
-from scipy.stats import norm, ttest_rel, ttest_ind, chisquare
+from scipy.stats import norm, ttest_rel, ttest_ind, chisquare, pearsonr, f_oneway
 from lifelines.statistics import logrank_test
 import numpy as np
 
@@ -15,6 +15,8 @@ tempos_evasao_bcc = [2, 4, 4, 6, 1, 14, 2, 4, 2, 3,
                      13, 2, 3, 1, 3, 2, 17, 16, 2, 4,
                      23, 1, 4, 5, 13, 7, 1, 10, 1, 10]
 
+# tempos_evasao_bsi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+# tempos_evasao_bcc = [2, 2, 3, 4, 7, 6, 5, 8, 10, 9]
 
 # Student’s t-test
 t, p_valor = ttest_ind(tempos_evasao_bsi, tempos_evasao_bcc)
@@ -24,6 +26,18 @@ print(p_valor)
 t, p_valor = ttest_rel(tempos_evasao_bsi, tempos_evasao_bcc)
 print(p_valor)
 
+# Analysis of Variance Test (ANOVA)
+t, p_valor = f_oneway(tempos_evasao_bsi, tempos_evasao_bcc)
+print(p_valor)
+
 # Chi-square - The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
 t, p_valor = chisquare(tempos_evasao_bsi, tempos_evasao_bcc)
+print(p_valor)
+
+results = logrank_test(tempos_evasao_bsi, tempos_evasao_bcc)
+results.print_summary()
+print(results.p_value)
+
+# Pearson’s Correlation Coefficient
+stat, p_valor = pearsonr(tempos_evasao_bsi, tempos_evasao_bcc)
 print(p_valor)

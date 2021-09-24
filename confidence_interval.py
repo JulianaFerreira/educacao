@@ -25,7 +25,7 @@ periodos = [2009.1, 2009.2, 2010.1, 2010.2, 2011.1, 2011.2, 2012.1, 2012.2, 2013
 
 
 for i in range(len(periodos)):
-    df = pd.read_csv("docs/df_survivability_bsi-bcc-atualizado1.csv")
+    df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
     df = df.loc[df['CD_PERD_ADMIS'] == periodos[i]]
 
     # df = df.loc[df['NM_COR_RACA'] == 'PARDA']
@@ -38,7 +38,7 @@ for i in range(len(periodos)):
     df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
     df_retidos = df[df['STATUS'] != "EVADIDO"]  # Correção para tempo de retenção, no último período evade e não retem
     df_retidos = df_retidos.loc[df_retidos['RETIDO'] == True]
-    df_retidos["DURACAO_VINCULO"] = df_retidos["DURACAO_VINCULO"] - 1  # Correção - tempo da retenção faz menos 1
+    df_retidos["DURACAO_VINCULO"] = df_retidos["DURACAO_VINCULO"]
     df_desvinculados = pd.concat([df_evadidos, df_graduados])
 
     quant_todos = len(df.NU_MATR_CURSO.unique())
