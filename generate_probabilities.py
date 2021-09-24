@@ -26,9 +26,15 @@ def transition_matrix(transitions):
     for (i, j) in zip(transitions, transitions[1:]):
         M[i][j] += 1
 
-    print(M)
+    # print(M)
 
-    # converte para probabilidades
+    # Conta para estudantes que ainda não evadiram ou graduaram -  não apague!
+    for i in range(len(M)):
+        for j in range(len(M)):
+            if j == 0:
+                M[i][j] = 0
+
+    # converte para probabilidades:
     for row in M:
         s = sum(row)
         if s > 0:
@@ -36,27 +42,35 @@ def transition_matrix(transitions):
 
     return M
 
-
 def apagar_reintegrados(df):
-    erros = []
-
-    count = 1
-    for i in range(len(df)):
-        if count == df.iloc[i].DURACAO_VINCULO_x:
-            count = count + 1
-        else:
-            if df.iloc[i-1].STATUS_x == 'EVADIDO' or df.iloc[i-1].STATUS_x == 'CONCLUIDO':
-                count = 2
-            else:
-                count = 1
-                item = df.iloc[i].NU_MATR_CURSO
-                if not item in erros:
-                    erros.append(item)
+    erros = [200610330, 200632094, 200632584, 200659979, 200678895, 200626145, 200632598, 200632612, 200650641,
+             200650658, 200659166, 200664331, 200695510]
 
     for i in range(len(erros)):
         df = df[df['NU_MATR_CURSO'] != erros[i]]
 
     return df
+
+# def apagar_reintegrados(df):
+#     erros = []
+#
+#     count = 1
+#     for i in range(len(df)):
+#         if count == df.iloc[i].DURACAO_VINCULO_x:
+#             count = count + 1
+#         else:
+#             if df.iloc[i-1].STATUS_x == 'EVADIDO' or df.iloc[i-1].STATUS_x == 'CONCLUIDO':
+#                 count = 2
+#             else:
+#                 count = 1
+#                 item = df.iloc[i].NU_MATR_CURSO
+#                 if not item in erros:
+#                     erros.append(item)
+#
+#     for i in range(len(erros)):
+#         df = df[df['NU_MATR_CURSO'] != erros[i]]
+#
+#     return df
 
 
 def evade_ou_conclu(df):
@@ -71,14 +85,16 @@ def evade_ou_conclu(df):
 def gerar_csv_matriz_probab(dados):
     df = pd.read_csv(dados)
 
-    # Corrigir a coluna de retidos
-    df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
-            df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
+    # Não precisa mais dessa parte
+    # # Corrigir a coluna de retidos
+    # df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
+    #         df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
+    #
+    # # Corrigir retidos trancados no primeiro periodo
+    # df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
 
-    # Remover retidos no primeiro periodo
-    df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
-
-    df = evade_ou_conclu(df)
+    # Se quise fazer apenas com estudantes que já evadiram ou concluiram
+    # df = evade_ou_conclu(df)
 
     df = apagar_reintegrados(df)
 
@@ -87,12 +103,12 @@ def gerar_csv_matriz_probab(dados):
 
 def altera_duracao_estados(df):
     # Começa pelo 0 para criar matriz
-    df['DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] - 1
+    df['DURACAO_VINCULO'] = df['DURACAO_VINCULO'] - 1
 
     # Altera DURACAO_VINCULO conforme status e retido
-    df.loc[df['RETIDO_x'] == True, 'DURACAO_VINCULO_x'] = df['DURACAO_VINCULO_x'] + 22
-    df.loc[df['STATUS_x'] == 'EVADIDO', 'DURACAO_VINCULO_x'] = 44
-    df.loc[df['STATUS_x'] == 'CONCLUIDO', 'DURACAO_VINCULO_x'] = 45
+    df.loc[df['RETIDO'] == True, 'DURACAO_VINCULO'] = df['DURACAO_VINCULO'] + 22
+    df.loc[df['STATUS'] == 'EVADIDO', 'DURACAO_VINCULO'] = 44
+    df.loc[df['STATUS'] == 'CONCLUIDO', 'DURACAO_VINCULO'] = 45
 
     return df
 
@@ -146,20 +162,20 @@ df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
 df = altera_duracao_estados(df)
 
 # Ano
-df = df.loc[df['CD_PERD_ADMIS_x'] < 2015]
+df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
 # # Sexo
-# df = df[df['NM_SEXO_x'] == 'F']
-# df = df[df['NM_SEXO_x'] == 'M']
+# df = df[df['NM_SEXO'] == 'F']
+# df = df[df['NM_SEXO'] == 'M']
 #
 # # Cor
-# df = df[df['NM_COR_RACA_x'] == 'BRANCA']
-# df = df[df['NM_COR_RACA_x'] == 'PRETA']
-# df = df[df['NM_COR_RACA_x'] == 'PARDA']
+# df = df[df['NM_COR_RACA'] == 'BRANCA']
+# df = df[df['NM_COR_RACA'] == 'PRETA']
+# df = df[df['NM_COR_RACA'] == 'PARDA']
 #
 # # Curso
-# df = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
-# df = df[df['NM_PROGR_FORM_x'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
 
 # Com retido
 states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'S22',
@@ -168,7 +184,7 @@ states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S
 # Sem retido
 # states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'E', 'G']
 
-t = df['DURACAO_VINCULO_x']
+t = df['DURACAO_VINCULO']
 p = transition_matrix(t)
 p[44] = np.zeros(46)
 p[45] = np.zeros(46)
@@ -182,8 +198,13 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sem-retencao.csv", states, p)
-generate_csv_and_diagram("matrix/bsi-bcc.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-20091.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-ate-2015-teste-aaa.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-20101.csv", states, p)
+# generate_csv_and_diagram("matrix/bcc-2010.1.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-ate-2013-evasao-retencao.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-ate-2013.csv", states, p)
+# generate_csv_and_diagram("matrix/bcc-ate-2013.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-ate-2013.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)

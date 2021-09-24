@@ -4,6 +4,8 @@ from markov_diagram import Diagram
 
 from pydtmc import MarkovChain, plot_graph, plot_walk
 
+# Usar generate_mc apenas para testes com modelos de cadeias de markov
+
 # Alterar aqui parametros para gerar matriz
 nomeArquivo = "matrix/matrixBoumi1.csv"
 taxaRetencao = 1.0
