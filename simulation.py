@@ -3,7 +3,7 @@ from lifelines.statistics import logrank_test
 from matplotlib import pyplot as plt
 import numpy as np
 from lifelines import KaplanMeierFitter
-from scipy.stats import ttest_ind
+from scipy.stats import ttest_ind, ttest_rel, chisquare, pearsonr, mannwhitneyu, f_oneway
 
 from Student import Student
 
@@ -61,14 +61,24 @@ def sobrevivencia(time, event_observed, label, title):
 #     plt.savefig(f"imgs/plot{title}.png")
 #     plt.show()
 
-def real_data():
+def select_data(df, case):
+    if case == "BCC":
+        return df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+    elif case == "BSI":
+        return df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+    else:
+        return df
+
+def real_data(case):
     df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
     df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
-    df = df.loc[df['NM_COR_RACA'] == 'PRETA']
+    # df = df.loc[df['NM_COR_RACA'] == 'PRETA']
     # df = df[df['NM_SEXO'] == 'F']
     # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
     # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+
+    df = select_data(df, case)
 
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
     df_evadidos['DURACAO_VINCULO'] = df_evadidos['DURACAO_VINCULO'] - 1
@@ -174,8 +184,8 @@ def Simu(quantAlunos, matriz):
         semestres = a.size
 
         # Colocar o semestre de corte aqui ou na linha 31 para fazer pelo gráfico
-        # if semestres > 20:
-        #     semestres = 20
+        if semestres > 20:
+            semestres = 20
 
         ###### Regras de Tempo ########
         # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
@@ -469,28 +479,77 @@ def Simu(quantAlunos, matriz):
 
 # Simulação BSI-BCC - Curso
 
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-ate-2013.csv')
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-ate-2013.csv')
 sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
 
-time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
+#print(len(time))
+
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/bcc-ate-2013.csv')
 sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
+
+# Com dados reais
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BSI")
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
 
 times = [time, time1]
 events = [event, event1]
 labels = ["BSI", "BCC"]
 
-# print("Desvinculação:")
-# t, p = ttest_ind(time, time1)
-# print(p)
+print("Pearsonr para Desvinculação:")
+#t, p = pearsonr(time[:300], time1[:300])
+t, p = pearsonr(time[:9000], time1[:9000])
+print(p)
+
+print("Mann-Whitney para Desvinculação:")
+#t, p = mannwhitneyu(time[:300], time1[:300])
+t, p = mannwhitneyu(time[:9000], time1[:9000])
+print(p)
+
+print("Student’s t-test para Desvinculação:")
+#t, p = ttest_ind(time[:300], time1[:300])
+t, p = ttest_ind(time[:9000], time1[:9000])
+print(p)
+
+print("Paired Student’s t-test para Desvinculação:")
+#t, p = ttest_rel(time[:300], time1[:300])
+t, p = ttest_rel(time[:9000], time1[:9000])
+print(p)
+
+print("Chi-square para Desvinculação:")
+#t, p = chisquare(time[:300], f_exp=time1[:300])
+t, p = chisquare(time[:9000], f_exp=time1[:9000])
+print(p)
+
+print("Logrank test para Desvinculação:")
+results = logrank_test(time[:9000], time1[:9000])
+results.print_summary()
+print(results.p_value)
 
 sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
 
 times = [time_evadido, time_evadido1]
 events = [event_evadido, event_evadido1]
 
-print("Teste de Hipótese para Evasão:")
-t, p = ttest_ind(time_evadido, time_evadido1)
-print(p)
+# print("Pearsonr para Evasão:")
+# t, p = pearsonr(time_evadido[:5000], time_evadido1[:5000])
+# print(p)
+#
+# print("Student’s t-test para Evasão:")
+# t, p = ttest_ind(time_evadido, time_evadido1)
+# print(p)
+#
+# print("Paired Student’s t-test para Evasão:")
+# t, p = ttest_rel(time_evadido[:5000], time_evadido1[:5000])
+# print(p)
+#
+# print("Chi-square para Evasão:")
+# t, p = chisquare(time_evadido[:5000], f_exp=time_evadido1[:5000])
+# print(p)
+#
+# print("Logrank test para Evasão:")
+# results = logrank_test(time_evadido, time_evadido1)
+# results.print_summary()
+# print(results.p_value)
 
 sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Categoria Curso")
 
