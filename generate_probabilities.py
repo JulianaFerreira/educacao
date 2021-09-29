@@ -85,13 +85,12 @@ def evade_ou_conclu(df):
 def gerar_csv_matriz_probab(dados):
     df = pd.read_csv(dados)
 
-    # Não precisa mais dessa parte
-    # # Corrigir a coluna de retidos
-    # df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
-    #         df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
-    #
-    # # Corrigir retidos trancados no primeiro periodo
-    # df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
+    # Corrigir a coluna de retidos
+    df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
+            df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
+
+    # Corrigir retidos trancados no primeiro periodo
+    df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
 
     # Se quise fazer apenas com estudantes que já evadiram ou concluiram
     # df = evade_ou_conclu(df)
@@ -112,50 +111,52 @@ def altera_duracao_estados(df):
 
     return df
 
-def alterar_prob_evasao(p):
+#TODO verificar se está correto após as alterações
+def alterar_prob_evasao(p, quant_periodos, probabilidade):
     evasao = []
     evasaoR = []
 
-    # pega e altera para 50% valor de E nos primeiros 4 períodos
-    for i in range(4):
-        evasao.append(p[i][len(p) - 2] / 2)
+    # pega e altera para {probabilidade}% do valor de E nos primeiros {quant_periodos} períodos
+    for i in range(quant_periodos):
+        evasao.append(p[i][len(p) - 2] * probabilidade)
 
-    for i in range(22, 26):
-        evasaoR.append(p[i][len(p) - 2] / 2)
+    for i in range(22, 22+quant_periodos):
+        evasaoR.append(p[i][len(p) - 2] * probabilidade)
 
     # coloca novo valor alterado
-    for i in range(4):
+    for i in range(quant_periodos):
         p[i][len(p) - 2] = evasao[i]
 
-    for i in range(22, 26):
+    for i in range(22, 22+quant_periodos):
         p[i][len(p) - 2] = evasaoR[i - 22]
 
     for i in range(len(p)-1):
         for j in range(len(p)-1):
-            if i < 4:
+            if i < quant_periodos:
                 if j == i + 1:
-                    p[i][j] = p[i][j] + evasao[i] / 2
-                    p[i][j + 22] = p[i][j + 22] + evasao[i] / 2
-            elif i > 21 and i < 26:
+                    p[i][j] = p[i][j] + evasao[i] * probabilidade
+                    p[i][j + 22] = p[i][j + 22] + evasao[i] * probabilidade
+            elif i > 21 and i < (22+quant_periodos):
                 if j == i + 1:
                     p[i][j] = p[i][j] + evasaoR[i-22]
 
     return p
 
 
-def alterar_prob_retencao(p):
+def alterar_prob_retencao(p, quant_periodos, probabilidade):
     retencao = []
 
-    # pegar e alterar valor da retenção em 50% até o período 4
-    for i in range(4):
+    # pegar e alterar valor da retenção em {probabilidade}% até o período {quant_periodos}
+    for i in range(quant_periodos):
         for j in range(len(p)-1):
             if j == i + 1:
-                retencao.append(p[i][j+22]/2)
-                p[i][j+22] = retencao[i]
-                p[i][j] = p[i][j] + retencao[i]
+                retencao.append(p[i][j+22]*probabilidade)
+                p[i][j] = p[i][j] + (p[i][j+22] * (1-probabilidade))
+                p[i][j + 22] = retencao[i]
 
     return p
 
+# TODO colocar para fazer o selfloop automaticamente passando o tempo de corte
 
 df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
 
@@ -190,16 +191,17 @@ p[44] = np.zeros(46)
 p[45] = np.zeros(46)
 
 # Alterar probabilidades de Reter e Evadir
-# p = alterar_prob_evasao(p)
-# p = alterar_prob_retencao(p)
+# p = alterar_prob_evasao(p, 1, 0.5)
+# p = alterar_prob_retencao(p, 1, 0.5)
 
 # p = np.round(p, 2)
-# generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao-sem1-25.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao-sem1-50.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao-sem1-75.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-sem1-25.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-sem1-50.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-sem1-75.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/teste.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-25.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-50.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-75.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-evasao-sem1-25.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-evasao-sem1-50.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-evasao-sem1-75.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-prob-evasao-retencao.csv", states, p)
@@ -210,7 +212,7 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-ate-2013-evasao-retencao.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-ate-2013.csv", states, p)
 # generate_csv_and_diagram("matrix/bcc-ate-2013.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-ate-2013.csv", states, p)
+# generate_csv_and_diagram("matrix/bsi-bcc-ate-2013-novo.csv", states, p)
 
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-f.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-sexo-m.csv", states, p)
