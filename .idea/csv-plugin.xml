@@ -3,20 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\docs\aaaaaa.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\docs\df_survivability_bsi-bcc-teste-1.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\docs\df_survivability_bsi-bcc.csv">
           <value>
             <Attribute>
@@ -116,6 +102,13 @@
           </value>
         </entry>
         <entry key="\matrix\bsi-bcc-ate-2013-evasao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\bsi-bcc-ate-2013-novo.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -326,6 +319,69 @@
           </value>
         </entry>
         <entry key="\matrix\corte_pareto_95\bsi-bcc-sexo-m.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\bsi-bcc-prob-evasao-sem1-25.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\bsi-bcc-prob-evasao-sem1-50.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\bsi-bcc-prob-evasao-sem1-75.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\bsi-bcc-prob-retencao-sem1-25.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\bsi-bcc-prob-retencao-sem1-50.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\bsi-bcc-prob-retencao-sem1-75.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\teste.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\teste2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\matrix\primeiro_semestre\teste3.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

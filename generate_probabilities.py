@@ -17,7 +17,7 @@ def generate_csv_and_diagram(arquivo, states, p):
     d.make_markov_diagram()
 
 # Cria matriz de transição passando um array com os estados transicionando
-def transition_matrix(transitions):
+def transition_matrix(transitions, tempo_selfloop):
     n = 1 + max(transitions)  # numero de estados
 
     M = [[0] * n for _ in range(n)]
@@ -39,6 +39,10 @@ def transition_matrix(transitions):
         s = sum(row)
         if s > 0:
             row[:] = [f / s for f in row]
+
+    # coloca o selfloop no tempo de corte
+    M[21+tempo_selfloop][21+tempo_selfloop] = M[21+tempo_selfloop][21+tempo_selfloop+1]
+    M[21 + tempo_selfloop][21 + tempo_selfloop + 1] = 0.0
 
     return M
 
@@ -111,7 +115,6 @@ def altera_duracao_estados(df):
 
     return df
 
-#TODO verificar se está correto após as alterações
 def alterar_prob_evasao(p, quant_periodos, probabilidade):
     evasao = []
     evasaoR = []
@@ -123,22 +126,23 @@ def alterar_prob_evasao(p, quant_periodos, probabilidade):
     for i in range(22, 22+quant_periodos):
         evasaoR.append(p[i][len(p) - 2] * probabilidade)
 
-    # coloca novo valor alterado
-    for i in range(quant_periodos):
-        p[i][len(p) - 2] = evasao[i]
-
-    for i in range(22, 22+quant_periodos):
-        p[i][len(p) - 2] = evasaoR[i - 22]
-
+    # ajusta os valores de progressao
     for i in range(len(p)-1):
         for j in range(len(p)-1):
             if i < quant_periodos:
                 if j == i + 1:
-                    p[i][j] = p[i][j] + evasao[i] * probabilidade
-                    p[i][j + 22] = p[i][j + 22] + evasao[i] * probabilidade
+                    p[i][j] = p[i][j] + ((p[i][len(p) - 2] * (1-probabilidade))/2)
+                    p[i][j + 22] = p[i][j + 22] + ((p[i][len(p) - 2] * (1-probabilidade))/2)
             elif i > 21 and i < (22+quant_periodos):
                 if j == i + 1:
-                    p[i][j] = p[i][j] + evasaoR[i-22]
+                    p[i][j] = p[i][j] + (p[i][len(p) - 2] * (1-probabilidade))
+
+    # coloca novo valor alterado
+    for i in range(quant_periodos):
+        p[i][len(p) - 2] = evasao[i]
+
+    for i in range(22, 22 + quant_periodos):
+        p[i][len(p) - 2] = evasaoR[i - 22]
 
     return p
 
@@ -156,7 +160,8 @@ def alterar_prob_retencao(p, quant_periodos, probabilidade):
 
     return p
 
-# TODO colocar para fazer o selfloop automaticamente passando o tempo de corte
+
+tempo_de_censura = 20
 
 df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
 
@@ -186,16 +191,16 @@ states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S
 # states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'E', 'G']
 
 t = df['DURACAO_VINCULO']
-p = transition_matrix(t)
+p = transition_matrix(t, tempo_de_censura)
 p[44] = np.zeros(46)
 p[45] = np.zeros(46)
 
 # Alterar probabilidades de Reter e Evadir
-# p = alterar_prob_evasao(p, 1, 0.5)
+# p = alterar_prob_evasao(p, 1, 0.25)
 # p = alterar_prob_retencao(p, 1, 0.5)
 
 # p = np.round(p, 2)
-# generate_csv_and_diagram("matrix/primeiro_semestre/teste.csv", states, p)
+# generate_csv_and_diagram("matrix/primeiro_semestre/teste4.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-25.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-50.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-75.csv", states, p)
