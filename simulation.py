@@ -131,9 +131,29 @@ def stacked_bar_plot(n, vinculados, graduados, evadidos):
     plt.yticks(np.arange(0, 101, step=10))
     plt.show()
 
+def barplot(title, desvinculados):
+    n = 23
+    quant_desvinculados = np.zeros(n)
+
+    for i in range(len(desvinculados)):
+        tempo = desvinculados[i]
+        quant_desvinculados[tempo] = quant_desvinculados[tempo] + 1
+
+    bars = list(range(0, n))
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, quant_desvinculados, color='gray')
+    plt.title(title)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    # Show graphic
+    plt.show()
 
 def quant_semester(quant_alunos, tempo_evadidos, tempo_graduados):
-    n = 21
+    n = 22
     quant_vinculados = np.zeros(n)
     quant_evadidos = np.zeros(n)
     quant_graduados = np.zeros(n)
@@ -157,12 +177,11 @@ def quant_semester(quant_alunos, tempo_evadidos, tempo_graduados):
 
     # Converte para probabilidades
     for i in range(n):
-        quant_vinculados[i] = quant_vinculados[i]/quant_alunos * 100
-        quant_evadidos[i] = quant_evadidos[i]/quant_alunos * 100
-        quant_graduados[i] = quant_graduados[i]/quant_alunos * 100
+        quant_vinculados[i] = quant_vinculados[i] / quant_alunos * 100
+        quant_evadidos[i] = quant_evadidos[i] / quant_alunos * 100
+        quant_graduados[i] = quant_graduados[i] / quant_alunos * 100
 
     stacked_bar_plot(n, quant_vinculados, quant_graduados, quant_evadidos)
-
 
 
 def Simu(quantAlunos, matriz):
@@ -258,7 +277,7 @@ def Simu(quantAlunos, matriz):
     print(f"Tempo médio até ser desvinculado S5: {np.round(np.mean(tempo_A5), 3)} semestres")
     print(f"Tempo médio até ser desvinculado S6: {np.round(np.mean(tempo_A6), 3)} semestres")
 
-    # quant_semester(quantAlunos, tempo_ate_evadido, tempo_ate_graduado)
+    #quant_semester(quantAlunos, tempo_ate_evadido, tempo_ate_graduado)
 
     #return time, event, event_evadido, event_graduado
     return time, time_evadido, time_graduado, event, event_evadido, event_graduado
@@ -517,8 +536,7 @@ def Simu(quantAlunos, matriz):
 
 
 # Simulação BSI-BCC - Curso
-
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bcc-ate-2013.csv')
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-ate-2013.csv')
 sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
 
 time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
@@ -527,14 +545,20 @@ sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_gra
 # # Com dados reais
 # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BSI")
 # time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
-#
-# # Quando for fazer pelos dados
+
+# Graficos
+quant_semester(len(time), time_evadido, time_graduado)
+quant_semester(len(time1), time_evadido1, time_graduado1)
+barplot("Desvinculados BSI", time)
+barplot("Desvinculados BCC", time1)
+
+# Quando for fazer pelos dados
 # time_dados_pareado = time.copy()
 # time_dados_pareado1 = time1.copy()
 # random.shuffle(time_dados_pareado)
 # random.shuffle(time_dados_pareado1)
-#
-# # Ordenar
+
+# Ordenar
 # time_dados_pareado[:300].sort()
 # time_dados_pareado1[:300].sort()
 
@@ -583,14 +607,14 @@ print("Pearsonr para Desvinculação:")
 t, p = pearsonr(time[:9000], time1[:9000])
 print(p)
 
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
-
-times = [time_evadido, time_evadido1]
-events = [event_evadido, event_evadido1]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Categoria Curso")
-
-times = [time_graduado, time_graduado1]
-events = [event_graduado, event_graduado1]
-
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Categoria Curso")
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
+#
+# times = [time_evadido, time_evadido1]
+# events = [event_evadido, event_evadido1]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Categoria Curso")
+#
+# times = [time_graduado, time_graduado1]
+# events = [event_graduado, event_graduado1]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Categoria Curso")
