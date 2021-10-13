@@ -1,11 +1,13 @@
 import random
-import scipy.stats
+import scipy.stats as st
 import pandas as pd
 from lifelines.statistics import logrank_test
 from matplotlib import pyplot as plt
 import numpy as np
 from lifelines import KaplanMeierFitter
-from scipy.stats import ttest_ind, ttest_rel, chisquare, pearsonr, mannwhitneyu, f_oneway
+from numpy import mean, std
+from scipy import stats
+from scipy.stats import ttest_ind, ttest_rel, chisquare, pearsonr, mannwhitneyu, f_oneway, ks_2samp
 
 from Student import Student
 
@@ -66,8 +68,8 @@ def sobrevivencia(time, event_observed, label, title):
 def mean_confidence_interval(data, confidence=0.95):
     a = 1.0 * np.array(data)
     n = len(a)
-    m, se = np.mean(a), scipy.stats.sem(a)
-    h = se * scipy.stats.t.ppf((1 + confidence) / 2., n-1)
+    m, se = np.mean(a), st.sem(a)
+    h = se * st.t.ppf((1 + confidence) / 2., n-1)
     return m, m-h, m+h
 
 def select_data(df, case):
@@ -534,23 +536,72 @@ def Simu(quantAlunos, matriz):
 #
 # sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Cor")
 
+def d_crit_two_way(arr1, arr2):
+    return 1.36*np.sqrt(len(arr1)**-1 + len(arr2)**-1)
+
+def kolmogorov_smirnov_test(samp_a, samp_b, label1, label2):
+    # concatenate and sort
+    samp_conc = np.sort(np.concatenate((samp_a, samp_b)))
+
+    # cdf of sample a
+    samp_a_cdf = [np.round(st.percentileofscore(samp_a, value) / 100, 1) for value in samp_conc]
+
+    # cdf of sample b
+    samp_b_cdf = [np.round(st.percentileofscore(samp_b, value) / 100, 1) for value in samp_conc]
+
+    # compute absolute difference
+    samp_diff = np.abs(np.subtract(samp_a_cdf, samp_b_cdf))
+
+    # get max difference
+    dn_ks = max(samp_diff)
+    print("dn_ks:", dn_ks)
+
+    print("dn_crit:", d_crit_two_way(samp_a, samp_b))
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(samp_conc, samp_a_cdf, label=label1)
+    plt.plot(samp_conc, samp_b_cdf, label=label2)
+
+    for val, p1, p2 in zip(samp_conc, samp_a_cdf, samp_b_cdf):
+        plt.plot([val, val], [p1, p2], color='green', alpha=0.2)
+
+    plt.legend()
+    plt.ylabel("F(x)")
+    plt.xlabel('x')
+    plt.title("KS Test - Modelo x Modelo (pareto) [BSI]")
+
+    plt.show()
+
+    #t, p = stats.kstest(samp_conc, 'norm', args=(mean(samp_conc), std(samp_conc)), N=len(samp_conc))
+    t, p = ks_2samp(np.sort(samp_a), np.sort(samp_b))
+    print("p-valor:", p)
+
+
 
 # Simulação BSI-BCC - Curso
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-ate-2013.csv')
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-ate-2013.csv')
 sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
 
-time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
-sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-ate-2013.csv')
+# sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 # # Com dados reais
 # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BSI")
-# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
+#time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
+
+
+
+
+kolmogorov_smirnov_test(time, time1, "Modelo", "Modelo(pareto)")
+
+
+
 
 # Graficos
-quant_semester(len(time), time_evadido, time_graduado)
-quant_semester(len(time1), time_evadido1, time_graduado1)
-barplot("Desvinculados BSI", time)
-barplot("Desvinculados BCC", time1)
+# quant_semester(len(time), time_evadido, time_graduado)
+# quant_semester(len(time1), time_evadido1, time_graduado1)
+# barplot("Desvinculados BSI", time)
+# barplot("Desvinculados BCC", time1)
 
 # Quando for fazer pelos dados
 # time_dados_pareado = time.copy()
@@ -563,8 +614,8 @@ barplot("Desvinculados BCC", time1)
 # time_dados_pareado1[:300].sort()
 
 # Ordenar
-time.sort()
-time1.sort()
+# time.sort()
+# time1.sort()
 
 # # Intervalo de Confiança
 # temp_mean, temp_min, temp_max = mean_confidence_interval(time)
@@ -575,37 +626,37 @@ time1.sort()
 # print("IC Desvinculação:")
 # print(temp_mean, temp_min, temp_max)
 
-times = [time, time1]
-events = [event, event1]
-labels = ["BSI", "BCC"]
-
-print("Student’s t-test para Desvinculação:")
-t, p = ttest_ind(time, time1)
-print(p)
-
-print("Paired Student’s t-test para Desvinculação:")
-#t, p = ttest_rel(time_dados_pareado[:300], time_dados_pareado1[:300])
-t, p = ttest_rel(time[:9000], time1[:9000])
-print(p)
-
-print("Chi-square para Desvinculação:")
-#t, p = chisquare(time_dados_pareado[:300], f_exp=time_dados_pareado1[:300])
-t, p = chisquare(time[:9000], f_exp=time1[:9000])
-print(p)
-
-print("Logrank test para Desvinculação:")
-results = logrank_test(time, time1)
-results.print_summary()
-print(results.p_value)
-
-print("Mann-Whitney para Desvinculação:")
-t, p = mannwhitneyu(time, time1)
-print(p)
-
-print("Pearsonr para Desvinculação:")
-#t, p = pearsonr(time_dados_pareado[:300], time_dados_pareado1[:300])
-t, p = pearsonr(time[:9000], time1[:9000])
-print(p)
+# times = [time, time1]
+# events = [event, event1]
+# labels = ["BSI", "BCC"]
+#
+# print("Student’s t-test para Desvinculação:")
+# t, p = ttest_ind(time, time1)
+# print(p)
+#
+# print("Paired Student’s t-test para Desvinculação:")
+# #t, p = ttest_rel(time_dados_pareado[:300], time_dados_pareado1[:300])
+# t, p = ttest_rel(time[:9000], time1[:9000])
+# print(p)
+#
+# print("Chi-square para Desvinculação:")
+# #t, p = chisquare(time_dados_pareado[:300], f_exp=time_dados_pareado1[:300])
+# t, p = chisquare(time[:9000], f_exp=time1[:9000])
+# print(p)
+#
+# print("Logrank test para Desvinculação:")
+# results = logrank_test(time, time1)
+# results.print_summary()
+# print(results.p_value)
+#
+# print("Mann-Whitney para Desvinculação:")
+# t, p = mannwhitneyu(time, time1)
+# print(p)
+#
+# print("Pearsonr para Desvinculação:")
+# #t, p = pearsonr(time_dados_pareado[:300], time_dados_pareado1[:300])
+# t, p = pearsonr(time[:9000], time1[:9000])
+# print(p)
 
 # sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
 #
