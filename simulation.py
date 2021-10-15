@@ -96,7 +96,7 @@ def real_data(case):
     tempo_evasao = df_evadidos["DURACAO_VINCULO"].values
 
     df_graduados = df.loc[df['STATUS'] == "CONCLUIDO"]
-    df_graduados['DURACAO_VINCULO'] = df_graduados['DURACAO_VINCULO']
+    #df_graduados['DURACAO_VINCULO'] = df_graduados['DURACAO_VINCULO']
     tempo_conclusao = df_graduados["DURACAO_VINCULO"].values
 
     tempo_desvinculacao = np.concatenate((tempo_evasao, tempo_conclusao))
@@ -540,6 +540,14 @@ def d_crit_two_way(arr1, arr2):
     return 1.36*np.sqrt(len(arr1)**-1 + len(arr2)**-1)
 
 def kolmogorov_smirnov_test(samp_a, samp_b, label1, label2):
+    # Apenas para teste com +1 nos 100 primeiros e últimos do modelo
+    # samp_a.sort()
+    # for i in range(len(samp_a)/2):
+    #     samp_a[i] = samp_a[i] * 1.1
+    #
+    # for i in range(len(samp_a)/2, len(samp_a)):
+    #     samp_a[i] = samp_a[i] * 0.9
+
     # concatenate and sort
     samp_conc = np.sort(np.concatenate((samp_a, samp_b)))
 
@@ -568,7 +576,7 @@ def kolmogorov_smirnov_test(samp_a, samp_b, label1, label2):
     plt.legend()
     plt.ylabel("F(x)")
     plt.xlabel('x')
-    plt.title("KS Test - Modelo x Modelo (pareto) [BSI]")
+    plt.title("KS Test - Dados x Modelo(pareto) [BCC] - Teste com +1 no tempo")
 
     plt.show()
 
@@ -576,23 +584,30 @@ def kolmogorov_smirnov_test(samp_a, samp_b, label1, label2):
     t, p = ks_2samp(np.sort(samp_a), np.sort(samp_b))
     print("p-valor:", p)
 
+    t, p = ttest_ind(samp_a, samp_b)
+    print(p)
+
+    t, p = ttest_rel(samp_a, samp_b)
+    print(p)
+
 
 
 # Simulação BSI-BCC - Curso
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/bsi-ate-2013.csv')
-sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
+# sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
 
-time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-ate-2013.csv')
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
 # sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 # # Com dados reais
 # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BSI")
-#time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
+# sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 
+time2 = np.concatenate((np.array((time1[:len(time1)//2]*0.9)), np.array((time1[len(time1)//2:]*1.1))))
 
-
-kolmogorov_smirnov_test(time, time1, "Modelo", "Modelo(pareto)")
+kolmogorov_smirnov_test(time2, time1, "Modelo(pareto)", "Dados")
 
 
 
@@ -625,10 +640,10 @@ kolmogorov_smirnov_test(time, time1, "Modelo", "Modelo(pareto)")
 # temp_mean, temp_min, temp_max = mean_confidence_interval(time1)
 # print("IC Desvinculação:")
 # print(temp_mean, temp_min, temp_max)
-
+#
 # times = [time, time1]
 # events = [event, event1]
-# labels = ["BSI", "BCC"]
+# labels = ["Dados", "Modelo"]
 #
 # print("Student’s t-test para Desvinculação:")
 # t, p = ttest_ind(time, time1)
@@ -657,15 +672,15 @@ kolmogorov_smirnov_test(time, time1, "Modelo", "Modelo(pareto)")
 # #t, p = pearsonr(time_dados_pareado[:300], time_dados_pareado1[:300])
 # t, p = pearsonr(time[:9000], time1[:9000])
 # print(p)
-
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação para Categoria Curso")
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação")
 #
 # times = [time_evadido, time_evadido1]
 # events = [event_evadido, event_evadido1]
 #
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão para Categoria Curso")
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
 #
 # times = [time_graduado, time_graduado1]
 # events = [event_graduado, event_graduado1]
 #
-# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão para Categoria Curso")
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão")
