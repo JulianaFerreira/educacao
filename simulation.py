@@ -77,6 +77,16 @@ def select_data(df, case):
         return df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
     elif case == "BSI":
         return df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+    elif case == "F":
+        return df[df['NM_SEXO'] == 'F']
+    elif case == "M":
+        return df[df['NM_SEXO'] == 'M']
+    elif case == "PRETA":
+        return df.loc[df['NM_COR_RACA'] == 'PRETA']
+    elif case == "BRANCA":
+        return df.loc[df['NM_COR_RACA'] == 'BRANCA']
+    elif case == "PARDA":
+        return df.loc[df['NM_COR_RACA'] == 'PARDA']
     else:
         return df
 
@@ -593,7 +603,7 @@ def kolmogorov_smirnov_test(samp_a, samp_b, label1, label2):
 
 
 # Simulação BSI-BCC - Curso
-# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bcc-ate-2013.csv')
 # sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
 
 # time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
@@ -605,11 +615,16 @@ time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = 
 # sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 
-time2 = np.concatenate((np.array((time1[:len(time1)//2]*0.9)), np.array((time1[len(time1)//2:]*1.1))))
+#time2 = np.concatenate((np.array((time1[:len(time1)//2]*0.9)), np.array((time1[len(time1)//2:]*1.1))))
 
-kolmogorov_smirnov_test(time2, time1, "Modelo(pareto)", "Dados")
+#kolmogorov_smirnov_test(time2, time1, "Modelo(pareto)", "Dados")
 
-
+t, p = ks_2samp(time, time1)
+print("Desvinculação - p-valor:", p)
+t, p = ks_2samp(time_evadido, time_evadido1)
+print("Evasão - p-valor:", p)
+t, p = ks_2samp(time_graduado, time_graduado1)
+print("Conclusão - p-valor:", p)
 
 
 # Graficos
