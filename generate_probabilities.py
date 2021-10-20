@@ -110,6 +110,7 @@ def altera_duracao_estados(df):
 
     # Altera DURACAO_VINCULO conforme status e retido
     df.loc[df['RETIDO'] == True, 'DURACAO_VINCULO'] = df['DURACAO_VINCULO'] + 22
+    #df.loc[df['RETIDO_FIM_PERD'] == True, 'DURACAO_VINCULO'] = df['DURACAO_VINCULO'] + 22
     df.loc[df['STATUS'] == 'EVADIDO', 'DURACAO_VINCULO'] = 44
     df.loc[df['STATUS'] == 'CONCLUIDO', 'DURACAO_VINCULO'] = 45
 
@@ -164,6 +165,7 @@ def alterar_prob_retencao(p, quant_periodos, probabilidade):
 tempo_de_censura = 20
 
 df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
+#df = gerar_csv_matriz_probab("docs/df_survival.csv")
 
 df = altera_duracao_estados(df)
 
@@ -182,6 +184,16 @@ df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 # # Curso
 # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
 # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+# df = df[df['NM_PROGR_FORM'] == 'AGRONOMIA']
+# df = df[df['NM_PROGR_FORM'] == 'MEDICINA VETERINÁRIA']
+
+# Estado Civil
+# df = df[df['NM_EST_CIVIL'] == 'SOLTEIRO']
+# df = df[df['NM_EST_CIVIL'] == 'CASADO']
+
+# Tipo de Ingresso
+# df = df[df['DS_TP_INGRS'] == 'VESTIBULAR']
+# df = df[df['DS_TP_INGRS'] == 'SISU']
 
 # Com retido
 states = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20', 'S21', 'S22',
@@ -200,7 +212,8 @@ p[45] = np.zeros(46)
 # p = alterar_prob_retencao(p, 1, 0.5)
 
 # p = np.round(p, 2)
-# generate_csv_and_diagram("matrix/primeiro_semestre/teste4.csv", states, p)
+
+# generate_csv_and_diagram("matrix/test.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-25.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-50.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-75.csv", states, p)
@@ -228,3 +241,6 @@ p[45] = np.zeros(46)
 #
 # generate_csv_and_diagram("matrix/bsi-bcc-curso-bsi.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-curso-bcc.csv", states, p)
+#
+# generate_csv_and_diagram("matrix/estado-civil-solteiro.csv", states, p)
+# generate_csv_and_diagram("matrix/estado-civil-casado.csv", states, p)
