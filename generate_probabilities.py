@@ -90,8 +90,8 @@ def gerar_csv_matriz_probab(dados):
     df = pd.read_csv(dados)
 
     # Corrigir a coluna de retidos
-    df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
-            df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
+    # df.loc[((df['QTD_REPROVADO_ACUM'] - df['QTD_REPROVADO']) < df['QTD_DISCIPLINAS_PERIODO']) & (
+    #         df['QTD_TRANCAMENTOS_ACUM'] < 1), 'RETIDO'] = False
 
     # Corrigir retidos trancados no primeiro periodo
     df.loc[df['DURACAO_VINCULO'] == 1, 'RETIDO'] = False
@@ -164,13 +164,14 @@ def alterar_prob_retencao(p, quant_periodos, probabilidade):
 
 tempo_de_censura = 20
 
-df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
-#df = gerar_csv_matriz_probab("docs/df_survival.csv")
+#df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
+df = gerar_csv_matriz_probab("docs/df_survival_2015_2018.csv")
 
 df = altera_duracao_estados(df)
 
 # Ano
-df = df.loc[df['CD_PERD_ADMIS'] < 2014]
+df = df.loc[df['CD_PERD_ADMIS'] > 2015]
+df = df.loc[df['CD_PERD_ADMIS'] < 2019]
 
 # # Sexo
 # df = df[df['NM_SEXO'] == 'F']
@@ -239,8 +240,10 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/bsi-bcc-cor-preta.csv", states, p)
 # generate_csv_and_diagram("matrix/bsi-bcc-cor-parda.csv", states, p)
 #
-# generate_csv_and_diagram("matrix/bsi-bcc-curso-bsi.csv", states, p)
-# generate_csv_and_diagram("matrix/bsi-bcc-curso-bcc.csv", states, p)
+# generate_csv_and_diagram("matrix/2015-2018/bcc.csv", states, p)
+# generate_csv_and_diagram("matrix/2015-2018/bsi.csv", states, p)
+# generate_csv_and_diagram("matrix/2015-2018/agro.csv", states, p)
+# generate_csv_and_diagram("matrix/2015-2018/med.csv", states, p)
 #
 # generate_csv_and_diagram("matrix/estado-civil-solteiro.csv", states, p)
 # generate_csv_and_diagram("matrix/estado-civil-casado.csv", states, p)

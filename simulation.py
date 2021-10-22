@@ -32,8 +32,8 @@ def sobrevivencia(time, event_observed, label, title):
     plt.title("IC de 95% para a Média", fontsize=10)
 
     # Corte pelo semestre no gráfico - BSI-BCC
-    plt.xticks(range(0, 21))
-    plt.xlim([-0.2, 20.2])
+    plt.xticks(range(0, 5))
+    plt.xlim([-0.2, 4.1])
     # plt.xticks(range(0, 15))
     # plt.xlim([-0.2, 14.2])
     plt.xlabel('Tempo (semestres)')
@@ -224,8 +224,8 @@ def Simu(quantAlunos, matriz):
         semestres = a.size
 
         # Colocar o semestre de corte aqui ou na linha 31 para fazer pelo gráfico
-        if semestres > 20:
-            semestres = 20
+        # if semestres > 5:
+        #     semestres = 5
 
         ###### Regras de Tempo ########
         # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
@@ -548,8 +548,49 @@ def Simu(quantAlunos, matriz):
 
 
 
+# Simulação BSI-BCC-Agro-Med - Curso
+
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/2015-2018/agro.csv')
+sobrevivencia([time_evadido], [event_evadido], ['Agro'], "Análise de Sobrevivência da Evasão")
+
+time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/2015-2018/bcc.csv')
+sobrevivencia([time_evadido1], [event_evadido1], ['BCC'], "Análise de Sobrevivência da Evasão")
+
+time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = Simu(10000, 'matrix/2015-2018/bsi.csv')
+sobrevivencia([time_evadido2], [event_evadido2], ['BSI'], "Análise de Sobrevivência da Evasão")
+
+time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = Simu(10000, 'matrix/2015-2018/med.csv')
+sobrevivencia([time_evadido3], [event_evadido3], ['Med Vet'], "Análise de Sobrevivência da Evasão")
+
+labels = ["Agro", "BCC", "BSI", "Med Vet"]
+
+times = [time_evadido, time_evadido1, time_evadido2, time_evadido3]
+events = [event_evadido, event_evadido1, event_evadido2, event_evadido3]
+
+sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
+
+
+t, p = ks_2samp(time_evadido1, time_evadido)
+print("BCC x Agro - p-valor:", p)
+
+t, p = ks_2samp(time_evadido2, time_evadido)
+print("BSI x Agro - p-valor:", p)
+
+t, p = ks_2samp(time_evadido1, time_evadido3)
+print("BCC x Med Vet - p-valor:", p)
+
+t, p = ks_2samp(time_evadido2, time_evadido3)
+print("BSI x Med Vet - p-valor:", p)
+
+t, p = ks_2samp(time_evadido1, time_evadido2)
+print("BCC x BSI - p-valor:", p)
+
+t, p = ks_2samp(time_evadido, time_evadido3)
+print("Agro x Med Vet - p-valor:", p)
+
+
 # Simulação BSI-BCC - Curso
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-cor-preta.csv')
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-cor-preta.csv')
 # sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
 
 # time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
@@ -557,7 +598,7 @@ time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(1
 
 # # Com dados reais
 # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BSI")
-time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("PRETA")
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("PRETA")
 # sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 
@@ -565,12 +606,12 @@ time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = 
 
 #kolmogorov_smirnov_test(time2, time1, "Modelo(pareto)", "Dados")
 
-t, p = ks_2samp(time, time1)
-print("Desvinculação - p-valor:", p)
-t, p = ks_2samp(time_evadido, time_evadido1)
-print("Evasão - p-valor:", p)
-t, p = ks_2samp(time_graduado, time_graduado1)
-print("Conclusão - p-valor:", p)
+# t, p = ks_2samp(time, time1)
+# print("Desvinculação - p-valor:", p)
+# t, p = ks_2samp(time_evadido, time_evadido1)
+# print("Evasão - p-valor:", p)
+# t, p = ks_2samp(time_graduado, time_graduado1)
+# print("Conclusão - p-valor:", p)
 
 
 # Graficos de barra
