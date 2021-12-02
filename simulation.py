@@ -77,6 +77,10 @@ def select_data(df, case):
         return df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
     elif case == "BSI":
         return df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
+    elif case == "AGRO":
+        return df[df['NM_PROGR_FORM'] == 'AGRONOMIA']
+    elif case == "MED":
+        return df[df['NM_PROGR_FORM'] == 'MEDICINA VETERINÁRIA']
     elif case == "F":
         return df[df['NM_SEXO'] == 'F']
     elif case == "M":
@@ -91,8 +95,12 @@ def select_data(df, case):
         return df
 
 def real_data(case):
-    df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
-    df = df.loc[df['CD_PERD_ADMIS'] < 2014]
+    # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+    # df = df.loc[df['CD_PERD_ADMIS'] < 2014]
+
+    df = pd.read_csv("docs/df_survival_2015_2018.csv")
+    df = df.loc[df['CD_PERD_ADMIS'] > 2015]
+    df = df.loc[df['CD_PERD_ADMIS'] < 2019]
 
     # df = df.loc[df['NM_COR_RACA'] == 'PRETA']
     # df = df[df['NM_SEXO'] == 'F']
@@ -102,6 +110,7 @@ def real_data(case):
     df = select_data(df, case)
 
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
+    df_evadidos = df_evadidos.loc[df_evadidos["DURACAO_VINCULO"] < 6]  # apagar quando for usar todos os semestres
     df_evadidos['DURACAO_VINCULO'] = df_evadidos['DURACAO_VINCULO'] - 1
     tempo_evasao = df_evadidos["DURACAO_VINCULO"].values
 
@@ -224,8 +233,8 @@ def Simu(quantAlunos, matriz):
         semestres = a.size
 
         # Colocar o semestre de corte aqui ou na linha 31 para fazer pelo gráfico
-        # if semestres > 5:
-        #     semestres = 5
+        if semestres > 5:
+            semestres = 5
 
         ###### Regras de Tempo ########
         # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
@@ -562,7 +571,16 @@ sobrevivencia([time_evadido2], [event_evadido2], ['BSI'], "Análise de Sobreviv�
 time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = Simu(10000, 'matrix/2015-2018/med.csv')
 sobrevivencia([time_evadido3], [event_evadido3], ['Med Vet'], "Análise de Sobrevivência da Evasão")
 
-labels = ["Agro", "BCC", "BSI", "Med Vet"]
+
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("AGRO")
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
+# time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = real_data("BSI")
+# time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = real_data("MED")
+
+
+# ["Agro", "BCC", "BSI", "Med Vet"]
+
+labels = ["Curso 1", "Curso 2", "Curso 3", "Curso 4"]
 
 times = [time_evadido, time_evadido1, time_evadido2, time_evadido3]
 events = [event_evadido, event_evadido1, event_evadido2, event_evadido3]
@@ -588,17 +606,43 @@ print("BCC x BSI - p-valor:", p)
 t, p = ks_2samp(time_evadido, time_evadido3)
 print("Agro x Med Vet - p-valor:", p)
 
+# Tamanho das amostras
+print("Tamanho das Amostras:")
+print(len(time_evadido))
+print(len(time_evadido1))
+print(len(time_evadido2))
+print(len(time_evadido3))
+
+# Intervalo de Confiança
+temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido)
+print("IC Agro:")
+print(temp_mean, temp_min, temp_max)
+
+temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido1)
+print("IC BCC:")
+print(temp_mean, temp_min, temp_max)
+
+temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido2)
+print("IC BSI:")
+print(temp_mean, temp_min, temp_max)
+
+temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido3)
+print("IC Vet:")
+print(temp_mean, temp_min, temp_max)
+
+
+
 
 # Simulação BSI-BCC - Curso
-# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-cor-preta.csv')
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-sexo-f.csv')
 # sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BSI")
-
-# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-ate-2013.csv')
+#
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/corte_pareto_95/bsi-bcc-sexo-m.csv')
 # sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 # # Com dados reais
 # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BSI")
-# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("PRETA")
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
 # sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - BCC")
 
 
@@ -625,8 +669,12 @@ print("Agro x Med Vet - p-valor:", p)
 # print("IC Desvinculação:")
 # print(temp_mean, temp_min, temp_max)
 #
-# temp_mean, temp_min, temp_max = mean_confidence_interval(time1)
-# print("IC Desvinculação:")
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido)
+# print("IC Evasão:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_graduado)
+# print("IC Conclusão:")
 # print(temp_mean, temp_min, temp_max)
 
 # times = [time, time1]
