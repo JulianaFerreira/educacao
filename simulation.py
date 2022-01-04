@@ -560,22 +560,44 @@ def Simu(quantAlunos, matriz):
 # Simulação BSI-BCC-Agro-Med - Curso
 
 time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/2015-2018/agro.csv')
-sobrevivencia([time_evadido], [event_evadido], ['Agro'], "Análise de Sobrevivência da Evasão")
+#sobrevivencia([time_evadido], [event_evadido], ['Agro'], "Análise de Sobrevivência da Evasão")
 
 time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/2015-2018/bcc.csv')
-sobrevivencia([time_evadido1], [event_evadido1], ['BCC'], "Análise de Sobrevivência da Evasão")
+#sobrevivencia([time_evadido1], [event_evadido1], ['BCC'], "Análise de Sobrevivência da Evasão")
 
 time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = Simu(10000, 'matrix/2015-2018/bsi.csv')
-sobrevivencia([time_evadido2], [event_evadido2], ['BSI'], "Análise de Sobrevivência da Evasão")
+#sobrevivencia([time_evadido2], [event_evadido2], ['BSI'], "Análise de Sobrevivência da Evasão")
 
 time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = Simu(10000, 'matrix/2015-2018/med.csv')
-sobrevivencia([time_evadido3], [event_evadido3], ['Med Vet'], "Análise de Sobrevivência da Evasão")
+#sobrevivencia([time_evadido3], [event_evadido3], ['Med Vet'], "Análise de Sobrevivência da Evasão")
 
 
 # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("AGRO")
 # time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
 # time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = real_data("BSI")
 # time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = real_data("MED")
+
+# Boxplot
+import seaborn as sns
+sns.set_theme(style="whitegrid")
+data1 = {'Curso': 'Curso 1', 'Tempo(semestres)': time_evadido}
+df1 = pd.DataFrame(data1)
+data2 = {'Curso': 'Curso 2', 'Tempo(semestres)': time_evadido1}
+df2 = pd.DataFrame(data2)
+data3 = {'Curso': 'Curso 3', 'Tempo(semestres)': time_evadido2}
+df3 = pd.DataFrame(data3)
+data4 = {'Curso': 'Curso 4', 'Tempo(semestres)': time_evadido3}
+df4 = pd.DataFrame(data4)
+df = df1.append(df2).append(df3).append(df4)
+ax = sns.boxplot(x='Curso', y='Tempo(semestres)', hue="Curso", data=df)
+plt.show()
+
+# Anova
+from scipy.stats import f_oneway
+F, p = f_oneway(time_evadido, time_evadido1, time_evadido2, time_evadido3)
+print("Anova: ", p)
+stats.kruskal(time_evadido, time_evadido1, time_evadido2, time_evadido3)
+print("Kruskal: ", p)
 
 
 # ["Agro", "BCC", "BSI", "Med Vet"]
@@ -585,7 +607,7 @@ labels = ["Curso 1", "Curso 2", "Curso 3", "Curso 4"]
 times = [time_evadido, time_evadido1, time_evadido2, time_evadido3]
 events = [event_evadido, event_evadido1, event_evadido2, event_evadido3]
 
-sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
+#sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
 
 
 t, p = ks_2samp(time_evadido1, time_evadido)
