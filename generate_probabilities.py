@@ -165,13 +165,13 @@ def alterar_prob_retencao(p, quant_periodos, probabilidade):
 tempo_de_censura = 20
 
 #df = gerar_csv_matriz_probab("docs/df_survivability_bsi-bcc.csv")
-df = gerar_csv_matriz_probab("docs/df_survival_2015_2018.csv")
+df = gerar_csv_matriz_probab("docs/df_survival_att.csv")
 
 df = altera_duracao_estados(df)
 
 # Ano
-df = df.loc[df['CD_PERD_ADMIS'] > 2015]
-df = df.loc[df['CD_PERD_ADMIS'] < 2019]
+df = df.loc[df['CD_PERD_ADMIS'] > 2009]
+df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
 # # Sexo
 # df = df[df['NM_SEXO'] == 'F']
@@ -214,6 +214,7 @@ p[45] = np.zeros(46)
 
 # p = np.round(p, 2)
 
+generate_csv_and_diagram("matrix/agro-bcc-bsi-vet.csv", states, p)
 # generate_csv_and_diagram("matrix/test.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-25.csv", states, p)
 # generate_csv_and_diagram("matrix/primeiro_semestre/bsi-bcc-prob-retencao-sem1-50.csv", states, p)
@@ -244,6 +245,4 @@ p[45] = np.zeros(46)
 # generate_csv_and_diagram("matrix/2015-2018/bsi.csv", states, p)
 # generate_csv_and_diagram("matrix/2015-2018/agro.csv", states, p)
 # generate_csv_and_diagram("matrix/2015-2018/med.csv", states, p)
-#
-# generate_csv_and_diagram("matrix/estado-civil-solteiro.csv", states, p)
-# generate_csv_and_diagram("matrix/estado-civil-casado.csv", states, p)
+

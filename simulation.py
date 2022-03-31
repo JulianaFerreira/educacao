@@ -16,8 +16,8 @@ def sobrevivencia(time, event_observed, label, title):
     kmf = KaplanMeierFitter()
 
     color = ["red", "green", "blue"]
-    linestyles = ['-.', ':', '--', '-']
-    markers = ['x', '*', '^', 'o']
+    linestyles = ['-.', ':', '--', '-', ':', '--']
+    markers = ['x', '*', '^', 'o', 'v','P']
 
     for i in range(len(time)):
         kmf.fit(time[i], event_observed[i], label=label[i])
@@ -29,13 +29,15 @@ def sobrevivencia(time, event_observed, label, title):
     plt.ylabel('Probabilidade')
     plt.yticks(np.arange(0, 1.1, step=0.1))
     plt.suptitle(f"{title}", fontsize=12)
-    plt.title("IC de 95% para a Média", fontsize=10)
+    plt.title("IC de 95% para a média", fontsize=10)
 
     # Corte pelo semestre no gráfico - BSI-BCC
-    plt.xticks(range(0, 5))
-    plt.xlim([-0.2, 4.1])
+    plt.xticks(range(0, 21))
+    plt.xlim([-0.2, 21.1])
     # plt.xticks(range(0, 15))
     # plt.xlim([-0.2, 14.2])
+    # plt.xticks(range(0, 5))
+    # plt.xlim([-0.2, 4.2])
     plt.xlabel('Tempo (semestres)')
 
     # Corte pelo semestre no gráfico - Boumi
@@ -43,6 +45,7 @@ def sobrevivencia(time, event_observed, label, title):
     # plt.xlim([-0.2, 9.2])
     # plt.xlabel('Tempo (anos)')
 
+    plt.grid(False)
     plt.savefig(f"imgs/plot{title}.png")
     plt.show()
     # kmf.plot_cumulative_density(ci_show=False)
@@ -95,22 +98,17 @@ def select_data(df, case):
         return df
 
 def real_data(case):
-    # df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
-    # df = df.loc[df['CD_PERD_ADMIS'] < 2014]
+    df = pd.read_csv("docs/df_survivability_bsi-bcc.csv")
+    df = df.loc[df['CD_PERD_ADMIS'] < 2014]
 
-    df = pd.read_csv("docs/df_survival_2015_2018.csv")
-    df = df.loc[df['CD_PERD_ADMIS'] > 2015]
-    df = df.loc[df['CD_PERD_ADMIS'] < 2019]
-
-    # df = df.loc[df['NM_COR_RACA'] == 'PRETA']
-    # df = df[df['NM_SEXO'] == 'F']
-    # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM SISTEMAS DE INFORMAÇÃO']
-    # df = df[df['NM_PROGR_FORM'] == 'BACHARELADO EM CIÊNCIA DA COMPUTAÇÃO']
+    # df = pd.read_csv("docs/df_survival_att.csv")
+    # df = df.loc[df['CD_PERD_ADMIS'] > 2015]
+    # df = df.loc[df['CD_PERD_ADMIS'] < 2019]
 
     df = select_data(df, case)
 
     df_evadidos = df.loc[df['STATUS'] == "EVADIDO"]
-    df_evadidos = df_evadidos.loc[df_evadidos["DURACAO_VINCULO"] < 6]  # apagar quando for usar todos os semestres
+    #df_evadidos = df_evadidos.loc[df_evadidos["DURACAO_VINCULO"] < 6]  # apagar quando for usar todos os semestres
     df_evadidos['DURACAO_VINCULO'] = df_evadidos['DURACAO_VINCULO'] - 1
     tempo_evasao = df_evadidos["DURACAO_VINCULO"].values
 
@@ -206,6 +204,7 @@ def quant_semester(quant_alunos, tempo_evadidos, tempo_graduados):
 
 
 def Simu(quantAlunos, matriz):
+#def Simu(quantAlunos, matriz, tempo_retencao):
     e = 0
     g = 0
     r = 0
@@ -233,8 +232,19 @@ def Simu(quantAlunos, matriz):
         semestres = a.size
 
         # Colocar o semestre de corte aqui ou na linha 31 para fazer pelo gráfico
-        if semestres > 5:
-            semestres = 5
+        # if semestres > 20:
+        #     semestres = 20
+
+        # Se ficou Retido em algum dos estados
+        count = 0
+        retido = 0
+        for estado in arr:
+            if 'R' in estado:
+                tempo_ate_retido.append(count)
+                retido = 1
+                r += 1
+                break
+            count += 1
 
         ###### Regras de Tempo ########
         # Não esquecer que são quantos semestres passaram até chegar naquele estado (quanto tempo está no curso) e não o período atual do curso!
@@ -243,6 +253,7 @@ def Simu(quantAlunos, matriz):
         # retenção é no inicio do semestre atual por isso o count começa no 0
         # probabilidade de retenção está certa, já que não pode contar quem iria ficar retido no ano que evadiu
         # lembrar dessas informações quando for validar os dados!
+        #if tempo_retencao == 0 and retido == 0:
         if arr[semestres-1] == 'E':  # evadido
             e += 1
             semestres = semestres - 1
@@ -262,15 +273,47 @@ def Simu(quantAlunos, matriz):
             v += 1
             # event.append(0)
             # time.append(semestres)
+        #elif tempo_retencao > 7 and retido == 1 and count >= tempo_retencao:
+        # if arr[semestres-1] == 'E':  # evadido
+        #     e += 1
+        #     semestres = semestres - 1
+        #     tempo_ate_evadido.append(semestres)
+        #     time.append(semestres)
+        #     time_evadido.append(semestres)
+        #     event.append(1)
+        #     event_evadido.append(1)
+        # elif arr[semestres-1] == 'G':  # graduado
+        #     g += 1
+        #     tempo_ate_graduado.append(semestres)
+        #     time.append(semestres)
+        #     time_graduado.append(semestres)
+        #     event.append(1)
+        #     event_graduado.append(1)
+        # else:  # ainda vinculado
+        #     v += 1
+            # event.append(0)
+            # time.append(semestres)
+        #elif retido == 1 and count == tempo_retencao:
+        # if arr[semestres-1] == 'E':  # evadido
+        #     e += 1
+        #     semestres = semestres - 1
+        #     tempo_ate_evadido.append(semestres)
+        #     time.append(semestres)
+        #     time_evadido.append(semestres)
+        #     event.append(1)
+        #     event_evadido.append(1)
+        # elif arr[semestres-1] == 'G':  # graduado
+        #     g += 1
+        #     tempo_ate_graduado.append(semestres)
+        #     time.append(semestres)
+        #     time_graduado.append(semestres)
+        #     event.append(1)
+        #     event_graduado.append(1)
+        # else:  # ainda vinculado
+        #     v += 1
+        #     # event.append(0)
+        #     # time.append(semestres)
 
-        # Se ficou Retido em algum dos estados
-        count = 0
-        for estado in arr:
-            if 'R' in estado:
-                tempo_ate_retido.append(count)
-                r += 1
-                break
-            count += 1
 
         # Tempo por ano
         tempo_A1.append(semestres)
@@ -525,7 +568,7 @@ def Simu(quantAlunos, matriz):
 
 
 # Simulação BSI-BCC - Cor/Raça
-
+#
 # print("Branca")
 # time_branca, time_evadido_branca, time_graduado_branca, event_branca, event_evadido_branca, event_graduado_branca = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-branca.csv')
 # sobrevivencia([time_evadido_branca, time_graduado_branca, time_branca], [event_evadido_branca, event_graduado_branca, event_branca], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Branca")
@@ -538,7 +581,38 @@ def Simu(quantAlunos, matriz):
 # time_parda, time_evadido_parda, time_graduado_parda, event_parda, event_evadido_parda, event_graduado_parda = Simu(10000, 'matrix/corte_pareto_80/bsi-bcc-cor-parda.csv')
 # sobrevivencia([time_evadido_parda, time_graduado_parda, time_parda], [event_evadido_parda, event_graduado_parda, event_parda], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência para Cor Parda")
 #
+# # Com dados reais
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("BRANCA")
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("PRETA")
+# time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = real_data("PARDA")
 #
+#
+# df1 = pd.DataFrame({'modelo_evadido_branca': time_evadido_branca}).reset_index()
+# df2 = pd.DataFrame({'modelo_concluido_branca': time_graduado_branca}).reset_index()
+# df3 = pd.DataFrame({'modelo_desvinculado_branca': time_branca}).reset_index()
+# df4 = pd.DataFrame({'modelo_evadido_preta': time_evadido_preta}).reset_index()
+# df5 = pd.DataFrame({'modelo_concluido_preta': time_graduado_preta}).reset_index()
+# df6 = pd.DataFrame({'modelo_desvinculado_preta': time_preta}).reset_index()
+# df7 = pd.DataFrame({'modelo_evadido_parda': time_evadido_parda}).reset_index()
+# df8 = pd.DataFrame({'modelo_concluido_parda': time_graduado_parda}).reset_index()
+# df9 = pd.DataFrame({'modelo_desvinculado_parda': time_parda}).reset_index()
+#
+# df10 = pd.DataFrame({'dados_evadido_branca': time_evadido}).reset_index()
+# df11 = pd.DataFrame({'dados_concluido_branca': time_graduado}).reset_index()
+# df12 = pd.DataFrame({'dados_desvinculado_branca': time}).reset_index()
+# df13 = pd.DataFrame({'dados_evadido_preta': time_evadido1}).reset_index()
+# df14 = pd.DataFrame({'dados_concluido_preta': time_graduado1}).reset_index()
+# df15 = pd.DataFrame({'dados_desvinculado_preta': time1}).reset_index()
+# df16 = pd.DataFrame({'dados_evadido_parda': time_evadido2}).reset_index()
+# df17 = pd.DataFrame({'dados_concluido_parda': time_graduado2}).reset_index()
+# df18 = pd.DataFrame({'dados_desvinculado_parda': time2}).reset_index()
+#
+#
+# df = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14, df15, df16, df17, df18]
+# df_final = pd.concat(df, axis=1)
+# df_hipotese = pd.concat(df, axis=1)
+# df_hipotese.to_csv('tempos_hipotese.csv', index=False)
+
 # times = [time_branca, time_preta, time_parda]
 # events = [event_branca, event_preta, event_parda]
 # labels = ["Branca", "Preta", "Parda"]
@@ -557,100 +631,130 @@ def Simu(quantAlunos, matriz):
 
 
 
+
+
+
 # Simulação BSI-BCC-Agro-Med - Curso
 
-time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/2015-2018/agro.csv')
-#sobrevivencia([time_evadido], [event_evadido], ['Agro'], "Análise de Sobrevivência da Evasão")
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/2015-2018/agro.csv')
+# #sobrevivencia([time_evadido], [event_evadido], ['Agro'], "Análise de Sobrevivência da Evasão")
+#
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/2015-2018/bcc.csv')
+# #sobrevivencia([time_evadido1], [event_evadido1], ['BCC'], "Análise de Sobrevivência da Evasão")
+#
+# #time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = Simu(10000, 'matrix/2015-2018/bsi.csv')
+# #sobrevivencia([time_evadido2], [event_evadido2], ['BSI'], "Análise de Sobrevivência da Evasão")
+#
+# time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = Simu(10000, 'matrix/2015-2018/med.csv')
+# #sobrevivencia([time_evadido3], [event_evadido3], ['Med Vet'], "Análise de Sobrevivência da Evasão")
+#
+#
+# # time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("AGRO")
+# # time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
+# # time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = real_data("BSI")
+# # time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = real_data("MED")
+#
+# # Boxplot
+# import seaborn as sns
+# sns.set_theme(style="whitegrid")
+# data1 = {'Cursos': 'Agrárias', 'Tempo(semestres)': time_evadido}
+# df1 = pd.DataFrame(data1)
+# data2 = {'Cursos': 'Computação', 'Tempo(semestres)': time_evadido1}
+# df2 = pd.DataFrame(data2)
+# # data3 = {'Curso': 'Curso 3', 'Tempo(semestres)': time_evadido2}
+# # df3 = pd.DataFrame(data3)
+# data4 = {'Cursos': 'Saúde', 'Tempo(semestres)': time_evadido3}
+# df4 = pd.DataFrame(data4)
+# #df = df1.append(df2).append(df3).append(df4)
+# df = df1.append(df2).append(df4)
+# ax = sns.boxplot(x='Cursos', y='Tempo(semestres)', color='grey', data=df)
+# plt.show()
+#
+# # Violinplot
+# ax = sns.violinplot(x='Cursos', y='Tempo(semestres)', color='grey', data=df)
+# plt.show()
+#
+#
+# # Anova
+# # from scipy.stats import f_oneway
+# # F, p = f_oneway(time_evadido, time_evadido1, time_evadido2, time_evadido3)
+# # print("Anova: ", p)
+# # stats.kruskal(time_evadido, time_evadido1, time_evadido2, time_evadido3)
+# # print("Kruskal: ", p)
+#
+#
+# # ["Agro", "BCC", "BSI", "Med Vet"]
+#
+# #labels = ["Curso 1", "Curso 2", "Curso 3", "Curso 4"]
+# labels = ["Curso Agrárias", "Curso Computação", "Curso Saúde"]
+#
+# # times = [time_evadido, time_evadido1, time_evadido2, time_evadido3]
+# # events = [event_evadido, event_evadido1, event_evadido2, event_evadido3]
+# times = [time_evadido, time_evadido1, time_evadido3]
+# events = [event_evadido, event_evadido1, event_evadido3]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
 
-time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/2015-2018/bcc.csv')
-#sobrevivencia([time_evadido1], [event_evadido1], ['BCC'], "Análise de Sobrevivência da Evasão")
 
-time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = Simu(10000, 'matrix/2015-2018/bsi.csv')
-#sobrevivencia([time_evadido2], [event_evadido2], ['BSI'], "Análise de Sobrevivência da Evasão")
-
-time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = Simu(10000, 'matrix/2015-2018/med.csv')
-#sobrevivencia([time_evadido3], [event_evadido3], ['Med Vet'], "Análise de Sobrevivência da Evasão")
-
-
-# time, time_evadido, time_graduado, event, event_evadido, event_graduado = real_data("AGRO")
-# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = real_data("BCC")
-# time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = real_data("BSI")
-# time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = real_data("MED")
-
-# Boxplot
-import seaborn as sns
-sns.set_theme(style="whitegrid")
-data1 = {'Curso': 'Curso 1', 'Tempo(semestres)': time_evadido}
-df1 = pd.DataFrame(data1)
-data2 = {'Curso': 'Curso 2', 'Tempo(semestres)': time_evadido1}
-df2 = pd.DataFrame(data2)
-data3 = {'Curso': 'Curso 3', 'Tempo(semestres)': time_evadido2}
-df3 = pd.DataFrame(data3)
-data4 = {'Curso': 'Curso 4', 'Tempo(semestres)': time_evadido3}
-df4 = pd.DataFrame(data4)
-df = df1.append(df2).append(df3).append(df4)
-ax = sns.boxplot(x='Curso', y='Tempo(semestres)', hue="Curso", data=df)
-plt.show()
-
-# Anova
-from scipy.stats import f_oneway
-F, p = f_oneway(time_evadido, time_evadido1, time_evadido2, time_evadido3)
-print("Anova: ", p)
-stats.kruskal(time_evadido, time_evadido1, time_evadido2, time_evadido3)
-print("Kruskal: ", p)
-
-
-# ["Agro", "BCC", "BSI", "Med Vet"]
-
-labels = ["Curso 1", "Curso 2", "Curso 3", "Curso 4"]
-
-times = [time_evadido, time_evadido1, time_evadido2, time_evadido3]
-events = [event_evadido, event_evadido1, event_evadido2, event_evadido3]
-
-#sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
-
-
-t, p = ks_2samp(time_evadido1, time_evadido)
-print("BCC x Agro - p-valor:", p)
-
-t, p = ks_2samp(time_evadido2, time_evadido)
-print("BSI x Agro - p-valor:", p)
-
-t, p = ks_2samp(time_evadido1, time_evadido3)
-print("BCC x Med Vet - p-valor:", p)
-
-t, p = ks_2samp(time_evadido2, time_evadido3)
-print("BSI x Med Vet - p-valor:", p)
-
-t, p = ks_2samp(time_evadido1, time_evadido2)
-print("BCC x BSI - p-valor:", p)
-
-t, p = ks_2samp(time_evadido, time_evadido3)
-print("Agro x Med Vet - p-valor:", p)
-
-# Tamanho das amostras
-print("Tamanho das Amostras:")
-print(len(time_evadido))
-print(len(time_evadido1))
-print(len(time_evadido2))
-print(len(time_evadido3))
-
-# Intervalo de Confiança
-temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido)
-print("IC Agro:")
-print(temp_mean, temp_min, temp_max)
-
-temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido1)
-print("IC BCC:")
-print(temp_mean, temp_min, temp_max)
-
-temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido2)
-print("IC BSI:")
-print(temp_mean, temp_min, temp_max)
-
-temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido3)
-print("IC Vet:")
-print(temp_mean, temp_min, temp_max)
+# t, p = ks_2samp(time_evadido1, time_evadido)
+# print("BCC x Agro - p-valor:", p)
+#
+# t, p = ks_2samp(time_evadido2, time_evadido)
+# print("BSI x Agro - p-valor:", p)
+#
+# t, p = ks_2samp(time_evadido1, time_evadido3)
+# print("BCC x Med Vet - p-valor:", p)
+#
+# t, p = ks_2samp(time_evadido2, time_evadido3)
+# print("BSI x Med Vet - p-valor:", p)
+#
+# t, p = ks_2samp(time_evadido1, time_evadido2)
+# print("BCC x BSI - p-valor:", p)
+#
+# t, p = ks_2samp(time_evadido, time_evadido3)
+# print("Agro x Med Vet - p-valor:", p)
+#
+# # Tamanho das amostras
+# print("Tamanho das Amostras:")
+# print(len(time_evadido))
+# print(len(time_evadido1))
+# print(len(time_evadido2))
+# print(len(time_evadido3))
+#
+# # Intervalo de Confiança
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido)
+# print("IC Agro:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido1)
+# print("IC BCC:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido2)
+# print("IC BSI:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_evadido3)
+# print("IC Vet:")
+# print(temp_mean, temp_min, temp_max)
+#
+# # Intervalo de Confiança - Conclusão
+# print("Conclusão")
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_graduado)
+# print("IC Agro:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_graduado1)
+# print("IC BCC:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_graduado2)
+# print("IC BSI:")
+# print(temp_mean, temp_min, temp_max)
+#
+# temp_mean, temp_min, temp_max = mean_confidence_interval(time_graduado3)
+# print("IC Vet:")
+# print(temp_mean, temp_min, temp_max)
 
 
 
@@ -714,3 +818,49 @@ print(temp_mean, temp_min, temp_max)
 # events = [event_graduado, event_graduado1]
 #
 # sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão")
+
+
+
+# Simulação BSI-BCC-Agro-Med - Por semestre de retenção
+
+# time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(10000, 'matrix/agro-bcc-bsi-vet.csv', 0)
+# sobrevivencia([time_evadido, time_graduado, time], [event_evadido, event_graduado, event], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - Sem retenção")
+#
+# time1, time_evadido1, time_graduado1, event1, event_evadido1, event_graduado1 = Simu(10000, 'matrix/agro-bcc-bsi-vet.csv', 1)
+# sobrevivencia([time_evadido1, time_graduado1, time1], [event_evadido1, event_graduado1, event1], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - 1")
+#
+# time2, time_evadido2, time_graduado2, event2, event_evadido2, event_graduado2 = Simu(10000, 'matrix/agro-bcc-bsi-vet.csv', 2)
+# sobrevivencia([time_evadido2, time_graduado2, time2], [event_evadido2, event_graduado2, event2], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - 2")
+#
+# time3, time_evadido3, time_graduado3, event3, event_evadido3, event_graduado3 = Simu(10000, 'matrix/agro-bcc-bsi-vet.csv', 4)
+# sobrevivencia([time_evadido3, time_graduado3, time3], [event_evadido3, event_graduado3, event3], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - 4")
+#
+# time4, time_evadido4, time_graduado4, event4, event_evadido4, event_graduado4 = Simu(10000, 'matrix/agro-bcc-bsi-vet.csv', 6)
+# sobrevivencia([time_evadido4, time_graduado4, time4], [event_evadido4, event_graduado4, event4], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - 6")
+#
+# time5, time_evadido5, time_graduado5, event5, event_evadido5, event_graduado5 = Simu(10000, 'matrix/agro-bcc-bsi-vet.csv', 8)
+# sobrevivencia([time_evadido5, time_graduado5, time5], [event_evadido5, event_graduado5, event5], ['evasão', 'conclusão', 'desvinculação'], "Análise de Sobrevivência - 8+")
+#
+# labels = ["Sem retenção", "1", "2", "4", "6", "8+"]
+# times = [time_evadido, time_evadido1, time_evadido2, time_evadido3, time_evadido4, time_evadido5]
+# events = [event_evadido, event_evadido1, event_evadido2, event_evadido3, event_evadido4, event_evadido5]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Evasão")
+#
+# times = [time_graduado, time_graduado1, time_graduado2, time_graduado3, time_graduado4, time_graduado5]
+# events = [event_graduado, event_graduado1, event_graduado2, event_graduado3, event_graduado4, event_graduado5]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Conclusão")
+#
+# times = [time, time1, time2, time3, time4, time5]
+# events = [event, event1, event2, event3, event4, event5]
+#
+# sobrevivencia(times, events, labels, "Análise de Sobrevivência da Desvinculação")
+
+
+# Simulação Exemplo
+
+time, time_evadido, time_graduado, event, event_evadido, event_graduado = Simu(1000, 'matrix/agro-bcc-bsi-vet.csv')
+sobrevivencia([time_evadido], [event_evadido], ['evento'], "Análise de Sobrevivência")
+
+
